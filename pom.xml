@@ -20,6 +20,7 @@
 
     <modules>
         <module>fwk-core</module>
+        <module>fwk-auditing</module>
     </modules>
 
     <scm>
@@ -58,6 +59,11 @@
             <dependency>
                 <groupId>io.davorpatech.fwk</groupId>
                 <artifactId>fwk-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.davorpatech.fwk</groupId>
+                <artifactId>fwk-auditing</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
