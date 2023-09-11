@@ -7,8 +7,10 @@
 
     <groupId>io.davorpatech</groupId>
     <artifactId>musical-surveyor-springboot-api</artifactId>
-    <description>Spring Boot API for managing music preferences of the audience within the context of a radio station</description>
     <version>1.0-SNAPSHOT</version>
+
+    <name>musical-surveyor-springboot-api</name>
+    <description>Spring Boot API for managing music preferences of the audience within the context of a radio station</description>
 
     <properties>
         <java.version>17</java.version>
