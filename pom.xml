@@ -1,22 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="
-            http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.1.3</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
 
     <groupId>io.davorpatech</groupId>
     <artifactId>musical-surveyor-springboot-api</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
     <name>musical-surveyor-springboot-api</name>
     <description>Spring Boot API for managing music preferences of the audience within the context of a radio station</description>
 
+    <scm>
+        <connection>scm:git:git://github.com/davorpa/musical-surveyor-springboot-api.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/davorpa/musical-surveyor-springboot-api.git</developerConnection>
+        <url>https://github.com/davorpa/musical-surveyor-springboot-api</url>
+    </scm>
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/davorpa/musical-surveyor-springboot-api/issues</url>
+    </issueManagement>
+
     <properties>
         <java.version>17</java.version>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Library versions -->
         <spring-boot.version>3.1.3</spring-boot.version>
         <spring-cloud.version>2022.0.4</spring-cloud.version>
