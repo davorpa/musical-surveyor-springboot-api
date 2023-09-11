@@ -5,6 +5,9 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/fwk-validators/pom.xml" />
+        <option value="$PROJECT_DIR$/fwk-auditing/pom.xml" />
+        <option value="$PROJECT_DIR$/fwk-core/pom.xml" />
       </list>
     </option>
   </component>

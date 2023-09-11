@@ -21,6 +21,10 @@
     <modules>
         <module>fwk-core</module>
         <module>fwk-auditing</module>
+        <module>fwk-validation-commons</module>
+        <module>fwk-validators</module>
+        <module>fwk-validation-context</module>
+        <module>fwk-validation-spring-boot-starter</module>
     </modules>
 
     <scm>
@@ -44,7 +48,7 @@
         <dependencies>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
+                <artifactId>spring-boot-starter</artifactId>
                 <version>${spring-boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
@@ -64,6 +68,26 @@
             <dependency>
                 <groupId>io.davorpatech.fwk</groupId>
                 <artifactId>fwk-auditing</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.davorpatech.fwk</groupId>
+                <artifactId>fwk-validation-commons</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.davorpatech.fwk</groupId>
+                <artifactId>fwk-validators</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.davorpatech.fwk</groupId>
+                <artifactId>fwk-validation-context</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.davorpatech.fwk</groupId>
+                <artifactId>fwk-validation-spring-boot-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
