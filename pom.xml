@@ -25,6 +25,7 @@
         <module>fwk-validators</module>
         <module>fwk-validation-context</module>
         <module>fwk-validation-spring-boot-starter</module>
+        <module>fwk-data-commons</module>
     </modules>
 
     <scm>
@@ -88,6 +89,11 @@
             <dependency>
                 <groupId>io.davorpatech.fwk</groupId>
                 <artifactId>fwk-validation-spring-boot-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.davorpatech.fwk</groupId>
+                <artifactId>fwk-data-commons</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

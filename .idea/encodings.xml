@@ -3,6 +3,7 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/fwk-auditing/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/fwk-core/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fwk-data-commons/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/fwk-validation-commons/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/fwk-validation-context/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/fwk-validation-spring-boot-starter/src/main/java" charset="UTF-8" />
