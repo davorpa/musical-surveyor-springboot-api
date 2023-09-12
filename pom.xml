@@ -26,6 +26,7 @@
         <module>fwk-validation-context</module>
         <module>fwk-validation-spring-boot-starter</module>
         <module>fwk-data-commons</module>
+        <module>fwk-web-error-attributes</module>
     </modules>
 
     <scm>
@@ -94,6 +95,11 @@
             <dependency>
                 <groupId>io.davorpatech.fwk</groupId>
                 <artifactId>fwk-data-commons</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.davorpatech.fwk</groupId>
+                <artifactId>fwk-web-error-attributes</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
