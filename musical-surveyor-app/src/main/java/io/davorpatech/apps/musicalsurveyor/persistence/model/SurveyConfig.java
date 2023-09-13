@@ -19,7 +19,7 @@ public class SurveyConfig extends BaseValueObject // NOSONAR
     @Min(0)
     private Integer numMaxParticipants;
 
-    @Column(name = "num_max_responses", nullable = false)
+    @Column(name = "num_survey_responses", nullable = false)
     @NotNull
     @Min(0)
     private Integer numSurveyResponses;
