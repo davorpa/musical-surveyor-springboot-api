@@ -7,9 +7,9 @@ import io.davorpatech.fwk.validation.groups.OnCreate;
 import io.davorpatech.fwk.validation.groups.OnUpdate;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Null;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.io.Serial;
 import java.time.LocalDateTime;
 
 @EntityListeners({
@@ -17,8 +17,9 @@ import java.time.LocalDateTime;
 })
 @Entity
 @Table(name = "RAFFLE")
-public class Raffle  extends BaseEntity<Long> implements AuditAccessor {
-
+public class Raffle extends BaseEntity<Long> implements AuditAccessor // NOSONAR
+{
+    @Serial
     private static final long serialVersionUID = 418020668455507366L;
 
     @Id
@@ -26,7 +27,7 @@ public class Raffle  extends BaseEntity<Long> implements AuditAccessor {
     @NotNull(groups = { OnUpdate.class, OnCreate.class})
     private Long id;
 
-    @Column(name = "status",length = 50, nullable = false)
+    @Column(name = "status", length = 50, nullable = false)
     @Enumerated(EnumType.STRING)
     @NotNull
     private RaffleStatus status;

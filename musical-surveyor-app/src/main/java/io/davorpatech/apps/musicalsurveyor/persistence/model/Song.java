@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.io.Serial;
 import java.util.Objects;
 
 @EntityListeners({
@@ -17,8 +18,9 @@ import java.util.Objects;
 })
 @Entity
 @Table(name = "SONG")
-public class Song extends BaseEntity<Long> implements AuditAccessor {
-
+public class Song extends BaseEntity<Long> implements AuditAccessor // NOSONAR
+{
+    @Serial
     private static final long serialVersionUID = -8577673241957398795L;
 
     @Id

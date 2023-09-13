@@ -13,6 +13,7 @@ import jakarta.validation.constraints.Null;
 import jakarta.validation.constraints.Size;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.io.Serial;
 import java.time.LocalDateTime;
 
 @EntityListeners({
@@ -20,9 +21,9 @@ import java.time.LocalDateTime;
 })
 @Entity
 @Table(name = "SURVEY")
-public class Survey  extends BaseEntity<Long> implements AuditAccessor {
-
-
+public class Survey extends BaseEntity<Long> implements AuditAccessor // NOSONAR
+{
+    @Serial
     private static final long serialVersionUID = -6363601101197972405L;
 
     @Id
@@ -41,7 +42,7 @@ public class Survey  extends BaseEntity<Long> implements AuditAccessor {
     @Size(max = 2048)
     private String description;
 
-    @Column(name = "status",length = 50, nullable = false)
+    @Column(name = "status", length = 50, nullable = false)
     @Enumerated(EnumType.STRING)
     @NotNull
     private SuveyStatus status;
@@ -59,7 +60,6 @@ public class Survey  extends BaseEntity<Long> implements AuditAccessor {
     private final SurveyConfig config = new SurveyConfig();
 
     @OneToOne(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-
     private Raffle raffle;
 
     @Embedded

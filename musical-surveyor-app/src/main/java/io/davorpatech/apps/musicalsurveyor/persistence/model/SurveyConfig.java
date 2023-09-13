@@ -6,9 +6,12 @@ import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
-@Embeddable
-public class SurveyConfig extends BaseValueObject {
+import java.io.Serial;
 
+@Embeddable
+public class SurveyConfig extends BaseValueObject // NOSONAR
+{
+    @Serial
     private static final long serialVersionUID = -6232890906214957251L;
 
     @Column(name = "num_max_participants", nullable = false)

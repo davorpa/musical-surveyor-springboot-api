@@ -13,6 +13,7 @@ import jakarta.validation.constraints.Null;
 import jakarta.validation.constraints.Size;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.io.Serial;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -24,8 +25,9 @@ import java.util.Set;
 @Table(
         name = "ARTIST"
 )
-public class Artist extends BaseEntity<Long> implements AuditAccessor{
-
+public class Artist extends BaseEntity<Long> implements AuditAccessor // NOSONAR
+{
+    @Serial
     private static final long serialVersionUID = 6983478586962494353L;
 
     @Id
