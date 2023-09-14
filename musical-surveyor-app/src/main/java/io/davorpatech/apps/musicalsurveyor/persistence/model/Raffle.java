@@ -35,7 +35,7 @@ public class Raffle extends BaseEntity<Long> implements AuditAccessor // NOSONAR
     @Column(name = "resolution_date", nullable = true)
     private LocalDateTime resolutionDate;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(
             name = "id",
             foreignKey = @ForeignKey(name = "FK_raffle_survey_id"))
@@ -47,7 +47,7 @@ public class Raffle extends BaseEntity<Long> implements AuditAccessor // NOSONAR
 
     @Override
     protected String defineObjAttrs() {
-        return String.format("%s, survey_id=%s, status=%s, resolution_date='%s'",
+        return String.format("%s, surveyId=%s, status=%s, resolution_date='%s'",
                 super.defineObjAttrs(), getSurveyId(), status, resolutionDate);
     }
 

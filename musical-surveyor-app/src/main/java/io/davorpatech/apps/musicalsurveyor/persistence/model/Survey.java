@@ -59,7 +59,9 @@ public class Survey extends BaseEntity<Long> implements AuditAccessor // NOSONAR
     @Valid
     private final SurveyConfig config = new SurveyConfig();
 
-    @OneToOne(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "survey", optional = true,
+        cascade = CascadeType.ALL, orphanRemoval = true,
+        fetch = FetchType.LAZY)
     private Raffle raffle;
 
     @Embedded
@@ -129,11 +131,12 @@ public class Survey extends BaseEntity<Long> implements AuditAccessor // NOSONAR
     }
 
     public void setRaffle(Raffle raffle) {
-        if (raffle == null) {
+        if (raffle == null) { // unlink bidirectional relationship
             if (this.raffle != null) {
+                // dispose previous references
                 this.raffle.setSurvey(null);
             }
-        } else {
+        } else { // link bidirectional relationship
             raffle.setSurvey(this);
         }
         this.raffle = raffle;
