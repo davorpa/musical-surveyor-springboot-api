@@ -1,5 +1,6 @@
 package io.davorpatech.apps.musicalsurveyor.persistence.model;
 
+import io.davorpatech.apps.musicalsurveyor.domain.ArtistConstants;
 import io.davorpatech.fwk.auditing.jpa.Audit;
 import io.davorpatech.fwk.auditing.jpa.AuditAccessor;
 import io.davorpatech.fwk.model.BaseEntity;
@@ -21,7 +22,7 @@ import java.util.Set;
 @EntityListeners({
     AuditingEntityListener.class
 })
-@Entity
+@Entity(name = ArtistConstants.DOMAIN_NAME)
 @Table(name = "ARTIST")
 public class Artist extends BaseEntity<Long> implements AuditAccessor // NOSONAR
 {
@@ -35,13 +36,13 @@ public class Artist extends BaseEntity<Long> implements AuditAccessor // NOSONAR
     @NotNull(groups = { OnUpdate.class })
     private Long id;
 
-    @Column(name = "name", length = 255, nullable = false)
+    @Column(name = "name", length = ArtistConstants.NAME_MAXLEN, nullable = false)
     @NotBlank
-    @Size(max = 255)
+    @Size(max = ArtistConstants.NAME_MAXLEN)
     private String name;
 
-    @Column(name = "biography", length = 2048, nullable = true)
-    @Size(max = 2048)
+    @Column(name = "biography", length = ArtistConstants.BIOGRAPHY_MAXLEN, nullable = true)
+    @Size(max = ArtistConstants.BIOGRAPHY_MAXLEN)
     private String biography;
 
     @OneToMany(mappedBy = "artist", fetch = FetchType.LAZY)
