@@ -1,5 +1,6 @@
 package io.davorpatech.apps.musicalsurveyor.persistence.model;
 
+import io.davorpatech.apps.musicalsurveyor.domain.RaffleTicketConstants;
 import io.davorpatech.fwk.model.BaseEntity;
 import io.davorpatech.fwk.validation.groups.OnCreate;
 import io.davorpatech.fwk.validation.groups.OnUpdate;
@@ -12,7 +13,7 @@ import jakarta.validation.constraints.Size;
 
 import java.io.Serial;
 
-@Entity
+@Entity(name = RaffleTicketConstants.DOMAIN_NAME)
 @Table(
     name = "RAFFLE_TICKET",
     uniqueConstraints = {
@@ -34,9 +35,9 @@ public class RaffleTicket extends BaseEntity<Long> // NOSONAR
     @NotNull(groups = { OnUpdate.class })
     private Long id;
 
-    @Column(name = "`number`", length = 40, nullable = false)
+    @Column(name = "`number`", length = RaffleTicketConstants.NUMBER_MAXLEN, nullable = false)
     @NotBlank
-    @Size(max = 40)
+    @Size(max = RaffleTicketConstants.NUMBER_MAXLEN)
     private String number;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
