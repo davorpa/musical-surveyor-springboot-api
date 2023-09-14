@@ -1,5 +1,6 @@
 package io.davorpatech.apps.musicalsurveyor.persistence.model;
 
+import io.davorpatech.apps.musicalsurveyor.domain.RaffleConstants;
 import io.davorpatech.apps.musicalsurveyor.domain.RaffleStatus;
 import io.davorpatech.fwk.auditing.jpa.Audit;
 import io.davorpatech.fwk.auditing.jpa.AuditAccessor;
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 @EntityListeners({
     AuditingEntityListener.class
 })
-@Entity
+@Entity(name = RaffleConstants.DOMAIN_NAME)
 @Table(name = "RAFFLE")
 public class Raffle extends BaseEntity<Long> implements AuditAccessor // NOSONAR
 {
@@ -28,7 +29,7 @@ public class Raffle extends BaseEntity<Long> implements AuditAccessor // NOSONAR
     @NotNull(groups = { OnUpdate.class, OnCreate.class})
     private Long id;
 
-    @Column(name = "status", length = 50, nullable = false)
+    @Column(name = "status", length = RaffleConstants.STATUS_MAXLEN, nullable = false)
     @Enumerated(EnumType.STRING)
     @NotNull
     private RaffleStatus status;
