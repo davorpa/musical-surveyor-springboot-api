@@ -13,7 +13,7 @@ import java.io.Serial;
 import java.time.LocalDateTime;
 
 @EntityListeners({
-        AuditingEntityListener.class
+    AuditingEntityListener.class
 })
 @Entity
 @Table(name = "RAFFLE")
@@ -37,8 +37,8 @@ public class Raffle extends BaseEntity<Long> implements AuditAccessor // NOSONAR
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(
-            name = "id",
-            foreignKey = @ForeignKey(name = "FK_raffle_survey_id"))
+        name = "id",
+        foreignKey = @ForeignKey(name = "FK_raffle_survey_id"))
     @MapsId
     private Survey survey;
 
@@ -48,7 +48,7 @@ public class Raffle extends BaseEntity<Long> implements AuditAccessor // NOSONAR
     @Override
     protected String defineObjAttrs() {
         return String.format("%s, surveyId=%s, status=%s, resolution_date='%s'",
-                super.defineObjAttrs(), getSurveyId(), status, resolutionDate);
+            super.defineObjAttrs(), getSurveyId(), status, resolutionDate);
     }
 
     @Override

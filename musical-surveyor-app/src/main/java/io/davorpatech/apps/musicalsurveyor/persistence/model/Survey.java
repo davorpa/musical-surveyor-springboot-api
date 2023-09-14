@@ -17,7 +17,7 @@ import java.io.Serial;
 import java.time.LocalDateTime;
 
 @EntityListeners({
-        AuditingEntityListener.class
+    AuditingEntityListener.class
 })
 @Entity
 @Table(name = "SURVEY")
@@ -70,7 +70,7 @@ public class Survey extends BaseEntity<Long> implements AuditAccessor // NOSONAR
     @Override
     protected String defineObjAttrs() {
         return String.format("%s, title='%s', status=%s, startDate='%s', endDate='%s', config=%s",
-                super.defineObjAttrs(), title, status, startDate, endDate, config);
+            super.defineObjAttrs(), title, status, startDate, endDate, config);
     }
 
     @Override

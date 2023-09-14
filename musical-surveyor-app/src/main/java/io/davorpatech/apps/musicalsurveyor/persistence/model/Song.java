@@ -14,7 +14,7 @@ import java.io.Serial;
 import java.util.Objects;
 
 @EntityListeners({
-        AuditingEntityListener.class
+    AuditingEntityListener.class
 })
 @Entity
 @Table(name = "SONG")
@@ -52,17 +52,17 @@ public class Song extends BaseEntity<Long> implements AuditAccessor // NOSONAR
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(
-            name = "artist_id",
-            nullable = false,
-            updatable = false,
-            foreignKey = @ForeignKey(name = "FK_song_artist_id"))
+        name = "artist_id",
+        nullable = false,
+        updatable = false,
+        foreignKey = @ForeignKey(name = "FK_song_artist_id"))
     @Valid
     private Artist artist;
 
     @Override
     protected String defineObjAttrs() {
         return String.format("%s, artist_id=%s, title='%s', year=%s, duration=%s, genre='%s'",
-                super.defineObjAttrs(), getArtistId(), title, year, duration, genre);
+            super.defineObjAttrs(), getArtistId(), title, year, duration, genre);
     }
 
     @Override

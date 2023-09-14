@@ -19,12 +19,10 @@ import java.util.Objects;
 import java.util.Set;
 
 @EntityListeners({
-        AuditingEntityListener.class
+    AuditingEntityListener.class
 })
 @Entity
-@Table(
-        name = "ARTIST"
-)
+@Table(name = "ARTIST")
 public class Artist extends BaseEntity<Long> implements AuditAccessor // NOSONAR
 {
     @Serial
@@ -92,15 +90,13 @@ public class Artist extends BaseEntity<Long> implements AuditAccessor // NOSONAR
         this.songs = Objects.requireNonNull(songs, "songs must not be null!");
     }
 
-    public void addSong(
-            final Song song) {
+    public void addSong(Song song) {
         Objects.requireNonNull(song, "song to add must not be null!");
         songs.add(song);
         song.setArtist(this);
     }
 
-    public void removeSong(
-            final Song song) {
+    public void removeSong(Song song) {
         Objects.requireNonNull(song, "asistencia to remove must not be null!");
         songs.remove(song);
         song.unsetArtist();

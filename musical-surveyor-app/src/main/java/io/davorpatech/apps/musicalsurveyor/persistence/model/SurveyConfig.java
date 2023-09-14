@@ -27,7 +27,7 @@ public class SurveyConfig extends BaseValueObject // NOSONAR
     @Override
     protected String defineObjAttrs() {
         return String.format("numMaxParticipants=%s, numSurveyResponses=%s",
-                numMaxParticipants, numSurveyResponses);
+            numMaxParticipants, numSurveyResponses);
     }
 
     public Integer getNumMaxParticipants() {
