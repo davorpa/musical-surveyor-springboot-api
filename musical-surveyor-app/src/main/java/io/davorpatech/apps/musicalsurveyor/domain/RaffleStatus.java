@@ -1,4 +1,4 @@
-package io.davorpatech.apps.musicalsurveyor.persistence.model;
+package io.davorpatech.apps.musicalsurveyor.domain;
 
 public enum RaffleStatus {
     PENDING,

@@ -1,5 +1,7 @@
 package io.davorpatech.apps.musicalsurveyor.persistence.model;
 
+import io.davorpatech.apps.musicalsurveyor.domain.RaffleConstants;
+import io.davorpatech.apps.musicalsurveyor.domain.RaffleStatus;
 import io.davorpatech.fwk.auditing.jpa.Audit;
 import io.davorpatech.fwk.auditing.jpa.AuditAccessor;
 import io.davorpatech.fwk.model.BaseEntity;
@@ -13,9 +15,9 @@ import java.io.Serial;
 import java.time.LocalDateTime;
 
 @EntityListeners({
-        AuditingEntityListener.class
+    AuditingEntityListener.class
 })
-@Entity
+@Entity(name = RaffleConstants.DOMAIN_NAME)
 @Table(name = "RAFFLE")
 public class Raffle extends BaseEntity<Long> implements AuditAccessor // NOSONAR
 {
@@ -27,7 +29,7 @@ public class Raffle extends BaseEntity<Long> implements AuditAccessor // NOSONAR
     @NotNull(groups = { OnUpdate.class, OnCreate.class})
     private Long id;
 
-    @Column(name = "status", length = 50, nullable = false)
+    @Column(name = "status", length = RaffleConstants.STATUS_MAXLEN, nullable = false)
     @Enumerated(EnumType.STRING)
     @NotNull
     private RaffleStatus status;
@@ -35,10 +37,10 @@ public class Raffle extends BaseEntity<Long> implements AuditAccessor // NOSONAR
     @Column(name = "resolution_date", nullable = true)
     private LocalDateTime resolutionDate;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(
-            name = "id",
-            foreignKey = @ForeignKey(name = "FK_raffle_survey_id"))
+        name = "id",
+        foreignKey = @ForeignKey(name = "FK_raffle_survey_id"))
     @MapsId
     private Survey survey;
 
@@ -47,8 +49,8 @@ public class Raffle extends BaseEntity<Long> implements AuditAccessor // NOSONAR
 
     @Override
     protected String defineObjAttrs() {
-        return String.format("%s, survey_id=%s, status=%s, resolution_date='%s'",
-                super.defineObjAttrs(), getSurveyId(), status, resolutionDate);
+        return String.format("%s, surveyId=%s, status=%s, resolution_date='%s'",
+            super.defineObjAttrs(), getSurveyId(), status, resolutionDate);
     }
 
     @Override

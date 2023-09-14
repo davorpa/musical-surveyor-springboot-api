@@ -14,21 +14,16 @@ import java.io.Serial;
 import java.math.BigDecimal;
 
 @EntityListeners({
-        AuditingEntityListener.class
+    AuditingEntityListener.class
 })
 @Entity(name = PrizeConstants.DOMAIN_NAME)
 @Table(
-        name = "PRIZE",
-        uniqueConstraints = {
-                @UniqueConstraint(
-                        name = "UK_prize_title",
-                        columnNames = {"title"}
-                )
-        }
+    name = "PRIZE",
+    uniqueConstraints = {
+        @UniqueConstraint(name = "UK_prize_title", columnNames = {"title"})
+    }
 )
-public class Prize // NOSONAR
-        extends BaseEntity<Long> // NOSONAR
-        implements AuditAccessor // NOSONAR
+public class Prize extends BaseEntity<Long> implements AuditAccessor // NOSONAR
 {
     @Serial
     private static final long serialVersionUID = 7324518886994447461L;
@@ -62,7 +57,7 @@ public class Prize // NOSONAR
     @Override
     protected String defineObjAttrs() {
         return String.format("%s, title='%s', monetaryValue=%s",
-                super.defineObjAttrs(), title, monetaryValue);
+            super.defineObjAttrs(), title, monetaryValue);
     }
 
     @Override

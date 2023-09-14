@@ -1,5 +1,6 @@
 package io.davorpatech.apps.musicalsurveyor.persistence.model;
 
+import io.davorpatech.apps.musicalsurveyor.domain.SurveyConstants;
 import io.davorpatech.fwk.model.BaseValueObject;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -16,18 +17,18 @@ public class SurveyConfig extends BaseValueObject // NOSONAR
 
     @Column(name = "num_max_participants", nullable = false)
     @NotNull
-    @Min(0)
+    @Min(SurveyConstants.CFG_NUM_MAX_PARTICIPANTS_MIN)
     private Integer numMaxParticipants;
 
     @Column(name = "num_survey_responses", nullable = false)
     @NotNull
-    @Min(0)
+    @Min(SurveyConstants.CFG_NUM_RESPONSES_MIN)
     private Integer numSurveyResponses;
 
     @Override
     protected String defineObjAttrs() {
         return String.format("numMaxParticipants=%s, numSurveyResponses=%s",
-                numMaxParticipants, numSurveyResponses);
+            numMaxParticipants, numSurveyResponses);
     }
 
     public Integer getNumMaxParticipants() {

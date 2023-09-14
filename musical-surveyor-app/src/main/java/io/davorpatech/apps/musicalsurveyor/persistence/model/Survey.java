@@ -1,5 +1,7 @@
 package io.davorpatech.apps.musicalsurveyor.persistence.model;
 
+import io.davorpatech.apps.musicalsurveyor.domain.SurveyConstants;
+import io.davorpatech.apps.musicalsurveyor.domain.SuveyStatus;
 import io.davorpatech.fwk.auditing.jpa.Audit;
 import io.davorpatech.fwk.auditing.jpa.AuditAccessor;
 import io.davorpatech.fwk.model.BaseEntity;
@@ -17,9 +19,9 @@ import java.io.Serial;
 import java.time.LocalDateTime;
 
 @EntityListeners({
-        AuditingEntityListener.class
+    AuditingEntityListener.class
 })
-@Entity
+@Entity(name = SurveyConstants.DOMAIN_NAME)
 @Table(name = "SURVEY")
 public class Survey extends BaseEntity<Long> implements AuditAccessor // NOSONAR
 {
@@ -33,16 +35,16 @@ public class Survey extends BaseEntity<Long> implements AuditAccessor // NOSONAR
     @NotNull(groups = {OnUpdate.class})
     private Long id;
 
-    @Column(name = "title", length = 255, nullable = false)
+    @Column(name = "title", length = SurveyConstants.TITLE_MAXLEN, nullable = false)
     @NotBlank
-    @Size(max = 255)
+    @Size(max = SurveyConstants.TITLE_MAXLEN)
     private String title;
 
-    @Column(name = "description", length = 2048, nullable = true)
-    @Size(max = 2048)
+    @Column(name = "description", length = SurveyConstants.DESCRIPTION_MAXLEN, nullable = true)
+    @Size(max = SurveyConstants.DESCRIPTION_MAXLEN)
     private String description;
 
-    @Column(name = "status", length = 50, nullable = false)
+    @Column(name = "status", length = SurveyConstants.STATUS_MAXLEN, nullable = false)
     @Enumerated(EnumType.STRING)
     @NotNull
     private SuveyStatus status;
@@ -59,7 +61,9 @@ public class Survey extends BaseEntity<Long> implements AuditAccessor // NOSONAR
     @Valid
     private final SurveyConfig config = new SurveyConfig();
 
-    @OneToOne(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "survey", optional = true,
+        cascade = CascadeType.ALL, orphanRemoval = true,
+        fetch = FetchType.LAZY)
     private Raffle raffle;
 
     @Embedded
@@ -68,7 +72,7 @@ public class Survey extends BaseEntity<Long> implements AuditAccessor // NOSONAR
     @Override
     protected String defineObjAttrs() {
         return String.format("%s, title='%s', status=%s, startDate='%s', endDate='%s', config=%s",
-                super.defineObjAttrs(), title, status, startDate, endDate, config);
+            super.defineObjAttrs(), title, status, startDate, endDate, config);
     }
 
     @Override
@@ -129,11 +133,12 @@ public class Survey extends BaseEntity<Long> implements AuditAccessor // NOSONAR
     }
 
     public void setRaffle(Raffle raffle) {
-        if (raffle == null) {
+        if (raffle == null) { // unlink bidirectional relationship
             if (this.raffle != null) {
+                // dispose previous references
                 this.raffle.setSurvey(null);
             }
-        } else {
+        } else { // link bidirectional relationship
             raffle.setSurvey(this);
         }
         this.raffle = raffle;
