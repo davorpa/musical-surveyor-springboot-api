@@ -6,10 +6,7 @@ import io.davorpatech.fwk.model.BaseEntity;
 import io.davorpatech.fwk.validation.groups.OnCreate;
 import io.davorpatech.fwk.validation.groups.OnUpdate;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Null;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serial;
@@ -39,6 +36,7 @@ public class Color extends BaseEntity<Long> implements AuditAccessor // NOSONAR
     @Column(name = "code", nullable = false, length = 25)
     @NotBlank
     @Size(max = 25)
+    @Pattern(regexp = "^(\\#[0-9A-Z]{6})$|^([a-z]+)$")
     private String code;
 
     @Embedded
