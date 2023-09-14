@@ -1,5 +1,6 @@
 package io.davorpatech.apps.musicalsurveyor.persistence.model;
 
+import io.davorpatech.apps.musicalsurveyor.domain.RadioListenerConstants;
 import io.davorpatech.fwk.auditing.jpa.Audit;
 import io.davorpatech.fwk.auditing.jpa.AuditAccessor;
 import io.davorpatech.fwk.model.BaseEntity;
@@ -14,7 +15,7 @@ import java.io.Serial;
 @EntityListeners({
     AuditingEntityListener.class
 })
-@Entity
+@Entity(name = RadioListenerConstants.DOMAIN_NAME)
 @Table(
     name = "RADIO_LISTENER",
     uniqueConstraints = {
@@ -33,25 +34,25 @@ public class RadioListener extends BaseEntity<Long> implements AuditAccessor // 
     @NotNull(groups = { OnUpdate.class })
     private Long id;
 
-    @Column(name = "name", length = 255, nullable = false)
+    @Column(name = "name", length = RadioListenerConstants.NAME_MAXLEN, nullable = false)
     @NotBlank
-    @Size(max = 255)
+    @Size(max = RadioListenerConstants.NAME_MAXLEN)
     private String name;
 
-    @Column(name = "phone", length = 15, nullable = false)
+    @Column(name = "phone", length = RadioListenerConstants.PHONE_MAXLEN, nullable = false)
     @NotBlank
-    @Size(max = 15)
-    @Pattern(regexp = "^\\+[0-9]{9,}$")
+    @Size(max = RadioListenerConstants.PHONE_MAXLEN)
+    @Pattern(regexp = RadioListenerConstants.PHONE_REGEX)
     private String phone;
 
-    @Column(name = "email", length = 255, nullable = false)
+    @Column(name = "email", length = RadioListenerConstants.EMAIL_MAXLEN, nullable = false)
     @NotBlank
-    @Size(max = 255)
+    @Size(max = RadioListenerConstants.EMAIL_MAXLEN)
     @Email
     private String email;
 
-    @Column(name = "address", length = 500, nullable = true)
-    @Size(max = 500)
+    @Column(name = "address", length = RadioListenerConstants.ADDRESS_MAXLEN, nullable = true)
+    @Size(max = RadioListenerConstants.ADDRESS_MAXLEN)
     private String address;
 
     @Embedded
