@@ -6,10 +6,7 @@ import io.davorpatech.fwk.validation.groups.OnCreate;
 import io.davorpatech.fwk.validation.groups.OnUpdate;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Null;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.io.Serial;
 
@@ -38,6 +35,7 @@ public class RaffleTicket extends BaseEntity<Long> // NOSONAR
     @Column(name = "`number`", length = RaffleTicketConstants.NUMBER_MAXLEN, nullable = false)
     @NotBlank
     @Size(max = RaffleTicketConstants.NUMBER_MAXLEN)
+    @Pattern(regexp = RaffleTicketConstants.NUMBER_REGEX)
     private String number;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
