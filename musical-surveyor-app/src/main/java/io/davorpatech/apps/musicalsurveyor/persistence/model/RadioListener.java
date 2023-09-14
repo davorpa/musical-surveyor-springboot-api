@@ -1,35 +1,47 @@
 package io.davorpatech.apps.musicalsurveyor.persistence.model;
 
+import io.davorpatech.fwk.validation.groups.OnCreate;
+import io.davorpatech.fwk.validation.groups.OnUpdate;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.*;
 
 import java.util.Objects;
 
 @Entity
-@Table(name = "RADIO_LISTENER")
+@Table(
+    name = "RADIO_LISTENER",
+    uniqueConstraints = {
+        @UniqueConstraint(name = "UK_radio_listener_email", columnNames = {"email"})
+    }
+)
 public class RadioListener
 {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, insertable = false, updatable = false)
+    @Null(groups = { OnCreate.class })
+    @NotNull(groups = { OnUpdate.class })
     private Long id;
 
-    @Column(name = "name", length = 25, nullable = false)
+    @Column(name = "name", length = 255, nullable = false)
     @NotBlank
+    @Size(max = 255)
     private String name;
 
-    @Column(name = "phone", length = 15)
-    @NotEmpty
-    @Pattern(regexp = "\\+\\d+")
+    @Column(name = "phone", length = 15, nullable = false)
+    @NotBlank
+    @Size(max = 15)
+    @Pattern(regexp = "^\\+[0-9]{9,}$")
     private String phone;
 
-    @Column(name = "email", length = 25, nullable = false)
+    @Column(name = "email", length = 255, nullable = false)
+    @NotBlank
+    @Size(max = 255)
     @Email
     private String email;
 
-    @Column(name = "address", length = 500)
+    @Column(name = "address", length = 500, nullable = true)
+    @Size(max = 500)
     private String address;
 
 
@@ -48,7 +60,7 @@ public class RadioListener
         return Objects.hash(id);
     }
 
-  @Override
+    @Override
     public String toString() {
         return "RadioListener{" +
             "id=" + id +
