@@ -36,7 +36,7 @@ public class Color extends BaseEntity<Long> implements AuditAccessor // NOSONAR
     @Column(name = "code", nullable = false, length = 25)
     @NotBlank
     @Size(max = 25)
-    @Pattern(regexp = "^(\\#[0-9A-Z]{6})$|^([a-z]+)$")
+    @Pattern(regexp = "^(\\#[0-9A-F]{6})$|^([a-z]+)$")
     private String code;
 
     @Embedded

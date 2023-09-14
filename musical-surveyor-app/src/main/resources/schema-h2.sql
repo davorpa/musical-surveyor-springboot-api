@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `color`(
     CONSTRAINT `UK_color_code`
             UNIQUE (`code`),
     CONSTRAINT `CK_color_code_regex`
-            CHECK (regexp_like(`code`, '^(\#[0-9A-Z]{6})$|^([a-z]+)$', 'c'))
+            CHECK (regexp_like(`code`, '^(\#[0-9A-F]{6})$|^([a-z]+)$', 'c'))
 );
 
 
