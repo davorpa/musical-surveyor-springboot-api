@@ -1,11 +1,19 @@
 package io.davorpatech.apps.musicalsurveyor.persistence.model;
 
+import io.davorpatech.fwk.auditing.jpa.Audit;
+import io.davorpatech.fwk.auditing.jpa.AuditAccessor;
 import io.davorpatech.fwk.model.BaseEntity;
 import io.davorpatech.fwk.validation.groups.OnCreate;
 import io.davorpatech.fwk.validation.groups.OnUpdate;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.io.Serial;
+
+@EntityListeners({
+    AuditingEntityListener.class
+})
 @Entity
 @Table(
     name = "RADIO_LISTENER",
@@ -13,8 +21,11 @@ import jakarta.validation.constraints.*;
         @UniqueConstraint(name = "UK_radio_listener_email", columnNames = {"email"})
     }
 )
-public class RadioListener extends BaseEntity<Long> // NOSONAR
+public class RadioListener extends BaseEntity<Long> implements AuditAccessor // NOSONAR
 {
+    @Serial
+    private static final long serialVersionUID = -3973268284635855107L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, insertable = false, updatable = false)
@@ -42,6 +53,9 @@ public class RadioListener extends BaseEntity<Long> // NOSONAR
     @Column(name = "address", length = 500, nullable = true)
     @Size(max = 500)
     private String address;
+
+    @Embedded
+    private final Audit audit = new Audit();
 
     @Override
     protected String defineObjAttrs() {
@@ -88,5 +102,10 @@ public class RadioListener extends BaseEntity<Long> // NOSONAR
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    @Override
+    public Audit getAudit() {
+        return audit;
     }
 }
