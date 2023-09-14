@@ -1,5 +1,6 @@
 package io.davorpatech.apps.musicalsurveyor.persistence.model;
 
+import io.davorpatech.apps.musicalsurveyor.domain.ColorConstants;
 import io.davorpatech.fwk.auditing.jpa.Audit;
 import io.davorpatech.fwk.auditing.jpa.AuditAccessor;
 import io.davorpatech.fwk.model.BaseEntity;
@@ -14,7 +15,7 @@ import java.io.Serial;
 @EntityListeners({
     AuditingEntityListener.class
 })
-@Entity
+@Entity(name = ColorConstants.DOMAIN_NAME)
 @Table(
     name = "COLOR",
     uniqueConstraints = {
@@ -33,10 +34,10 @@ public class Color extends BaseEntity<Long> implements AuditAccessor // NOSONAR
     @NotNull(groups = { OnUpdate.class })
     private Long id;
 
-    @Column(name = "code", nullable = false, length = 25)
+    @Column(name = "code", nullable = false, length = ColorConstants.CODE_MAXLEN)
     @NotBlank
-    @Size(max = 25)
-    @Pattern(regexp = "^(\\#[0-9A-F]{6})$|^([a-z]+)$")
+    @Size(max = ColorConstants.CODE_MAXLEN)
+    @Pattern(regexp = ColorConstants.CODE_REGEX)
     private String code;
 
     @Embedded
