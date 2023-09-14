@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Pattern;
 import java.util.Objects;
 
 @Entity
-@Table(name = "radio_listeners")
+@Table(name = "RADIO_LISTENER")
 public class RadioListener
 {
     @Id
