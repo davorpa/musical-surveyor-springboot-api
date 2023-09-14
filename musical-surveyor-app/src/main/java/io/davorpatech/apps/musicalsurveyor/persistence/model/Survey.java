@@ -17,6 +17,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serial;
 import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @EntityListeners({
     AuditingEntityListener.class
@@ -66,13 +69,18 @@ public class Survey extends BaseEntity<Long> implements AuditAccessor // NOSONAR
         fetch = FetchType.LAZY)
     private Raffle raffle;
 
+    @OneToMany(mappedBy = "survey", fetch = FetchType.LAZY)
+    @OrderBy("participatedAt ASC, id.participantId ASC")
+    private Set<@Valid SurveyParticipation> participations = new LinkedHashSet<>();
+
     @Embedded
     private final Audit audit = new Audit();
 
     @Override
     protected String defineObjAttrs() {
-        return String.format("%s, title='%s', status=%s, startDate='%s', endDate='%s', config=%s",
-            super.defineObjAttrs(), title, status, startDate, endDate, config);
+        return String.format(
+            "%s, title='%s', status=%s, startDate='%s', endDate='%s', config=%s, participations=%s",
+            super.defineObjAttrs(), title, status, startDate, endDate, config, participations.size());
     }
 
     @Override
@@ -142,6 +150,27 @@ public class Survey extends BaseEntity<Long> implements AuditAccessor // NOSONAR
             raffle.setSurvey(this);
         }
         this.raffle = raffle;
+    }
+
+    public Set<SurveyParticipation> getParticipations() {
+        return Set.copyOf(participations);
+    }
+
+    public void setParticipations(Set<SurveyParticipation> participations) {
+        this.participations = Objects.requireNonNull(
+            participations, "participations must not be null!");
+    }
+
+    public void addParticipation(SurveyParticipation participation) {
+        Objects.requireNonNull(participation, "participation to add must not be null!");
+        participations.add(participation); // register
+        participation.setSurvey(this); // link to this reference
+    }
+
+    public void removeParticipation(SurveyParticipation participation) {
+        Objects.requireNonNull(participation, "participation to remove must not be null!");
+        participations.remove(participation); // unregister
+        participation.unsetSurvey(); // unlink this reference
     }
 
     @Override
