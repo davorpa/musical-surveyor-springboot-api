@@ -1,11 +1,10 @@
 package io.davorpatech.apps.musicalsurveyor.persistence.model;
 
+import io.davorpatech.fwk.model.BaseEntity;
 import io.davorpatech.fwk.validation.groups.OnCreate;
 import io.davorpatech.fwk.validation.groups.OnUpdate;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-
-import java.util.Objects;
 
 @Entity
 @Table(
@@ -14,7 +13,7 @@ import java.util.Objects;
         @UniqueConstraint(name = "UK_radio_listener_email", columnNames = {"email"})
     }
 )
-public class RadioListener
+public class RadioListener extends BaseEntity<Long> // NOSONAR
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,33 +43,13 @@ public class RadioListener
     @Size(max = 500)
     private String address;
 
-
-    // constructores, getters y setters
-
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        RadioListener that = (RadioListener) o;
-        return id.equals(that.id);
+    protected String defineObjAttrs() {
+        return String.format("%s, name='%s', phone='%s', email='%s'",
+            super.defineObjAttrs(), name, phone, email);
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-        return "RadioListener{" +
-            "id=" + id +
-            ", name='" + name + '\'' +
-            ", phone='" + phone + '\'' +
-            ", email='" + email + '\'' +
-            ", address='" + address + '\'' +
-            '}';
-    }
-
     public Long getId() {
         return id;
     }
