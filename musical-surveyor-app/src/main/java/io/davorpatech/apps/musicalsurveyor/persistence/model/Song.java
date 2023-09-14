@@ -1,5 +1,6 @@
 package io.davorpatech.apps.musicalsurveyor.persistence.model;
 
+import io.davorpatech.apps.musicalsurveyor.domain.SongConstants;
 import io.davorpatech.fwk.auditing.jpa.Audit;
 import io.davorpatech.fwk.auditing.jpa.AuditAccessor;
 import io.davorpatech.fwk.model.BaseEntity;
@@ -16,7 +17,7 @@ import java.util.Objects;
 @EntityListeners({
     AuditingEntityListener.class
 })
-@Entity
+@Entity(name = SongConstants.DOMAIN_NAME)
 @Table(name = "SONG")
 public class Song extends BaseEntity<Long> implements AuditAccessor // NOSONAR
 {
@@ -30,21 +31,21 @@ public class Song extends BaseEntity<Long> implements AuditAccessor // NOSONAR
     @NotNull(groups = { OnUpdate.class })
     private Long id;
 
-    @Column(name = "title", length = 255, nullable = false)
+    @Column(name = "title", length = SongConstants.TITLE_MAXLEN, nullable = false)
     @NotBlank
-    @Size(max = 255)
+    @Size(max = SongConstants.TITLE_MAXLEN)
     private String title;
 
     @Column(name = "`year`", nullable = true)
-    @Min(0)
+    @Min(SongConstants.YEAR_MIN)
     private Integer year;
 
     @Column(name = "duration", nullable = true)
-    @Min(0)
+    @Min(SongConstants.DURATION_MIN)
     private Integer duration;
 
-    @Column(name = "genre", length = 50, nullable = true)
-    @Size(max = 50)
+    @Column(name = "genre", length = SongConstants.GENRE_MAXLEN, nullable = true)
+    @Size(max = SongConstants.GENRE_MAXLEN)
     private String genre;
 
     @Embedded
