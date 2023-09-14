@@ -1,5 +1,6 @@
 package io.davorpatech.apps.musicalsurveyor.persistence.model;
 
+import io.davorpatech.apps.musicalsurveyor.domain.SurveyConstants;
 import io.davorpatech.apps.musicalsurveyor.domain.SuveyStatus;
 import io.davorpatech.fwk.auditing.jpa.Audit;
 import io.davorpatech.fwk.auditing.jpa.AuditAccessor;
@@ -20,7 +21,7 @@ import java.time.LocalDateTime;
 @EntityListeners({
     AuditingEntityListener.class
 })
-@Entity
+@Entity(name = SurveyConstants.DOMAIN_NAME)
 @Table(name = "SURVEY")
 public class Survey extends BaseEntity<Long> implements AuditAccessor // NOSONAR
 {
@@ -34,16 +35,16 @@ public class Survey extends BaseEntity<Long> implements AuditAccessor // NOSONAR
     @NotNull(groups = {OnUpdate.class})
     private Long id;
 
-    @Column(name = "title", length = 255, nullable = false)
+    @Column(name = "title", length = SurveyConstants.TITLE_MAXLEN, nullable = false)
     @NotBlank
-    @Size(max = 255)
+    @Size(max = SurveyConstants.TITLE_MAXLEN)
     private String title;
 
-    @Column(name = "description", length = 2048, nullable = true)
-    @Size(max = 2048)
+    @Column(name = "description", length = SurveyConstants.DESCRIPTION_MAXLEN, nullable = true)
+    @Size(max = SurveyConstants.DESCRIPTION_MAXLEN)
     private String description;
 
-    @Column(name = "status", length = 50, nullable = false)
+    @Column(name = "status", length = SurveyConstants.STATUS_MAXLEN, nullable = false)
     @Enumerated(EnumType.STRING)
     @NotNull
     private SuveyStatus status;
