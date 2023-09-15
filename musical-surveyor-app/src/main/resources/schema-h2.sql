@@ -22,9 +22,9 @@ DROP TABLE IF EXISTS `color`;
 
 CREATE TABLE IF NOT EXISTS `color`(
     -- id columns
-    `id`               BIGINT          NOT NULL  AUTO_INCREMENT,
+    `id`                BIGINT          NOT NULL  AUTO_INCREMENT,
     -- data columns
-    `code`             VARCHAR(25)     NOT NULL,
+    `code`              VARCHAR(25)     NOT NULL,
     -- audit columns
     `created_on`        TIMESTAMP(6)    NOT NULL,
     `created_by`        VARCHAR(255)    NOT NULL,
@@ -147,14 +147,14 @@ CREATE TABLE IF NOT EXISTS `survey`(
     `title`                 VARCHAR(255)    NOT NULL,
     `description`           VARCHAR(2048)   NULL,
     `status`                VARCHAR(50)     NOT NULL,
-    `start_date`            timestamp(6)    NOT NULL,
-    `end_date`              timestamp(6)    NOT NULL,
+    `start_date`            TIMESTAMP(6)    NOT NULL,
+    `end_date`              TIMESTAMP(6)    NOT NULL,
     `num_max_participants`  INT             NOT NULL DEFAULT 50,
     `num_survey_responses`  INT             NOT NULL DEFAULT 3,
     -- audit columns
-    `created_on`            timestamp(6)    NOT NULL,
+    `created_on`            TIMESTAMP(6)    NOT NULL,
     `created_by`            VARCHAR(255)    NOT NULL,
-    `last_modified_on`      timestamp(6)    NULL,
+    `last_modified_on`      TIMESTAMP(6)    NULL,
     `last_modified_by`      VARCHAR(255)    NULL,
 
     -- named constraints
