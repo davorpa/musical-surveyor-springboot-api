@@ -43,6 +43,13 @@ public class RafflePrize extends BaseEntity<RafflePrizeId> implements AuditAcces
     @MapsId("prizeId")
     private Prize prize;
 
+    @OneToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(
+        name = "winner_ticket_id",
+        nullable = true,
+        foreignKey = @ForeignKey(name = "FK_raffle_prize_winner_ticket_id"))
+    private RaffleTicket winnerTicket;
+
     @Embedded
     private final Audit audit = new Audit();
 
@@ -57,7 +64,8 @@ public class RafflePrize extends BaseEntity<RafflePrizeId> implements AuditAcces
 
     @Override
     protected String defineObjAttrs() {
-        return String.format("%s", super.defineObjAttrs());
+        return String.format("%s, winnerTicketId=%s",
+            super.defineObjAttrs(), getWinnerTicketId());
     }
 
     @Override
@@ -101,6 +109,51 @@ public class RafflePrize extends BaseEntity<RafflePrizeId> implements AuditAcces
 
     void unsetPrize() {
         this.prize = null;
+    }
+
+    /**
+     * Gets the winner raffle ticket for this prize.
+     *
+     * <p>If the prize has not been delivered to the winner, this method returns {@code null}.
+     *
+     * @return the winner raffle ticket for this prize.
+     */
+    public RaffleTicket getWinnerTicket() {
+        return winnerTicket;
+    }
+
+    /**
+     * Sets the winner raffle ticket for this prize.
+     *
+     * @param winnerTicket the winner raffle ticket for this prize.
+     */
+    public void setWinnerTicket(RaffleTicket winnerTicket) {
+        this.winnerTicket = winnerTicket;
+    }
+
+    /**
+     * Gets the winner raffle ticket ID for this prize.
+     *
+     * <p>If the prize has not been delivered to the winner, this method returns {@code null}.
+     *
+     * @return the winner raffle ticket ID for this prize.
+     */
+    public Long getWinnerTicketId() {
+        RaffleTicket target = getWinnerTicket();
+        return target == null ? null : target.getId();
+    }
+
+    /**
+     * Checks if the prize has been delivered to the winner, thus is,
+     * if some winner raffle ticket is linked to this prize
+     * (<code>{@link #getWinnerTicket()} != null</code>).
+     *
+     * @return {@code true} if the prize has been delivered to the winner,
+     *         {@code false} otherwise.
+     * @see #getWinnerTicket()
+     */
+    public boolean isDelivered() {
+        return getWinnerTicket() != null;
     }
 
     @Override

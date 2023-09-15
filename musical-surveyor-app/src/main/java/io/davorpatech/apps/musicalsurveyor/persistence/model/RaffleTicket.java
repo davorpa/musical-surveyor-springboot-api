@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 
 import java.io.Serial;
+import java.util.Optional;
 
 @Entity(name = RaffleTicketConstants.DOMAIN_NAME)
 @Table(
@@ -48,10 +49,15 @@ public class RaffleTicket extends BaseEntity<Long> // NOSONAR
     @Valid
     private Color color;
 
+    @OneToOne(mappedBy = "winnerTicket", optional = true,
+        cascade = CascadeType.ALL, orphanRemoval = true,
+        fetch = FetchType.EAGER)
+    private RafflePrize rafflePrize;
+
     @Override
     protected String defineObjAttrs() {
-        return String.format("%s, number='%s', colorId=%s, colorCode='%s'",
-            super.defineObjAttrs(), number, getColorId(), getColorCode());
+        return String.format("%s, number='%s', colorId=%s, colorCode='%s', wonPrizeId=%s",
+            super.defineObjAttrs(), number, getColorId(), getColorCode(), getRaffledPrizeId());
     }
 
     @Override
@@ -87,5 +93,66 @@ public class RaffleTicket extends BaseEntity<Long> // NOSONAR
     public Long getColorId() {
         Color target = getColor();
         return target == null ? null : color.getId();
+    }
+
+    /**
+     * Returns the raffle prize associated with this raffle ticket
+     * if is a winner ticket after make a raffle.
+     *
+     * @return the raffle prize associated with this raffle ticket, if any.
+     */
+    public RafflePrize getRafflePrize() {
+        return rafflePrize;
+    }
+
+    /**
+     * Sets the raffle prize associated with this raffle ticket.
+     *
+     * <p><b>NOTE</b>: Since this is the owning side of the @{@link OneToOne}
+     * relationship, is perfect to use this method as linker between one raffle
+     * prize and its winner raffle ticket after make a raffle.
+     *
+     * @param rafflePrize the raffle prize associated with this raffle ticket, if any.
+     */
+    public void setRafflePrize(RafflePrize rafflePrize) {
+        if (rafflePrize == null) { // unlink bidirectional relationship
+            if (this.rafflePrize != null) {
+                // dispose previous references
+                this.rafflePrize.setWinnerTicket(null);
+            }
+        } else { // link bidirectional relationship
+            rafflePrize.setWinnerTicket(this);
+        }
+        this.rafflePrize = rafflePrize;
+    }
+
+    /**
+     * Gets the winning raffled prize ID, if any, for this raffle ticket.
+     * Otherwise, returns {@code null}.
+     *
+     * @return the winning raffled prize ID, if any, for this raffle ticket.
+     */
+    public Long getRaffledPrizeId() {
+        RafflePrize target = getRafflePrize();
+        return Optional.ofNullable(target)
+            // navigation using RafflePrize.RafflePrizeId
+            .map(RafflePrize::getId)
+            .map(RafflePrizeId::getPrizeId)
+            // or else using RafflePrize.Prize
+            .orElseGet(() -> Optional.ofNullable(target)
+                .map(RafflePrize::getPrize)
+                .map(Prize::getId)
+                .orElse(null));
+    }
+
+    /**
+     * Returns {@code true} if this raffle ticket is a winner ticket after make a
+     * raffle. Otherwise, returns {@code false}.
+     *
+     * @return {@code true} if this raffle ticket is a winner ticket after make a raffle.
+     * @see #getRafflePrize()
+     */
+    public boolean isWinnerTicket() {
+        return getRafflePrize() != null;
     }
 }
