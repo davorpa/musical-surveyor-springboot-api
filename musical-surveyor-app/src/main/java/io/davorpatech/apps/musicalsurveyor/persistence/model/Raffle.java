@@ -49,7 +49,7 @@ public class Raffle extends BaseEntity<Long> implements AuditAccessor // NOSONAR
     private Survey survey;
 
     @OneToMany(mappedBy = "raffle", fetch = FetchType.LAZY)
-    @OrderBy("prize.monetaryValue DESC, prize.id ASC")
+    @OrderBy("id.prizeId ASC")
     private Set<@Valid RafflePrize> prizes = new LinkedHashSet<>();
 
     @Embedded
