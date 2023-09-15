@@ -140,11 +140,19 @@ public class Raffle extends BaseEntity<Long> implements AuditAccessor // NOSONAR
     /**
      * Sets the survey that originated the raffle.
      *
-     * @param survey the survey that originated the raffle
+     * @param survey the survey that originated the raffle, never {@code null}.
      * @see Survey
      */
     public void setSurvey(Survey survey) {
-        this.survey = survey;
+        this.survey = Objects.requireNonNull(survey, "Survey must not be null!");
+        this.id = survey.getId();
+    }
+
+    /**
+     * Unsets the survey that originated the raffle.
+     */
+    void unsetSurvey() {
+        this.survey = null;
     }
 
     /**

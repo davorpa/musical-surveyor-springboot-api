@@ -244,7 +244,7 @@ public class Survey extends BaseEntity<Long> implements AuditAccessor // NOSONAR
         if (raffle == null) { // unlink bidirectional relationship
             if (this.raffle != null) {
                 // dispose previous references
-                this.raffle.setSurvey(null);
+                this.raffle.unsetSurvey();
             }
         } else { // link bidirectional relationship
             raffle.setSurvey(this);
