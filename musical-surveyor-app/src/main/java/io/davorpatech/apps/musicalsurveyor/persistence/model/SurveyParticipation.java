@@ -62,6 +62,14 @@ public class SurveyParticipation extends BaseEntity<SurveyParticipationId> imple
     @Column(name = "participated_at", nullable = true)
     private LocalDateTime participatedAt;
 
+    @OneToOne(fetch = FetchType.LAZY, optional = true,
+        cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(
+        name = "raffle_ticket_id",
+        nullable = true,
+        foreignKey = @ForeignKey(name = "FK_survey_participation_raffle_ticket_id"))
+    private RaffleTicket raffleTicket;
+
     @Embedded
     private final Audit audit = new Audit();
 
@@ -207,6 +215,37 @@ public class SurveyParticipation extends BaseEntity<SurveyParticipationId> imple
      */
     public void setParticipatedAt(LocalDateTime participatedAt) {
         this.participatedAt = participatedAt;
+    }
+
+    /**
+     * Gets the raffle ticket associated with this survey participation.
+     *
+     * <p>This is the owning side of a one-to-one relationship, so it is always
+     * a single raffle ticket.
+     *
+     * <p>It could be {@code null}, raffle tickets are assigned when a participant
+     * submit their favourite songs as responses.
+     *
+     * @return the raffle ticket associated with this survey participation
+     */
+    public RaffleTicket getRaffleTicket() {
+        return raffleTicket;
+    }
+
+    /**
+     * Sets the raffle ticket associated with this survey participation.
+     *
+     * <p><b>NOTE</b>: Since this is the owning side of the @{@link OneToOne}
+     * relationship, is perfect to use this method as linker between one raffle
+     * ticket and its associated survey participation.
+     *
+     * <p>Raffle tickets are assigned when a participant submit their favourite
+     * songs as responses.
+     *
+     * @param raffleTicket the raffle ticket associated with this survey participation
+     */
+    public void setRaffleTicket(RaffleTicket raffleTicket) {
+        this.raffleTicket = raffleTicket;
     }
 
     @Override
