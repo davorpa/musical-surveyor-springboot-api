@@ -177,7 +177,7 @@ public class RaffleTicket extends BaseEntity<Long> // NOSONAR
         if (rafflePrize == null) { // unlink bidirectional relationship
             if (this.rafflePrize != null) {
                 // dispose previous references
-                this.rafflePrize.setWinnerTicket(null);
+                this.rafflePrize.unsetWinnerTicket();
             }
         } else { // link bidirectional relationship
             rafflePrize.setWinnerTicket(this);

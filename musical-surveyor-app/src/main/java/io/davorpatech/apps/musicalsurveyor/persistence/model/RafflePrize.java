@@ -189,10 +189,15 @@ public class RafflePrize extends BaseEntity<RafflePrizeId> implements AuditAcces
     /**
      * Sets the winner raffle ticket for this prize.
      *
-     * @param winnerTicket the winner raffle ticket for this prize.
+     * @param winnerTicket the winner raffle ticket for this prize, never {@code null}
      */
     public void setWinnerTicket(RaffleTicket winnerTicket) {
-        this.winnerTicket = winnerTicket;
+        this.winnerTicket = Objects.requireNonNull(
+            winnerTicket, "RaffleTicket winnerTicket must not be null!");
+    }
+
+    void unsetWinnerTicket() {
+        this.winnerTicket = null;
     }
 
     /**
