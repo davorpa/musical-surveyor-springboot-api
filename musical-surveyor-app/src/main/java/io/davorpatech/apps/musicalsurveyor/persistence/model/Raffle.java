@@ -8,11 +8,15 @@ import io.davorpatech.fwk.model.BaseEntity;
 import io.davorpatech.fwk.validation.groups.OnCreate;
 import io.davorpatech.fwk.validation.groups.OnUpdate;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serial;
 import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @EntityListeners({
     AuditingEntityListener.class
@@ -44,13 +48,18 @@ public class Raffle extends BaseEntity<Long> implements AuditAccessor // NOSONAR
     @MapsId
     private Survey survey;
 
+    @OneToMany(mappedBy = "raffle", fetch = FetchType.LAZY)
+    @OrderBy("prize.monetaryValue DESC, prize.id ASC")
+    private Set<@Valid RafflePrize> prizes = new LinkedHashSet<>();
+
     @Embedded
     private final Audit audit = new Audit();
 
     @Override
     protected String defineObjAttrs() {
-        return String.format("%s, surveyId=%s, status=%s, resolution_date='%s'",
-            super.defineObjAttrs(), getSurveyId(), status, resolutionDate);
+        return String.format(
+            "%s, surveyId=%s, status=%s, resolution_date='%s', prizes=%s",
+            super.defineObjAttrs(), getSurveyId(), status, resolutionDate, prizes.size());
     }
 
     @Override
@@ -89,6 +98,26 @@ public class Raffle extends BaseEntity<Long> implements AuditAccessor // NOSONAR
     private Long getSurveyId() {
         Survey target = getSurvey();
         return target == null ? null : target.getId();
+    }
+
+    public Set<RafflePrize> getPrizes() {
+        return Set.copyOf(prizes); // ensure immutability
+    }
+
+    public void setPrizes(Set<RafflePrize> prizes) {
+        this.prizes = Objects.requireNonNull(prizes, "prizes must not be null!");
+    }
+
+    public void addPrize(RafflePrize prize) {
+        Objects.requireNonNull(prize, "prize to add must not be null!");
+        prizes.add(prize); // register
+        prize.setRaffle(this); // link to this reference
+    }
+
+    public void removePrize(RafflePrize prize) {
+        Objects.requireNonNull(prize, "prize to remove must not be null!");
+        prizes.remove(prize); // unregister
+        prize.unsetPrize(); // unlink this reference
     }
 
     @Override
