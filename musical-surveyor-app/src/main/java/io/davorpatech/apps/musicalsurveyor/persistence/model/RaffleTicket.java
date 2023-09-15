@@ -50,8 +50,8 @@ public class RaffleTicket extends BaseEntity<Long> // NOSONAR
 
     @Override
     protected String defineObjAttrs() {
-        return String.format("%s, number='%s', color=%s",
-            super.defineObjAttrs(), number, color);
+        return String.format("%s, number='%s', colorId=%s, colorCode='%s'",
+            super.defineObjAttrs(), number, getColorId(), getColorCode());
     }
 
     @Override
