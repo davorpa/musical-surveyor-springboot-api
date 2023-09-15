@@ -12,6 +12,15 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serial;
 
+/**
+ * The Color entity class.
+ *
+ * <p>A color is a visual mask that can be applied to a raffle ticket.
+ *
+ * <p>As an entity, follows the {@link BaseEntity} contract, which means
+ * that it has an ID, and it can be compared for equality to other entities
+ * using that identifiable field.
+ */
 @EntityListeners({
     AuditingEntityListener.class
 })
@@ -53,14 +62,38 @@ public class Color extends BaseEntity<Long> implements AuditAccessor // NOSONAR
         return id;
     }
 
+    /**
+     * Sets the ID of the entity.
+     *
+     * <p>It is not recommended to use this method directly, as it is
+     * intended to be used by the persistence layer.
+     *
+     * @param id the ID of the entity to set
+     */
     public void setId(Long id) {
         this.id = id;
     }
 
+    /**
+     * Gets the color code.
+     *
+     * <p>It is formatted as a hexadecimal color code, such as {@code #FFFFFF}
+     * or as a color name like {@code white}.
+     *
+     * @return the color code
+     */
     public String getCode() {
         return code;
     }
 
+    /**
+     * Sets the color code.
+     *
+     * <p>It must be formatted as a hexadecimal color code, such as {@code #FFFFFF}
+     * or as a color name like {@code white}.
+     *
+     * @param code the color code to set
+     */
     public void setCode(String code) {
         this.code = code;
     }

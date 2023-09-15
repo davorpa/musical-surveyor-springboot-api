@@ -11,6 +11,20 @@ import jakarta.validation.constraints.*;
 import java.io.Serial;
 import java.util.Optional;
 
+/**
+ * The RaffleTicket entity class.
+ *
+ * <p>A raffle ticket is a numbered and colored ticket that is used in a raffle,
+ * given to participants that had sent their as favorites songs as anwsers to a
+ * survey made by a radio station.
+ *
+ * <p>At the end of the survey, a raffle is made between all tickets to define
+ * the winner ticket that will win a prize.
+ *
+ * <p>As an entity, follows the {@link BaseEntity} contract, which means that it
+ * has an ID, and it can be compared for equality to other entities using that
+ * identifiable field.
+ */
 @Entity(name = RaffleTicketConstants.DOMAIN_NAME)
 @Table(
     name = "RAFFLE_TICKET",
@@ -65,31 +79,76 @@ public class RaffleTicket extends BaseEntity<Long> // NOSONAR
         return id;
     }
 
+    /**
+     * Sets the ID of the entity.
+     *
+     * <p>It is not recommended to use this method directly, as it is
+     * intended to be used by the persistence layer.
+     *
+     * @param id the ID of the entity to set
+     */
     public void setId(Long id) {
         this.id = id;
     }
 
+    /**
+     * Gets the serial number of the raffle ticket.
+     *
+     * <p>It a unique alphanumeric code that identifies the raffle ticket.
+     *
+     * @return the serial number of the raffle ticket
+     */
     public String getNumber() {
         return number;
     }
 
+    /**
+     * Sets the serial number of the raffle ticket.
+     *
+     * <p>It must be a unique alphanumeric code that identifies the raffle ticket.
+     *
+     * @param number the serial number of the raffle ticket to set
+     */
     public void setNumber(String number) {
         this.number = number;
     }
 
+    /**
+     * Gets the color of the raffle ticket.
+     *
+     * @return the color of the raffle ticket
+     */
     public Color getColor() {
         return color;
     }
 
+    /**
+     * Sets the color of the raffle ticket.
+     *
+     * @param color the color of the raffle ticket to set
+     */
     public void setColor(Color color) {
         this.color = color;
     }
 
+    /**
+     * Gets the color code of the raffle ticket.
+     *
+     * <p>It is formatted as a hexadecimal color code, such as {@code #FFFFFF}
+     * or as a color name like {@code white}.
+     *
+     * @return the color code of the raffle ticket
+     */
     public String getColorCode() {
         Color target = getColor();
         return target == null ? null : color.getCode();
     }
 
+    /**
+     * Gets the color ID of the raffle ticket.
+     *
+     * @return the color ID of the raffle ticket
+     */
     public Long getColorId() {
         Color target = getColor();
         return target == null ? null : color.getId();

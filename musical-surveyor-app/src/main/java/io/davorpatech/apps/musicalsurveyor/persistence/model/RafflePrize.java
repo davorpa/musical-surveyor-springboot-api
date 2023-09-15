@@ -12,6 +12,17 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.io.Serial;
 import java.util.Objects;
 
+/**
+ * The RafflePrize entity class.
+ *
+ * <p>A raffle prize is a prize that can be won by a raffle ticket after make a draw
+ * between all participants that had sent their as favorites songs as anwsers
+ * to a survey made by a radio station.
+ *
+ * <p>As an entity, follows the {@link BaseEntity} contract, which means
+ * that it has an ID, and it can be compared for equality to other entities
+ * using that identifiable field.
+ */
 @EntityListeners({
     AuditingEntityListener.class
 })
@@ -53,10 +64,19 @@ public class RafflePrize extends BaseEntity<RafflePrizeId> implements AuditAcces
     @Embedded
     private final Audit audit = new Audit();
 
+    /**
+     * Constructs a new {@code RafflePrize} instance without any properties set.
+     */
     RafflePrize() {
         super();
     }
 
+    /**
+     * Constructs a new {@code RafflePrize} instance with the given properties set.
+     *
+     * @param raffleId the ID of the raffle
+     * @param prizeId  the ID of the prize
+     */
     public RafflePrize(Long raffleId, Long prizeId) {
         super();
         this.id = new RafflePrizeId(raffleId, prizeId);
@@ -73,40 +93,84 @@ public class RafflePrize extends BaseEntity<RafflePrizeId> implements AuditAcces
         return id;
     }
 
+    /**
+     * Sets the ID of the entity.
+     *
+     * <p>It is not recommended to use this method directly, as it is
+     * intended to be used by the persistence layer.
+     *
+     * @param id the ID of the entity to set
+     */
     public void setId(RafflePrizeId id) {
         this.id = id;
     }
 
+    /**
+     * Gets the ID of the raffle.
+     *
+     * @return the ID of the raffle
+     */
     public Long getRaffleId() {
         RafflePrizeId target = getId();
         return target == null ? null : target.getRaffleId();
     }
 
+    /**
+     * Gets the ID of the prize.
+     *
+     * @return the ID of the prize
+     */
     public Long getPrizeId() {
         RafflePrizeId target = getId();
         return target == null ? null : target.getPrizeId();
     }
 
+    /**
+     * Gets the raffle for this prize.
+     *
+     * @return
+     */
     public Raffle getRaffle() {
         return raffle;
     }
 
+    /**
+     * Sets the raffle for this prize.
+     *
+     * @param raffle the raffle for this prize. It must not be {@code null}.
+     */
     public void setRaffle(Raffle raffle) {
         this.raffle = Objects.requireNonNull(raffle, "Raffle must not be null!");
     }
 
+    /**
+     * Unsets the raffle for this prize.
+     */
     void unsetRaffle() {
         this.raffle = null;
     }
 
+    /**
+     * Gets the prize for this prize.
+     *
+     * @return the prize for this prize.
+     */
     public Prize getPrize() {
         return prize;
     }
 
+    /**
+     * Sets the prize for this prize.
+     *
+     * @param prize the prize for this prize. It must not be {@code null}.
+     */
     public void setPrize(Prize prize) {
         this.prize = Objects.requireNonNull(prize, "Prize must not be null!");
     }
 
+    /**
+     * Unsets the prize for this prize.
+     */
     void unsetPrize() {
         this.prize = null;
     }

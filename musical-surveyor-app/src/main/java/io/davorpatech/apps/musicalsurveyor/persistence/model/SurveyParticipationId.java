@@ -8,6 +8,18 @@ import jakarta.validation.constraints.NotNull;
 import java.io.Serial;
 import java.util.Objects;
 
+/**
+ * The SurveyParticipationId entity class.
+ *
+ * <p>It represents the composite primary key of the {@link SurveyParticipation}
+ * entity.
+ *
+ * <p>As a value object, follows the {@link BaseValueObject} contract, which
+ * means that it has no ID, and it can be compared for equality to other value
+ * objects using its attributes.
+ *
+ * @see SurveyParticipation
+ */
 @Embeddable
 public class SurveyParticipationId extends BaseValueObject // NOSONAR
 {
@@ -22,10 +34,20 @@ public class SurveyParticipationId extends BaseValueObject // NOSONAR
     @NotNull
     private Long participantId;
 
+    /**
+     * Constructs a new {@link SurveyParticipationId} instance with no values.
+     */
     SurveyParticipationId() {
         super();
     }
 
+    /**
+     * Constructs a new {@link SurveyParticipationId} instance with the given values
+     * that forms the composite primary key of the {@link SurveyParticipation} entity
+     *
+     * @param surveyId      the survey ID to set
+     * @param participantId the participant ID to set
+     */
     public SurveyParticipationId(Long surveyId, Long participantId) {
         super();
         this.surveyId = surveyId;
@@ -51,10 +73,20 @@ public class SurveyParticipationId extends BaseValueObject // NOSONAR
         return Objects.hash(getSurveyId(), getParticipantId());
     }
 
+    /**
+     * Returns the survey ID, part of the composite primary key.
+     *
+     * @return the survey ID
+     */
     public Long getSurveyId() {
         return surveyId;
     }
 
+    /**
+     * Returns the participant ID, part of the composite primary key.
+     *
+     * @return the participant ID
+     */
     public Long getParticipantId() {
         return participantId;
     }

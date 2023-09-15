@@ -9,6 +9,13 @@ import jakarta.validation.constraints.NotNull;
 
 import java.io.Serial;
 
+/**
+ * The SurveyConfig entity class.
+ *
+ * <p>It holds the configuration parameters of a {@link Survey} entity.
+ *
+ * @see Survey
+ */
 @Embeddable
 public class SurveyConfig extends BaseValueObject // NOSONAR
 {
@@ -31,18 +38,54 @@ public class SurveyConfig extends BaseValueObject // NOSONAR
             numMaxParticipants, numSurveyResponses);
     }
 
+    /**
+     * Gets the maximum number of participants allowed in the survey.
+     *
+     * <p>The default value is {@code 50}. It can be changed by the administrator
+     * of the radio station when creating a new survey.
+     *
+     * @return the maximum number of participants allowed in the survey,
+     *         never {@code null}
+     */
     public Integer getNumMaxParticipants() {
         return numMaxParticipants;
     }
 
+    /**
+     * Sets the maximum number of participants allowed in the survey.
+     *
+     * <p>The default value is {@code 50}. It can be changed by the administrator
+     * of the radio station when creating a new survey.
+     *
+     * @param numMaxParticipants the maximum number of participants allowed in the survey,
+     *                           must not be {@code null}
+     */
     public void setNumMaxParticipants(Integer numMaxParticipants) {
         this.numMaxParticipants = numMaxParticipants;
     }
 
+    /**
+     * Gets the number of survey responses to be collected.
+     *
+     * <p>The default value is {@code 3}. It can be changed by the administrator
+     * of the radio station when creating a new survey.
+     *
+     * @return the number of survey responses to be collected,
+     *         never {@code null}
+     */
     public Integer getNumSurveyResponses() {
         return numSurveyResponses;
     }
 
+    /**
+     * Sets the number of survey responses to be collected.
+     *
+     * <p>The default value is {@code 3}. It can be changed by the administrator
+     * of the radio station when creating a new survey.
+     *
+     * @param numSurveyResponses the number of survey responses to be collected,
+     *                           must not be {@code null}
+     */
     public void setNumSurveyResponses(Integer numSurveyResponses) {
         this.numSurveyResponses = numSurveyResponses;
     }
