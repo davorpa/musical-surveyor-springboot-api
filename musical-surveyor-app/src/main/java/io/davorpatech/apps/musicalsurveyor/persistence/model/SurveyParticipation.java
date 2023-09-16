@@ -11,7 +11,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serial;
 import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * The SurveyParticipation entity class.
@@ -79,6 +81,22 @@ public class SurveyParticipation extends BaseEntity<SurveyParticipationId> imple
     @Valid
     private RaffleTicket raffleTicket;
 
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+        name = "SURVEY_RESPONSING",
+        joinColumns = {
+            @JoinColumn(name = "survey_id", referencedColumnName = "survey_id", nullable = false),
+            @JoinColumn(name = "participant_id", referencedColumnName = "participant_id", nullable = false)
+        },
+        foreignKey = @ForeignKey(name = "FK_survey_responsing_participation_id"),
+        inverseJoinColumns = @JoinColumn(
+            name = "song_id", referencedColumnName = "id", nullable = false,
+            foreignKey = @ForeignKey(name = "FK_survey_responsing_song_id")
+        )
+    )
+    @OrderBy("artist.id ASC, id ASC")
+    private Set<@Valid Song> responses = new LinkedHashSet<>();
+
     @Embedded
     private final Audit audit = new Audit();
 
@@ -107,7 +125,8 @@ public class SurveyParticipation extends BaseEntity<SurveyParticipationId> imple
 
     @Override
     protected String defineObjAttrs() {
-        return String.format("%s, participatedAt='%s'", super.defineObjAttrs(), participatedAt);
+        return String.format("%s, participatedAt='%s', responses=%s",
+            super.defineObjAttrs(), participatedAt, responses.size());
     }
 
     @Override
@@ -263,6 +282,51 @@ public class SurveyParticipation extends BaseEntity<SurveyParticipationId> imple
             raffleTicket.setSurveyParticipation(this);
         }
         this.raffleTicket = raffleTicket;
+    }
+
+    /**
+     * Gets the favorite songs as survey responses summited by the participant.
+     *
+     * <p>Represents the single side of a many-to-many relationship with
+     * the {@link Song} entity.
+     *
+     * @return the responses of the participant
+     */
+    public Set<Song> getResponses() {
+        return Set.copyOf(responses); // ensure immutability
+    }
+
+    /**
+     * Sets the favorite songs as survey responses summited by the participant.
+     *
+     * <p>Setted responses represents the single side of a many-to-many relationship
+     * with the {@link Song} entity.
+     *
+     * @param responses the responses of the participant to set, never {@code null}
+     */
+    public void setResponses(Set<Song> responses) {
+        this.responses = Objects.requireNonNull(
+            responses, "responses must not be null!");
+    }
+
+    /**
+     * Adds a song to the responses of the participant.
+     *
+     * @param song the song to add, must not be {@code null}
+     */
+    public void addResponse(Song song) {
+        Objects.requireNonNull(song, "song to add must not be null!");
+        responses.add(song); // register
+    }
+
+    /**
+     * Removes a song from the responses of the participant.
+     *
+     * @param song the song to remove, must not be {@code null}
+     */
+    public void removeResponse(Song song) {
+        Objects.requireNonNull(song, "song to remove must not be null!");
+        responses.remove(song); // unregister
     }
 
     @Override
