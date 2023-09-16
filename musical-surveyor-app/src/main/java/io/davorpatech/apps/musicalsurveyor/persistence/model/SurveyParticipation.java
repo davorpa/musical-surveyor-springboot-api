@@ -76,6 +76,7 @@ public class SurveyParticipation extends BaseEntity<SurveyParticipationId> imple
         name = "raffle_ticket_id",
         nullable = true,
         foreignKey = @ForeignKey(name = "FK_survey_participation_raffle_ticket_id"))
+    @Valid
     private RaffleTicket raffleTicket;
 
     @Embedded

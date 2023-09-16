@@ -70,6 +70,7 @@ public class RaffleTicket extends BaseEntity<Long> // NOSONAR
     @OneToOne(mappedBy = "winnerTicket", optional = true,
         cascade = CascadeType.ALL, orphanRemoval = true,
         fetch = FetchType.EAGER)
+    @Valid
     private RafflePrize rafflePrize;
 
     @Override
