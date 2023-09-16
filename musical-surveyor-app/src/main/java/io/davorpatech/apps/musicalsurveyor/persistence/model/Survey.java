@@ -78,7 +78,7 @@ public class Survey extends BaseEntity<Long> implements AuditAccessor // NOSONAR
 
     @OneToOne(mappedBy = "survey", optional = true,
         cascade = CascadeType.ALL, orphanRemoval = true,
-        fetch = FetchType.LAZY)
+        fetch = FetchType.EAGER)
     private Raffle raffle;
 
     @OneToMany(mappedBy = "survey", fetch = FetchType.LAZY)
