@@ -291,5 +291,7 @@ CREATE TABLE IF NOT EXISTS `raffle_prize`(
             REFERENCES `prize`(`id`),
     CONSTRAINT `FK_raffle_prize_winner_ticket_id`
             FOREIGN KEY (`winner_ticket_id`)
-            REFERENCES `raffle_ticket`(`id`)
+            REFERENCES `raffle_ticket`(`id`),
+    CONSTRAINT `UK_raffle_prize_winner_ticket_id`
+            UNIQUE (`winner_ticket_id`)
 );

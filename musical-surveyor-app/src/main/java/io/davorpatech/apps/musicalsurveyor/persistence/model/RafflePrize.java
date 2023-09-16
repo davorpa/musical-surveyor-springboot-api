@@ -16,7 +16,7 @@ import java.util.Objects;
  * The RafflePrize entity class.
  *
  * <p>A raffle prize is a prize that can be won by a raffle ticket after make a draw
- * between all participants that had sent their as favorites songs as anwsers
+ * between all participants that had sent their as favorites songs as answers
  * to a survey made by a radio station.
  *
  * <p>As an entity, follows the {@link BaseEntity} contract, which means
@@ -27,7 +27,15 @@ import java.util.Objects;
     AuditingEntityListener.class
 })
 @Entity(name = RafflePrizeConstants.DOMAIN_NAME)
-@Table(name = "RAFFLE_PRIZE")
+@Table(
+    name = "RAFFLE_PRIZE",
+    uniqueConstraints = {
+        @UniqueConstraint(
+            name = "UK_raffle_prize_winner_ticket_id",
+            columnNames = {"winner_ticket_id"}
+        )
+    }
+)
 public class RafflePrize extends BaseEntity<RafflePrizeId> implements AuditAccessor // NOSONAR
 {
     @Serial
@@ -128,7 +136,7 @@ public class RafflePrize extends BaseEntity<RafflePrizeId> implements AuditAcces
     /**
      * Gets the raffle for this prize.
      *
-     * @return
+     * @return the raffle for this prize
      */
     public Raffle getRaffle() {
         return raffle;
@@ -137,7 +145,7 @@ public class RafflePrize extends BaseEntity<RafflePrizeId> implements AuditAcces
     /**
      * Sets the raffle for this prize.
      *
-     * @param raffle the raffle for this prize. It must not be {@code null}.
+     * @param raffle the raffle for this prize. It must not be {@code null}
      */
     public void setRaffle(Raffle raffle) {
         this.raffle = Objects.requireNonNull(raffle, "Raffle must not be null!");
@@ -153,7 +161,7 @@ public class RafflePrize extends BaseEntity<RafflePrizeId> implements AuditAcces
     /**
      * Gets the prize for this prize.
      *
-     * @return the prize for this prize.
+     * @return the prize for this prize
      */
     public Prize getPrize() {
         return prize;
@@ -162,7 +170,7 @@ public class RafflePrize extends BaseEntity<RafflePrizeId> implements AuditAcces
     /**
      * Sets the prize for this prize.
      *
-     * @param prize the prize for this prize. It must not be {@code null}.
+     * @param prize the prize for this prize. It must not be {@code null}
      */
     public void setPrize(Prize prize) {
         this.prize = Objects.requireNonNull(prize, "Prize must not be null!");
@@ -180,7 +188,7 @@ public class RafflePrize extends BaseEntity<RafflePrizeId> implements AuditAcces
      *
      * <p>If the prize has not been delivered to the winner, this method returns {@code null}.
      *
-     * @return the winner raffle ticket for this prize.
+     * @return the winner raffle ticket for this prize
      */
     public RaffleTicket getWinnerTicket() {
         return winnerTicket;
@@ -196,6 +204,9 @@ public class RafflePrize extends BaseEntity<RafflePrizeId> implements AuditAcces
             winnerTicket, "RaffleTicket winnerTicket must not be null!");
     }
 
+    /**
+     * Unsets the winner raffle ticket for this prize.
+     */
     void unsetWinnerTicket() {
         this.winnerTicket = null;
     }
@@ -205,7 +216,7 @@ public class RafflePrize extends BaseEntity<RafflePrizeId> implements AuditAcces
      *
      * <p>If the prize has not been delivered to the winner, this method returns {@code null}.
      *
-     * @return the winner raffle ticket ID for this prize.
+     * @return the winner raffle ticket ID for this prize
      */
     public Long getWinnerTicketId() {
         RaffleTicket target = getWinnerTicket();
