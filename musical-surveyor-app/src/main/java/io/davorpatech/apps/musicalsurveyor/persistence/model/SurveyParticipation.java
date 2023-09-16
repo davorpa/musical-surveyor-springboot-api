@@ -245,6 +245,14 @@ public class SurveyParticipation extends BaseEntity<SurveyParticipationId> imple
      * @param raffleTicket the raffle ticket associated with this survey participation
      */
     public void setRaffleTicket(RaffleTicket raffleTicket) {
+        if (raffleTicket == null) { // unlink bidirectional relationship
+            if (this.raffleTicket != null) {
+                // dispose previous references
+                this.raffleTicket.unsetSurveyParticipation();
+            }
+        } else { // link bidirectional relationship
+            raffleTicket.setSurveyParticipation(this);
+        }
         this.raffleTicket = raffleTicket;
     }
 

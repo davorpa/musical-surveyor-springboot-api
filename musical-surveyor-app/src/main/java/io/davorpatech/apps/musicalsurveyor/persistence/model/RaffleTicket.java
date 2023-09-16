@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 
 import java.io.Serial;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -63,6 +64,9 @@ public class RaffleTicket extends BaseEntity<Long> // NOSONAR
     @Valid
     private Color color;
 
+    @OneToOne(mappedBy = "raffleTicket", optional = true)
+    private SurveyParticipation surveyParticipation;
+
     @OneToOne(mappedBy = "winnerTicket", optional = true,
         cascade = CascadeType.ALL, orphanRemoval = true,
         fetch = FetchType.EAGER)
@@ -70,8 +74,10 @@ public class RaffleTicket extends BaseEntity<Long> // NOSONAR
 
     @Override
     protected String defineObjAttrs() {
-        return String.format("%s, number='%s', colorId=%s, colorCode='%s', wonPrizeId=%s",
-            super.defineObjAttrs(), number, getColorId(), getColorCode(), getRaffledPrizeId());
+        return String.format(
+            "%s, number='%s', colorId=%s, colorCode='%s', participationId=%s, wonPrizeId=%s",
+            super.defineObjAttrs(), number, getColorId(), getColorCode(),
+            getParticipationIds(), getRaffledPrizeId());
     }
 
     @Override
@@ -152,6 +158,58 @@ public class RaffleTicket extends BaseEntity<Long> // NOSONAR
     public Long getColorId() {
         Color target = getColor();
         return target == null ? null : color.getId();
+    }
+
+    /**
+     * Gets the survey participation that has generated this raffle ticket.
+     *
+     * <p>Raffle tickets are assigned when a participant submit their favourite
+     * songs as survey responses.
+     *
+     * @return the survey participation
+     */
+    public SurveyParticipation getSurveyParticipation() {
+        return surveyParticipation;
+    }
+
+    /**
+     * Sets the survey participation that has generated this raffle ticket.
+     *
+     * <p>Raffle tickets should be assigned when a participant submit their
+     * favourite songs as survey responses.
+     *
+     * @param surveyParticipation the survey participation to set, never {@code null}
+     */
+    public void setSurveyParticipation(SurveyParticipation surveyParticipation) {
+        this.surveyParticipation = Objects.requireNonNull(
+            surveyParticipation, "SurveyParticipation must not be null!");
+    }
+
+    /**
+     * Unsets the survey participation that has generated this raffle ticket.
+     */
+    void unsetSurveyParticipation() {
+        this.surveyParticipation = null;
+    }
+
+    /**
+     * Gets the survey participation ID, if any, for this raffle ticket.
+     * Otherwise, returns {@code null}.
+     *
+     * @return the survey participation ID, if any, for this raffle ticket.
+     *
+     * @see #getSurveyParticipation()
+     * @see SurveyParticipation#getId
+     */
+    protected String getParticipationIds() {
+        SurveyParticipation target = getSurveyParticipation();
+        return Optional.ofNullable(target)
+            .map(SurveyParticipation::getId)
+            // toString()
+            .map(SurveyParticipationId::defineObjAttrs)
+            // wrap with curly braces since it is a composite key
+            .map(str -> '{' + str + '}')
+            .orElse(null);
     }
 
     /**
