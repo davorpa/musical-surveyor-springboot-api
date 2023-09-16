@@ -218,7 +218,9 @@ CREATE TABLE IF NOT EXISTS `survey_participation`(
             REFERENCES `radio_listener`(`id`),
     CONSTRAINT `FK_survey_participation_raffle_ticket_id`
             FOREIGN KEY (`raffle_ticket_id`)
-            REFERENCES `raffle_ticket`(`id`)
+            REFERENCES `raffle_ticket`(`id`),
+    CONSTRAINT `UK_survey_participation_raffle_ticket_id`
+            UNIQUE (`raffle_ticket_id`)
 );
 
 

@@ -33,7 +33,15 @@ import java.util.Objects;
     AuditingEntityListener.class
 })
 @Entity(name = SurveyParticipationConstants.DOMAIN_NAME)
-@Table(name = "SURVEY_PARTICIPATION")
+@Table(
+    name = "SURVEY_PARTICIPATION",
+    uniqueConstraints = {
+        @UniqueConstraint(
+            name = "UK_survey_participation_raffle_ticket_id",
+            columnNames = {"raffle_ticket_id"}
+        )
+    }
+)
 public class SurveyParticipation extends BaseEntity<SurveyParticipationId> implements AuditAccessor // NOSONAR
 {
     @Serial
