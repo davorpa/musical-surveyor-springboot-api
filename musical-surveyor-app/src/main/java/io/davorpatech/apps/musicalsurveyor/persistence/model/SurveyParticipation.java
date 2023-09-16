@@ -95,7 +95,7 @@ public class SurveyParticipation extends BaseEntity<SurveyParticipationId> imple
         )
     )
     @OrderBy("artist.id ASC, id ASC")
-    private Set<@Valid Song> responses = new LinkedHashSet<>();
+    Set<@Valid Song> responses = new LinkedHashSet<>(); // NOSONAR
 
     @Embedded
     private final Audit audit = new Audit();
@@ -316,7 +316,8 @@ public class SurveyParticipation extends BaseEntity<SurveyParticipationId> imple
      */
     public void addResponse(Song song) {
         Objects.requireNonNull(song, "song to add must not be null!");
-        responses.add(song); // register
+        responses.add(song); // register in this side
+        song.participations.add(this); // register in the other side
     }
 
     /**
@@ -326,7 +327,8 @@ public class SurveyParticipation extends BaseEntity<SurveyParticipationId> imple
      */
     public void removeResponse(Song song) {
         Objects.requireNonNull(song, "song to remove must not be null!");
-        responses.remove(song); // unregister
+        responses.remove(song); // unregister in this side
+        song.participations.remove(this); // unregister in the other side
     }
 
     @Override

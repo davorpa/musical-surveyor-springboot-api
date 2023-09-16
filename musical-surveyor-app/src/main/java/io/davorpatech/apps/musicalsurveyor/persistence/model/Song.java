@@ -12,7 +12,9 @@ import jakarta.validation.constraints.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serial;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * The Song entity class.
@@ -21,6 +23,11 @@ import java.util.Objects;
  * played on the radio. It is usually a single track from an album.
  *
  * <p>A song can only have one artist and an artist can have many songs.
+ *
+ * <p>Audience members of a radio station can respond to a survey by selecting
+ * songs that they like and, a song can be selected by many audience members
+ * as the way to know their musical preferences. This many-to-many
+ * relationship has its owning side at the {@link SurveyParticipation} entity.
  *
  * <p>As an entity, follows the {@link BaseEntity} contract, which means
  * that it has an ID, and it can be compared for equality to other entities
@@ -72,10 +79,16 @@ public class Song extends BaseEntity<Long> implements AuditAccessor // NOSONAR
     @Valid
     private Artist artist;
 
+    @ManyToMany(mappedBy = "responses", fetch = FetchType.LAZY)
+    @OrderBy("participatedAt ASC")
+    Set<@Valid SurveyParticipation> participations = new LinkedHashSet<>(); // NOSONAR
+
     @Override
     protected String defineObjAttrs() {
-        return String.format("%s, artist_id=%s, title='%s', year=%s, duration=%s, genre='%s'",
-            super.defineObjAttrs(), getArtistId(), title, year, duration, genre);
+        return String.format(
+            "%s, artist_id=%s, title='%s', year=%s, duration=%s, genre='%s', participations=%s",
+            super.defineObjAttrs(), getArtistId(), title, year, duration, genre,
+            participations.size());
     }
 
     @Override
@@ -208,6 +221,54 @@ public class Song extends BaseEntity<Long> implements AuditAccessor // NOSONAR
     public Long getArtistId() {
         Artist target = getArtist();
         return target == null ? null : target.getId();
+    }
+
+    /**
+     * Gets the survey participations where a song has been selected as a
+     * survey response.
+     *
+     * @return the survey participations where a song has been selected as a response
+     */
+    public Set<SurveyParticipation> getParticipations() {
+        return Set.copyOf(participations); // ensure immutability
+    }
+
+    /**
+     * Sets the survey participations where a song has been selected as a
+     * survey response.
+     *
+     * @param participations the survey participations where a song has been
+     *                       selected as a response, never {@code null}
+     */
+    public void setParticipations(Set<SurveyParticipation> participations) {
+        this.participations = Objects.requireNonNull(
+            participations, "participations must not be null!");
+    }
+
+    /**
+     * Adds a survey participation where a song has been selected as a
+     * survey response.
+     *
+     * @param participation the survey participation where a song has been
+     *                      selected as a response, never {@code null}
+     */
+    public void addParticipation(SurveyParticipation participation) {
+        Objects.requireNonNull(participation, "participation to add must not be null!");
+        participations.add(participation); // register in this side
+        participation.responses.add(this); // register in the other side
+    }
+
+    /**
+     * Removes a survey participation where a song has been selected as a
+     * survey response.
+     *
+     * @param participation the survey participation where a song has been
+     *                      selected as a response, never {@code null}
+     */
+    public void removeParticipation(SurveyParticipation participation) {
+        Objects.requireNonNull(participation, "participation to remove must not be null!");
+        participations.remove(participation); // unregister in this side
+        participation.responses.remove(this); // unregister in the other side
     }
 
     @Override
