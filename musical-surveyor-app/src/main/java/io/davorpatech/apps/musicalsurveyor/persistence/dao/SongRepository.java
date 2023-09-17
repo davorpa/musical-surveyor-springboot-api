@@ -2,6 +2,7 @@ package io.davorpatech.apps.musicalsurveyor.persistence.dao;
 
 import io.davorpatech.apps.musicalsurveyor.persistence.model.Song;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -25,4 +26,27 @@ import org.springframework.stereotype.Repository;
 public interface SongRepository extends JpaRepository<Song, Long>
 {
 
+    /**
+     * Returns whether there are any song associated with the given {@code artistId}.
+     *
+     * @param artistId the artist ID to check, never {@code null}
+     * @return {@code true} if there are any song associated with the given
+     *         {@code artistId}, {@code false} otherwise
+     */
+    @Query("""
+        SELECT CASE WHEN COUNT(s) > 0 THEN TRUE ELSE FALSE END
+        FROM #{#entityName} s
+        WHERE s.artist.id = ?1
+        """)
+    boolean existsByArtist(Long artistId);
+
+    /**
+     * Returns the number of song associated with the given {@code artistId}.
+     *
+     * @param artistId the artist ID to check, never {@code null}
+     * @return the number of song associated with the given {@code artistId},
+     *         never {@code null}, always greater than or equal to 0
+     */
+    @Query("SELECT COUNT(s) FROM #{#entityName} s WHERE s.artist.id = ?1")
+    Long countByArtist(Long artistId);
 }

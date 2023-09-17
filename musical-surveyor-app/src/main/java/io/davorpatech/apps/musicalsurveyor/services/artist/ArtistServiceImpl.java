@@ -1,13 +1,17 @@
 package io.davorpatech.apps.musicalsurveyor.services.artist;
 
+import io.davorpatech.apps.musicalsurveyor.domain.SongConstants;
 import io.davorpatech.apps.musicalsurveyor.domain.artist.*;
 import io.davorpatech.apps.musicalsurveyor.persistence.dao.ArtistRepository;
+import io.davorpatech.apps.musicalsurveyor.persistence.dao.SongRepository;
 import io.davorpatech.apps.musicalsurveyor.persistence.model.Artist;
+import io.davorpatech.fwk.exception.EntityUsedByForeignsException;
 import io.davorpatech.fwk.service.data.jpa.JpaBasedDataService;
 import org.springframework.data.domain.Sort;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 /**
  * Implementation of {@link ArtistService}.
@@ -27,13 +31,19 @@ public class ArtistServiceImpl extends JpaBasedDataService<
         FindArtistsInput, CreateArtistInput, UpdateArtistInput>
     implements ArtistService // NOSONAR
 {
+    private final SongRepository songRepository;
+
     /**
      * Constructs a new {@link ArtistServiceImpl} with the given arguments.
      *
      * @param artistRepository the artist repository, never {@code null}
+     * @param songRepository   the song repository, never {@code null}
      */
-    ArtistServiceImpl(ArtistRepository artistRepository) {
+    ArtistServiceImpl(ArtistRepository artistRepository, SongRepository songRepository)
+    {
         super(artistRepository, ArtistConstants.DOMAIN_NAME);
+        Assert.notNull(songRepository, "SongRepository must not be null!");
+        this.songRepository = songRepository;
     }
 
     @Override
@@ -62,5 +72,15 @@ public class ArtistServiceImpl extends JpaBasedDataService<
             @NonNull Artist entity, @NonNull UpdateArtistInput input) {
         entity.setName(input.getName());
         entity.setBiography(input.getBiography());
+    }
+
+    @Override
+    protected void checkEntityDeletion(@NonNull Artist entity) {
+        Long id = entity.getId();
+        Long count = songRepository.countByArtist(id);
+        if (count > 0) {
+            throw new EntityUsedByForeignsException(
+                ArtistConstants.DOMAIN_NAME, id, SongConstants.DOMAIN_NAME, count);
+        }
     }
 }
