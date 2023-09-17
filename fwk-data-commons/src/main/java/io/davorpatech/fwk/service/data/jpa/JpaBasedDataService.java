@@ -232,6 +232,19 @@ public abstract class JpaBasedDataService< // NOSONAR
     {
         final T entity = repository.findById(id)
                 .orElseThrow(NoSuchEntityException.creater(domainName, id));
+        checkEntityDeletion(entity);
         repository.delete(entity);
+    }
+
+    /**
+     * Checks if the given entity can be deleted.
+     *
+     * <p>Implementations that need to check if the entity can be deleted
+     * should override this method.
+     *
+     * @param entity the entity to check
+     */
+    protected void checkEntityDeletion(final @NonNull T entity) {
+        // NOOP
     }
 }
