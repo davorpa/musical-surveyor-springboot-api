@@ -1,6 +1,7 @@
 package io.davorpatech.fwk.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -12,24 +13,41 @@ import java.util.Collection;
  *
  * @param <T> the component type of the paged data
  */
+@Schema(
+    description = """
+        A paged result is a slice of a list of objects.
+        
+        It allows gain information about the position of it in the containing entire list."""
+)
 public class PagedResult<T extends Serializable> implements Serializable // NOSONAR
 {
     private static final long serialVersionUID = 1924584331116408492L;
 
+    @Schema(description = "The page content as a collection of objects.")
     private final Collection<T> data;
 
+    @Schema(description = "The total amount of elements that the entire collection contains.")
     private final long totalElements;
 
+    @Schema(description = "The number of the current page. Is always non-negative.")
     private final int pageNumber;
 
+    @Schema(description = "The amount of total pages. Is always non-negative.")
     private final int totalPages;
 
+    @Schema(description = "Whether the current page is the first one.")
     @JsonProperty("isFirst")
     private final boolean first;
+
+    @Schema(description = "Whether the current page is the last one.")
     @JsonProperty("isLast")
     private final boolean last;
+
+    @Schema(description = "Whether there is a next page.")
     @JsonProperty("hasNext")
     private final boolean hasNext;
+
+    @Schema(description = "Whether there is a previous page.")
     @JsonProperty("hasPrevious")
     private final boolean hasPrevious;
 

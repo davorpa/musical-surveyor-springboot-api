@@ -47,6 +47,7 @@
         <spring-cloud.version>2022.0.4</spring-cloud.version>
         <springdoc-openapi.version>2.2.0</springdoc-openapi.version>
         <therapi-runtime-javadoc.version>0.15.0</therapi-runtime-javadoc.version>
+        <swagger-core-jakarta.version>2.2.15</swagger-core-jakarta.version>
         <!-- Plugin versions -->
         <springdoc-openapi-maven-plugin.version>1.4</springdoc-openapi-maven-plugin.version>
     </properties>
@@ -76,6 +77,16 @@
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
                 <version>${springdoc-openapi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-core-jakarta</artifactId>
+                <version>${swagger-core-jakarta.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-annotations-jakarta</artifactId>
+                <version>${swagger-core-jakarta.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.therapi</groupId>
