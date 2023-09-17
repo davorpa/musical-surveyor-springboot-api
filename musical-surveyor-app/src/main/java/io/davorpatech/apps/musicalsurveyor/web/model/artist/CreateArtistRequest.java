@@ -2,6 +2,7 @@ package io.davorpatech.apps.musicalsurveyor.web.model.artist;
 
 import io.davorpatech.apps.musicalsurveyor.domain.artist.ArtistConstants;
 import io.davorpatech.fwk.model.BaseValueObject;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -28,15 +29,29 @@ import java.util.Objects;
  * not required to create a new {@code Artist} because the server
  * will generate a new {@code id} for the new {@code Artist}.
  */
+@Schema(
+    name = "CreateArtistRequest",
+    description = "Represents the HTTP request body to create a new Artist."
+)
 public class CreateArtistRequest extends BaseValueObject
 {
     @Serial
     private static final long serialVersionUID = 1878460926711768021L;
 
+    @Schema(
+        description = "The artist name",
+        example = "The Beatles")
     @NotBlank
     @Size(max = ArtistConstants.NAME_MAXLEN)
     private final String name;
 
+    @Schema(
+        description = "The artist biography",
+        example = """
+            The Beatles were an English rock band formed in Liverpool in 1960.
+            
+            With a line-up comprising John Lennon, Paul McCartney, George Harrison and Ringo Starr,
+            they are regarded as the most influential band of all time.""")
     @Size(max = ArtistConstants.BIOGRAPHY_MAXLEN)
     private final String biography;
 

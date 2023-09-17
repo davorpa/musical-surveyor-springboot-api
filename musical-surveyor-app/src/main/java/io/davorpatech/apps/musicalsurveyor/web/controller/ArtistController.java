@@ -9,6 +9,12 @@ import io.davorpatech.apps.musicalsurveyor.web.model.artist.CreateArtistRequest;
 import io.davorpatech.apps.musicalsurveyor.web.model.artist.UpdateArtistRequest;
 import io.davorpatech.fwk.exception.NoMatchingRelatedFieldsException;
 import io.davorpatech.fwk.model.PagedResult;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.SortDefault;
@@ -38,6 +44,13 @@ import java.util.Objects;
  * responsible for handling the HTTP requests, and they delegate the
  * business logic to the services.
  */
+@Tag(
+    name = "artist",
+    description = """
+        The Artists API.
+        
+        Provides REST operations to manage Artist resources."""
+)
 @RestController
 @RequestMapping("/api/artists")
 public class ArtistController // NOSONAR
@@ -61,8 +74,25 @@ public class ArtistController // NOSONAR
      * @param forceUnpaged whether to force an unpaged result
      * @return all {@code Artist} resources
      */
+    @Operation(
+        summary = "Finds all artists",
+        description = """
+            Finds all artists.
+            
+            The results can be paginated and sorted.""",
+        tags = { "artist" }
+    )
+    @ApiResponse(
+        responseCode = "200",
+        description = "Successful operation",
+        useReturnTypeSchema = true)
+    @ApiResponse(
+        responseCode = "400",
+        description = "Request parameters are invalid",
+        content = @Content)
     @GetMapping
     PagedResult<ArtistDTO> findAll(
+        @ParameterObject
         @SortDefault.SortDefaults(
             @SortDefault(sort = "id", direction = Sort.Direction.ASC)
         ) Pageable pageable,
@@ -79,11 +109,32 @@ public class ArtistController // NOSONAR
     /**
      * Retrieves the {@code Artist} resource detail given its ID.
      *
-     * @param id the ID of the artist to be retrieved
+     * @param id the ID of the resource to be retrieved
      * @return the {@code Artist} resource matching the given ID
      */
+    @Operation(
+        summary = "Retrieves an artist detail by ID",
+        description = """
+            Retrieves an artist detail by its identifier.
+    
+            The identifier is a numeric value.""",
+        tags = { "artist" }
+    )
+    @ApiResponse(
+        responseCode = "200",
+        description = "Successful operation",
+        useReturnTypeSchema = true)
+    @ApiResponse(
+        responseCode = "400",
+        description = "Request parameters are invalid",
+        content = @Content)
+    @ApiResponse(
+        responseCode = "404",
+        description = "Artist not found",
+        content = @Content)
     @GetMapping("/{id}")
     ResponseEntity<ArtistDTO> retrieveById(
+        @Parameter(description = "The identifier of the artist to be retrieved", example = "1")
         @PathVariable("id") Long id)
     {
         ArtistDTO dto = artistService.findById(id);
@@ -96,6 +147,22 @@ public class ArtistController // NOSONAR
      * @param request the request body containing the parameters
      * @return the created {@code Artist} resource
      */
+    @Operation(
+        summary = "Creates a new artist",
+        description = """
+            Creates a new artist.
+            
+            The request body must contain the parameters.""",
+        tags = { "artist" }
+    )
+    @ApiResponse(
+        responseCode = "201",
+        description = "Successful operation",
+        useReturnTypeSchema = true)
+    @ApiResponse(
+        responseCode = "400",
+        description = "Request parameters are invalid",
+        content = @Content)
     @PostMapping
     ResponseEntity<ArtistDTO> create(
         @RequestBody @Validated CreateArtistRequest request)
@@ -120,8 +187,31 @@ public class ArtistController // NOSONAR
      * @param request the request body containing the updated parameters
      * @return the updated {@code Artist} resource
      */
+    @Operation(
+        summary = "Updates an artist detail by ID",
+        description = """
+            Updates an artist detail by its identifier.
+            
+            The identifier is a numeric value.
+            
+            The request body must contain the updated parameters.""",
+        tags = { "artist" }
+    )
+    @ApiResponse(
+        responseCode = "200",
+        description = "Successful operation",
+        useReturnTypeSchema = true)
+    @ApiResponse(
+        responseCode = "400",
+        description = "Request parameters are invalid",
+        content = @Content)
+    @ApiResponse(
+        responseCode = "404",
+        description = "Artist not found",
+        content = @Content)
     @PutMapping("/{id}")
     ResponseEntity<ArtistDTO> update(
+        @Parameter(description = "The identifier of the artist to be updated", example = "1")
         @PathVariable("id") Long id,
         @RequestBody @Validated UpdateArtistRequest request)
     {
@@ -141,8 +231,28 @@ public class ArtistController // NOSONAR
      * @param id the ID of the artist resource to be removed
      * @return the removed {@code Artist} resource
      */
+    @Operation(
+        summary = "Deletes an artist detail by ID",
+        description = """
+            Deletes an artist by its identifier.
+            
+            The identifier is a numeric value.""",
+        tags = { "artist" }
+    )
+    @ApiResponse(
+        responseCode = "204",
+        description = "Successful operation")
+    @ApiResponse(
+        responseCode = "400",
+        description = "Request parameters are invalid",
+        content = @Content)
+    @ApiResponse(
+        responseCode = "404",
+        description = "Artist not found",
+        content = @Content)
     @DeleteMapping("/{id}")
     ResponseEntity<Void> delete(
+        @Parameter(description = "The identifier of the artist to be removed", example = "10")
         @PathVariable("id") Long id)
     {
         artistService.deleteById(id);
