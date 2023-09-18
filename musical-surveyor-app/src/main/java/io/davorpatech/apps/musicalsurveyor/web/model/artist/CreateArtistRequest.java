@@ -33,7 +33,7 @@ import java.util.Objects;
     name = "CreateArtistRequest",
     description = "Represents the HTTP request body to create a new Artist."
 )
-public class CreateArtistRequest extends BaseValueObject
+public class CreateArtistRequest extends BaseValueObject // NOSONAR
 {
     @Serial
     private static final long serialVersionUID = 1878460926711768021L;

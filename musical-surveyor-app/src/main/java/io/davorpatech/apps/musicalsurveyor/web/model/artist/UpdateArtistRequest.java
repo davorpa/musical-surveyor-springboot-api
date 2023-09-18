@@ -34,7 +34,7 @@ import java.util.Objects;
     name = "UpdateArtistRequest",
     description = "Represents the HTTP request body to update an existing Artist."
 )
-public class UpdateArtistRequest extends BaseValueObject implements Identifiable<Long>
+public class UpdateArtistRequest extends BaseValueObject implements Identifiable<Long> // NOSONAR
 {
     @Serial
     private static final long serialVersionUID = -5790988780557771252L;
@@ -96,6 +96,11 @@ public class UpdateArtistRequest extends BaseValueObject implements Identifiable
         return String.format("id=%s, name='%s', biography='%s'", id, name, biography);
     }
 
+    /**
+     * Returns the artist ID.
+     *
+     * @return the artist ID
+     */
     @Override
     public Long getId() {
         return id;
