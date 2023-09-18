@@ -15,9 +15,9 @@ public interface SongConstants { // NOSONAR
     int TITLE_MAXLEN = 255;
 
     /**
-     * The minimum value of the {@code year} field.
+     * The minimum value of the {@code releaseYear} field.
      */
-    int YEAR_MIN = 0;
+    int RELEASE_YEAR_MIN = 0;
 
     /**
      * The minimum value of the {@code duration} field.

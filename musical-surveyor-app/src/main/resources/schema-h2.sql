@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `song`(
     `id`                BIGINT          NOT NULL  AUTO_INCREMENT,
     -- data columns
     `title`             VARCHAR(255)    NOT NULL,
-    `year`              INT             NULL,
+    `release_year`      INT             NULL,
     `duration`          INT             NULL,
     `genre`             VARCHAR(50)     NULL,
     -- foreignal columns
@@ -80,8 +80,8 @@ CREATE TABLE IF NOT EXISTS `song`(
     -- named constraints
     CONSTRAINT `PK_song_id`
             PRIMARY KEY(`id`),
-    CONSTRAINT `CK_song_year`
-            CHECK (`year` IS NULL OR `year` >= 0),
+    CONSTRAINT `CK_song_release_year`
+            CHECK (`release_year` IS NULL OR `release_year` >= 0),
     CONSTRAINT `CK_song_duration`
             CHECK (`duration` IS NULL OR `duration` >= 0),
     CONSTRAINT `FK_song_artist_id`

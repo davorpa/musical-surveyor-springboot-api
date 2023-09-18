@@ -55,9 +55,9 @@ public class Song extends BaseEntity<Long> implements AuditAccessor // NOSONAR
     @Size(max = SongConstants.TITLE_MAXLEN)
     private String title;
 
-    @Column(name = "`year`", nullable = true)
-    @Min(SongConstants.YEAR_MIN)
-    private Integer year;
+    @Column(name = "release_year", nullable = true)
+    @Min(SongConstants.RELEASE_YEAR_MIN)
+    private Integer releaseYear;
 
     @Column(name = "duration", nullable = true)
     @Min(SongConstants.DURATION_MIN)
@@ -86,8 +86,9 @@ public class Song extends BaseEntity<Long> implements AuditAccessor // NOSONAR
     @Override
     protected String defineObjAttrs() {
         return String.format(
-            "%s, artist_id=%s, title='%s', year=%s, duration=%s, genre='%s', participations=%s",
-            super.defineObjAttrs(), getArtistId(), title, year, duration, genre,
+            "%s, artist_id=%s, title='%s', releaseYear=%s, duration=%s, genre=%s, participations=%s",
+            super.defineObjAttrs(), getArtistId(), title, releaseYear, duration,
+            genre == null ? null : '\'' + genre + '\'',
             participations.size());
     }
 
@@ -127,21 +128,21 @@ public class Song extends BaseEntity<Long> implements AuditAccessor // NOSONAR
     }
 
     /**
-     * Gets the year of the song.
+     * Gets the release year of the song.
      *
-     * @return the year of the song
+     * @return the release year of the song
      */
-    public Integer getYear() {
-        return year;
+    public Integer getReleaseYear() {
+        return releaseYear;
     }
 
     /**
-     * Sets the year of the song.
+     * Sets the release year of the song.
      *
-     * @param year the year of the song to set
+     * @param releaseYear the release year of the song to set
      */
-    public void setYear(Integer year) {
-        this.year = year;
+    public void setReleaseYear(Integer releaseYear) {
+        this.releaseYear = releaseYear;
     }
 
     /**

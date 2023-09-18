@@ -32,7 +32,7 @@ INSERT INTO `artist`
 
 
 INSERT INTO `song`
-    (`title`, `year`, `duration`, `genre`, `artist_id`, `created_on`, `created_by`)
+    (`title`, `release_year`, `duration`, `genre`, `artist_id`, `created_on`, `created_by`)
     VALUES
     ('Song 0001', 1990,  157, 'Rock',    (SELECT `id` FROM `artist` WHERE `name` = 'MusicalArtist 001'), '2023-07-10T12:00:00', 'SYSTEM'),
     ('Song 0002', 1980,  180, 'Rock',    (SELECT `id` FROM `artist` WHERE `name` = 'MusicalArtist 001'), '2023-07-10T12:00:00', 'SYSTEM'),
