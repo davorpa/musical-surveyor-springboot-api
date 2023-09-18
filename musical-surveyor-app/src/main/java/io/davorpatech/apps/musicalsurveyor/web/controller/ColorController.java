@@ -224,6 +224,10 @@ public class ColorController // NOSONAR
         responseCode = "409",
         description = "Color code already exists",
         content = @Content)
+    @ApiResponse(
+        responseCode = "412",
+        description = "Color codes are immutable",
+        content = @Content)
     @PutMapping("/{id}")
     ResponseEntity<ColorDTO> update(
         @Parameter(description = "The identifier of the color to be updated", example = "1")

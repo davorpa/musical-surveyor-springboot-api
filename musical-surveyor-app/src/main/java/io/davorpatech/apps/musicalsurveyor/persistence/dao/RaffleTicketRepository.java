@@ -2,6 +2,7 @@ package io.davorpatech.apps.musicalsurveyor.persistence.dao;
 
 import io.davorpatech.apps.musicalsurveyor.persistence.model.RaffleTicket;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -24,5 +25,27 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RaffleTicketRepository extends JpaRepository<RaffleTicket, Long>
 {
+    /**
+     * Returns whether there are any raffle tickets associated with the given {@code colorId}.
+     *
+     * @param colorId the color ID to check, never {@code null}
+     * @return {@code true} if there are any raffle tickets associated with the given
+     *         {@code colorId}, {@code false} otherwise
+     */
+    @Query("""
+        SELECT CASE WHEN COUNT(rt) > 0 THEN TRUE ELSE FALSE END
+        FROM #{#entityName} rt
+        WHERE rt.color.id = ?1
+        """)
+    boolean existsByColor(Long colorId);
 
+    /**
+     * Returns the number of raffle tickets associated with the given {@code colorId}.
+     *
+     * @param colorId the color ID to check, never {@code null}
+     * @return the number of raffle tickets associated with the given {@code colorId},
+     *         never {@code null}, always greater than or equal to 0
+     */
+    @Query("SELECT COUNT(rt) FROM #{#entityName} rt WHERE rt.color.id = ?1")
+    Long countByColor(Long colorId);
 }
