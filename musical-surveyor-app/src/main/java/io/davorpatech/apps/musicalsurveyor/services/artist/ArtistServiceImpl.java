@@ -1,7 +1,7 @@
 package io.davorpatech.apps.musicalsurveyor.services.artist;
 
-import io.davorpatech.apps.musicalsurveyor.domain.SongConstants;
 import io.davorpatech.apps.musicalsurveyor.domain.artist.*;
+import io.davorpatech.apps.musicalsurveyor.domain.songs.SongConstants;
 import io.davorpatech.apps.musicalsurveyor.persistence.dao.ArtistRepository;
 import io.davorpatech.apps.musicalsurveyor.persistence.dao.SongRepository;
 import io.davorpatech.apps.musicalsurveyor.persistence.model.Artist;
