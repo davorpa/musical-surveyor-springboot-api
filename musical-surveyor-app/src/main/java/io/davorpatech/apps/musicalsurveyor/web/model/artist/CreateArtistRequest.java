@@ -1,5 +1,6 @@
 package io.davorpatech.apps.musicalsurveyor.web.model.artist;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import io.davorpatech.apps.musicalsurveyor.domain.artist.ArtistConstants;
 import io.davorpatech.fwk.model.BaseValueObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -61,6 +62,7 @@ public class CreateArtistRequest extends BaseValueObject // NOSONAR
      * @param name      the artist name
      * @param biography the artist biography
      */
+    @JsonCreator
     public CreateArtistRequest(String name, String biography) {
         super();
         this.name = name;

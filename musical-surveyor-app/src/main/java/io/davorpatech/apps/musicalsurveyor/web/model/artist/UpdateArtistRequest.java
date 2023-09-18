@@ -1,5 +1,6 @@
 package io.davorpatech.apps.musicalsurveyor.web.model.artist;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import io.davorpatech.apps.musicalsurveyor.domain.artist.ArtistConstants;
 import io.davorpatech.fwk.model.BaseValueObject;
 import io.davorpatech.fwk.model.Identifiable;
@@ -69,6 +70,7 @@ public class UpdateArtistRequest extends BaseValueObject implements Identifiable
      * @param name      the artist name
      * @param biography the artist biography
      */
+    @JsonCreator
     public UpdateArtistRequest(Long id, String name, String biography) {
         super();
         this.id = id;
