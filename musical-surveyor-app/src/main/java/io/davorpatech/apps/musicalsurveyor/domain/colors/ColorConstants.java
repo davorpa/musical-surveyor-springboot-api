@@ -1,4 +1,4 @@
-package io.davorpatech.apps.musicalsurveyor.domain;
+package io.davorpatech.apps.musicalsurveyor.domain.colors;
 
 /**
  * Constants to work with {@code Color} domain entities and DTOs.
