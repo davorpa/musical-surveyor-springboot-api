@@ -1,4 +1,4 @@
-package io.davorpatech.apps.musicalsurveyor.domain;
+package io.davorpatech.apps.musicalsurveyor.domain.listeners;
 
 /**
  * Constants to work with {@code RadioListener} domain entities and DTOs.

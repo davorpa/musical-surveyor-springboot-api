@@ -1,6 +1,6 @@
 package io.davorpatech.apps.musicalsurveyor.persistence.model;
 
-import io.davorpatech.apps.musicalsurveyor.domain.RadioListenerConstants;
+import io.davorpatech.apps.musicalsurveyor.domain.listeners.RadioListenerConstants;
 import io.davorpatech.fwk.auditing.jpa.Audit;
 import io.davorpatech.fwk.auditing.jpa.AuditAccessor;
 import io.davorpatech.fwk.model.BaseEntity;
