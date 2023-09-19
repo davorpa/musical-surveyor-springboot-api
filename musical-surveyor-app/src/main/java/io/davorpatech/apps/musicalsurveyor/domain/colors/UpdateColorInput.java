@@ -44,7 +44,7 @@ public class UpdateColorInput extends BaseUpdateInputCmd<Long> // NOSONAR
      * @param code the color code
      */
     public UpdateColorInput(Long id, String code) {
-        super(id);
+        super();
         this.code = code;
     }
 

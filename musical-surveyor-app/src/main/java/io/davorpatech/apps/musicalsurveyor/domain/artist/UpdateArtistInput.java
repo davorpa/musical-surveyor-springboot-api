@@ -50,7 +50,7 @@ public class UpdateArtistInput extends BaseUpdateInputCmd<Long> // NOSONAR
      * @param biography  the artist biography
      */
     public UpdateArtistInput(Long id, String name, String biography) {
-        super(id);
+        super();
         this.name = name;
         this.biography = biography;
     }
