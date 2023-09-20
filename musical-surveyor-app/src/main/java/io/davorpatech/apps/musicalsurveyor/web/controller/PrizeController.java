@@ -36,11 +36,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class PrizeController // NOSONAR
 {
     private final PrizeService prizeService;
-
     public PrizeController(PrizeService prizeService) {
         this.prizeService = prizeService;
     }
-
     /**
      *Creates a new {@code PrizeController} instance.
      *
