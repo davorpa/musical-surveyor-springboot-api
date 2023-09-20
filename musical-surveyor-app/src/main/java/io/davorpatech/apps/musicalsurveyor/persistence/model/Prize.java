@@ -1,6 +1,6 @@
 package io.davorpatech.apps.musicalsurveyor.persistence.model;
 
-import io.davorpatech.apps.musicalsurveyor.domain.PrizeConstants;
+import io.davorpatech.apps.musicalsurveyor.domain.prizes.PrizeConstants;
 import io.davorpatech.fwk.auditing.jpa.Audit;
 import io.davorpatech.fwk.auditing.jpa.AuditAccessor;
 import io.davorpatech.fwk.model.BaseEntity;
@@ -17,7 +17,7 @@ import java.math.BigDecimal;
  * The Prize entity class.
  *
  * <p>A prize is a reward that can be won by a raffle ticket after make a draw
- * between all participants that had sent their as favorites songs as anwsers
+ * between all participants that had sent their as favorites songs as answers
  * to a survey made by a radio station.
  *
  * <p>As an entity, follows the {@link BaseEntity} contract, which means
