@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional(readOnly = true)
-public class RadioListenerImpl extends JpaBasedDataService<
+public class RadioListenerServiceImpl extends JpaBasedDataService<
         RadioListenerRepository,
         Long, RadioListener, RadioListenerDTO,
         FindRadioListenersInput, CreateRadioListenerInput,UpdateRadioListenerInput>
@@ -32,7 +32,7 @@ public class RadioListenerImpl extends JpaBasedDataService<
      *
      * @param radioListenerRepository the repository of the business entity, never {@code null}
      */
-    RadioListenerImpl(RadioListenerRepository radioListenerRepository){
+    RadioListenerServiceImpl(RadioListenerRepository radioListenerRepository) {
         super(radioListenerRepository, RadioListenerConstants.DOMAIN_NAME);
     }
 
