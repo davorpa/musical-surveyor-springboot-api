@@ -11,7 +11,7 @@ import io.davorpatech.fwk.service.data.DataService;
  * Service for managing {@link RadioListener} data domain.
  */
 public interface RadioListenerService extends DataService<
-    Long, RadioListener, RadioListenerDTO,
-    FindRadioListenerInput, CreateRadioListenerInput,UpdateRadioListenerInput>  // NOSONAR
+        Long, RadioListener, RadioListenerDTO,
+        FindRadioListenerInput, CreateRadioListenerInput,UpdateRadioListenerInput>  // NOSONAR
 {
 }
