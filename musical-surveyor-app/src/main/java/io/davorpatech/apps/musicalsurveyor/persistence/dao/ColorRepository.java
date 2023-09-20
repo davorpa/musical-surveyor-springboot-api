@@ -3,6 +3,7 @@ package io.davorpatech.apps.musicalsurveyor.persistence.dao;
 import io.davorpatech.apps.musicalsurveyor.persistence.model.Color;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * The {@code Color} repository interface.
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Repository;
  * @see Color
  */
 @Repository
+@Transactional(readOnly = true)
 public interface ColorRepository extends JpaRepository<Color, Long>
 {
 
