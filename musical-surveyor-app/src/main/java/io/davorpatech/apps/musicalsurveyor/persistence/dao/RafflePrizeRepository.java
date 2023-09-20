@@ -4,6 +4,7 @@ import io.davorpatech.apps.musicalsurveyor.persistence.model.RafflePrize;
 import io.davorpatech.apps.musicalsurveyor.persistence.model.RafflePrizeId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * The {@code RafflePrize} repository interface.
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Repository;
  * @see RafflePrizeId
  */
 @Repository
+@Transactional(readOnly = true)
 public interface RafflePrizeRepository extends JpaRepository<RafflePrize, RafflePrizeId>
 {
 

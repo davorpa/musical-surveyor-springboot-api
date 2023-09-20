@@ -58,7 +58,7 @@ public class Artist extends BaseEntity<Long> implements AuditAccessor // NOSONAR
     private String biography;
 
     @OneToMany(mappedBy = "artist", fetch = FetchType.LAZY)
-    @OrderBy("title ASC, year ASC")
+    @OrderBy("title ASC, releaseYear ASC")
     private Set<@Valid Song> songs = new LinkedHashSet<>();
 
     @Embedded
