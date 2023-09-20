@@ -32,10 +32,6 @@ public class BaseSortableFindInputCmd // NOSONAR
         this.sort = sort == null ? Sort.unsorted() : sort;
     }
 
-    public BaseSortableFindInputCmd() {
-        super();
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

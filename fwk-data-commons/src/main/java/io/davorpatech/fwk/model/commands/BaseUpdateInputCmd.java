@@ -26,8 +26,11 @@ public class BaseUpdateInputCmd<ID extends Serializable> // NOSONAR
 
     /**
      * Constructs a new {@link BaseUpdateInputCmd} with the given arguments.
+     *
+     * @param id the value of the artificial key that uniquely identifies
+     *           the underlying record
      */
-    public BaseUpdateInputCmd() {
+    public BaseUpdateInputCmd(final ID id) {
         super();
         this.id = id;
     }

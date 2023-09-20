@@ -33,10 +33,6 @@ public class BaseFindInputCmd // NOSONAR
         this.pageSize = pageSize;
     }
 
-    public BaseFindInputCmd() {
-
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

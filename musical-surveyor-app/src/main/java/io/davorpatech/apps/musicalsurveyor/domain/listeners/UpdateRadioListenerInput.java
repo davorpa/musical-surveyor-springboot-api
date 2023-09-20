@@ -61,7 +61,7 @@ public class UpdateRadioListenerInput extends BaseUpdateInputCmd<Long> {
      * @param email
      */
     public UpdateRadioListenerInput(Long id, String name, String phone, String address, String email) {
-        super();
+        super(id);
         this.name = name;
         this.phone = phone;
         this.address = address;
