@@ -1,10 +1,15 @@
 package io.davorpatech.apps.musicalsurveyor.persistence.dao;
 
 import io.davorpatech.apps.musicalsurveyor.persistence.model.Song;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 /**
  * The {@code Song} repository interface.
@@ -28,6 +33,44 @@ import org.springframework.transaction.annotation.Transactional;
 public interface SongRepository extends JpaRepository<Song, Long>
 {
     /**
+     * Returns the song with the given {@code artistId} and {@code songId}.
+     *
+     * @param artistId the artist ID to check, never {@code null}
+     * @param songId   the song ID to check, never {@code null}
+     * @return the song with the given {@code artistId} and {@code songId},
+     *         never {@code null}
+     */
+    @Query("""
+        SELECT s
+        FROM #{#entityName} s
+        WHERE s.id = :songId AND s.artist.id = :artistId
+        """)
+    @EntityGraph(
+        attributePaths = {"artist"},
+        type = EntityGraph.EntityGraphType.FETCH)
+    Optional<Song> findInArtistRepertoire(
+        @Param("artistId") Long artistId,
+        @Param("songId") Long songId);
+
+    /**
+     * Deletes the song with the given {@code artistId} and {@code songId}.
+     *
+     * @param artistId the artist ID to check, never {@code null}
+     * @param songId   the song ID to check, never {@code null}
+     * @return the number of song deleted, always greater than or equal to zero,
+     *         where zero indicates that no songs was deleted
+     */
+    @Modifying
+    @Transactional
+    @Query("""
+        DELETE FROM #{#entityName} s
+        WHERE s.id = :songId AND s.artist.id = :artistId
+        """)
+    int deleteFromArtistRepertoire(
+        @Param("artistId") Long artistId,
+        @Param("songId") Long songId);
+
+    /**
      * Returns whether there are any song associated with the given {@code artistId}.
      *
      * @param artistId the artist ID to check, never {@code null}
@@ -50,4 +93,44 @@ public interface SongRepository extends JpaRepository<Song, Long>
      */
     @Query("SELECT COUNT(s) FROM #{#entityName} s WHERE s.artist.id = ?1")
     Long countByArtist(Long artistId);
+
+    /**
+     * Returns the number of participation responses associated with the given
+     * {@code songId} and {@code artistId}.
+     *
+     * @param songId   the song ID to check, never {@code null}
+     * @param artistId the artist ID to check that owns the song, never {@code null}
+     * @return the number of participation responses associated with the given
+     *         parameters, wherein is always greater than or equal to zero.
+     *         Zero indicates that no participation responses was found, situation
+     *         permitted by the business rules that prevent remove a song with
+     *         participation responses
+     */
+    @Query("""
+         SELECT COUNT(s)
+         FROM #{#entityName} s INNER JOIN s.participations sp
+         WHERE s.id = :songId AND s.artist.id = :artistId
+         """)
+    long countByParticipationResponses(
+        @Param("artistId") Long artistId,
+        @Param("songId") Long songId);
+
+    /**
+     * Returns the number of participation responses associated with the given
+     * {@code songId}.
+     *
+     * @param songId   the song ID to check, never {@code null}
+     * @return the number of participation responses associated with the given
+     *         parameters, wherein is always greater than or equal to zero.
+     *         Zero indicates that no participation responses was found, situation
+     *         permitted by the business rules that prevent remove a song with
+     *         participation responses
+     */
+    @Query("""
+         SELECT COUNT(s)
+         FROM #{#entityName} s INNER JOIN s.participations sp
+         WHERE s.id = :songId
+         """)
+    long countByParticipationResponses(
+        @Param("songId") Long songId);
 }
