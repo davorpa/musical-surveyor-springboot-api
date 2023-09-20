@@ -11,112 +11,123 @@ import java.io.Serial;
 import java.util.Objects;
 
 /**
- * Input objet for creating a new {@code RadioListener}
- * <p>Domain DTOS are immutable objects. As a DTO, it is a simple
- *  * POJO that holds data and has no behavior. It is used to transfer
- *  * data between the presentation layer and the services layer. It is
- *  * also used to validate the data sent to the services layer. It is a
- *  * good practice to use different DTOs for each one of service operations.
- *  * This way, the DTOs can be extended in the future without breaking the
- *  * service contract.
+ * Input objet for creating a new {@code RadioListener}.
  *
- * <p>As a domain DTO, it follows the {@link BaseValueObject} contract,
- *  * which means that it identifiable field is fuzzy, and it can be compared
- *  *
- *  * <p>As a domain DTO, it follows the {@link BaseValueObject} contract,
- *  * which means that it identifiable field is fuzzy, and it can be compared
- *  * for equality to other domain DTOs using all of its fields.
+ * <p>Domain DTOs are immutable objects. As a DTO, it is a simple
+ * POJO that holds data and has no behavior. It is used to transfer
+ * data between the presentation layer and the services layer. It is
+ * also used to validate the data sent to the services layer. It is a
+ * good practice to use different DTOs for each one of service operations.
+ * This way, the DTOs can be extended in the future without breaking the
+ * service contract.
+ *
+ * <p>This is why the {@link CreateRadioListenerInput} and the
+ * {@link UpdateRadioListenerInput} are different classes. They both represent
+ * the same data, but the {@link UpdateRadioListenerInput} has an additional
+ * {@code id} field. This is because the {@code id} is required to update an
+ * existing {@code RadioListener}. The {@code id} is not required to create a
+ * new {@code RadioListener} because the server will generate a new {@code id}
+ * for the new {@code RadioListener}.
+ *
+ * <p>As a domain DTO, it follows the {@link BaseValueObject} contract, which
+ * means that its identifiable field is fuzzy, and it can be compared for
+ * equality to other domain DTOs using all of its fields.
  */
 public class CreateRadioListenerInput extends BaseValueObject implements CreateInputCmd // NOSONAR
- {
+{
+    @Serial
+    private static final long serialVersionUID = 9071775290398728529L;
 
-     @Serial
-     private static final long serialVersionUID = 9071775290398728529L;
+    @NotBlank
+    @Size(max = RadioListenerConstants.NAME_MAXLEN)
+    private  final String name;
 
-     @NotBlank
-     @Size(max = RadioListenerConstants.NAME_MAXLEN)
-     private  final String name;
+    @NotBlank
+    @Size(max = RadioListenerConstants.PHONE_MAXLEN)
+    @Pattern(regexp = RadioListenerConstants.PHONE_REGEX)
+    private final String phone;
 
-     @NotBlank
-     @Size(max = RadioListenerConstants.PHONE_MAXLEN)
-     @Pattern(regexp = RadioListenerConstants.PHONE_REGEX)
-     private final String phone;
+    @Size(max = RadioListenerConstants.ADDRESS_MAXLEN)
+    private final String address;
 
-     @Size(max = RadioListenerConstants.ADDRESS_MAXLEN)
-     private final String address;
+    @NotBlank
+    @Size(max = RadioListenerConstants.EMAIL_MAXLEN)
+    @Email
+    private final String email;
 
-     @NotBlank
-     @Size(max = RadioListenerConstants.EMAIL_MAXLEN)
-     @Email
-     private final String email;
+    /**
+     * Constructs a new {@link CreateRadioListenerInput} with the giver arguments.
+     *
+     * @param name    the radio listener full name
+     * @param phone   the radio listener phone number
+     * @param address the radio listener postal address (optional)
+     * @param email   the radio listener email address
+     */
+    public CreateRadioListenerInput(String name, String phone, String address, String email) {
+        super();
+        this.name = name;
+        this.phone = phone;
+        this.address = address;
+        this.email = email;
+    }
 
-     @Override
-     protected String defineObjAttrs() {
-         return null;
-     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CreateRadioListenerInput other = (CreateRadioListenerInput) o;
+        return Objects.equals(name, other.name) &&
+            Objects.equals(phone, other.phone) &&
+            Objects.equals(address, other.address) &&
+            Objects.equals(email, other.email);
+    }
 
-     /**
-      * Constructs a new {@link CreateRadioListenerInput} with the giver arguments.
-      * @param name the radio Listener name
-      * @param phone the radio Listener phone
-      * @param address the radio Listener address
-      * @param email the radio listener email
-      */
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, phone, address, email);
+    }
 
-     public CreateRadioListenerInput(String name, String phone, String address, String email){
-         super();
-         this.name = name;
-         this.phone = phone;
-         this.address = address;
-         this.email = email;
-     }
+    @Override
+    protected String defineObjAttrs() {
+        return String.format(
+            "name='%s', phone='%s', email='%s', address=%s",
+            name, phone, email,
+            address == null ? null : '\'' + address + '\'');
+    }
 
-     @Override
-     public  boolean equals(Object o){
-         if (this == o) return true;
-         if (o == null || getClass() != o.getClass()) return false;
-         CreateRadioListenerInput other = (CreateRadioListenerInput) o;
-         return Objects.equals(name, other.name) &&
-             Objects.equals(phone, other.phone) &&
-             Objects.equals(address, other.address)&&
-             Objects.equals(email, other.email);
-     }
-     @Override
-     public int hashCode(){
-         return Objects.hash(name, phone, address, email);
-     }
+    /**
+     * Returns the radio listener full name.
+     *
+     * @return the radio listener full name
+     */
+    public String getName() {
+        return name;
+    }
 
-     /**
-      * Returns the radio listener name.
-      * @return the radio listener name
-      */
+    /**
+     * Returns the radio listener phone.
+     *
+     * @return the radio listener phone
+     */
+    public String getPhone() {
+        return phone;
+    }
 
-        public String getName() {
-            return name;
-        }
-        /**
-         * Returns the radio listener phone.
-         * @return the radio listener phone
-         */
-        public String getPhone() {
-            return phone;
-        }
-            /**
-             * Returns the radio listener address.
-             * @return the radio listener address
-             */
-        public String getAddress() {
-                return address;
-            }
+    /**
+     * Returns the radio listener postal address.
+     *
+     * @return the radio listener postal address
+     */
+    public String getAddress() {
+        return address;
+    }
 
-            /**
-             * Returns the radio listener email.
-             * @return the radio listener email
-             */
-
-        public String getEmail() {
-                return email;
-            }
- }
-
-
+    /**
+     * Returns the radio listener email address.
+     *
+     * @return the radio listener email address
+     */
+    public String getEmail() {
+        return email;
+    }
+}
