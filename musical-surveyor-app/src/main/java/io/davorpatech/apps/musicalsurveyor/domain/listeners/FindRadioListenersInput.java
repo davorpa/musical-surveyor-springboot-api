@@ -13,19 +13,19 @@ import java.io.Serial;
  * which means that it identifiable field is fuzzy, and it can be compared
  * for equality to other domain DTOs using all of its fields.
  */
-public class FindRadioListenerInput extends BaseSortableFindInputCmd // NOSONAR
+public class FindRadioListenersInput extends BaseSortableFindInputCmd // NOSONAR
 {
     @Serial
     private static final long serialVersionUID = 5471516994682940700L;
 
     /**
-     * Constructs a new {@link FindRadioListenerInput} with the given arguments.
+     * Constructs a new {@link FindRadioListenersInput} with the given arguments.
      *
      * @param pageNumber the number of the current page (zero-index based)
      * @param pageSize   the page size; thus is, the number of items to be returned
      * @param sort       the sort to be used as part of any search query
      */
-    public FindRadioListenerInput(int pageNumber, int pageSize, Sort sort) {
+    public FindRadioListenersInput(int pageNumber, int pageSize, Sort sort) {
         super(pageNumber, pageSize, sort);
     }
 }

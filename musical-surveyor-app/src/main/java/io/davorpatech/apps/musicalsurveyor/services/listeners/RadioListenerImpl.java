@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class RadioListenerImpl extends JpaBasedDataService<
         RadioListenerRepository,
         Long, RadioListener, RadioListenerDTO,
-        FindRadioListenerInput, CreateRadioListenerInput,UpdateRadioListenerInput>
+        FindRadioListenersInput, CreateRadioListenerInput,UpdateRadioListenerInput>
     implements RadioListenerService // NOSONAR
 {
     /**
