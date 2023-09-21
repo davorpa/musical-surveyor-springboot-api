@@ -5,6 +5,8 @@ import io.davorpatech.apps.musicalsurveyor.persistence.dao.PrizeRepository;
 import io.davorpatech.apps.musicalsurveyor.persistence.model.Prize;
 import io.davorpatech.fwk.service.data.jpa.JpaBasedDataService;
 import io.micrometer.common.lang.NonNull;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,6 +54,20 @@ public class PrizeServiceImpl extends JpaBasedDataService<
             prize.getMonetaryValue());
     }
 
+    @Transactional
+    @Override
+    public @NonNull PrizeDTO create(@NonNull CreatePrizeInput input) {
+        try {
+            return super.create(input);
+        } catch (DataIntegrityViolationException ex) {
+            // translate the exception to a more meaningful one
+            if (StringUtils.containsIgnoreCase(ex.getMessage(), "UK_prize_title")) {
+                throw new PrizeTitleAlreadyExistsException(input.getTitle(), ex);
+            }
+            throw ex;
+        }
+    }
+
     @Override
     protected @NonNull Prize convertCreateToEntity(@NonNull CreatePrizeInput input) {
         Prize entity = new Prize();
@@ -59,6 +75,23 @@ public class PrizeServiceImpl extends JpaBasedDataService<
         entity.setDescription(input.getDescription());
         entity.setMonetaryValue(input.getMonetaryValue());
         return entity;
+    }
+
+    @Transactional
+    @Override
+    public @NonNull PrizeDTO update(@NonNull UpdatePrizeInput input) {
+        try {
+            PrizeDTO dto = super.update(input);
+            // To be able to capture exceptions like DataIntegrityViolationException
+            repository.flush();
+            return dto;
+        } catch (DataIntegrityViolationException ex) {
+            // translate the exception to a more meaningful one
+            if (StringUtils.containsIgnoreCase(ex.getMessage(), "UK_prize_title")) {
+                throw new PrizeTitleAlreadyExistsException(input.getTitle(), ex);
+            }
+            throw ex;
+        }
     }
 
     @Override
