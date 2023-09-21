@@ -3,7 +3,9 @@ package io.davorpatech.apps.musicalsurveyor.persistence.dao;
 import io.davorpatech.apps.musicalsurveyor.persistence.model.SurveyParticipation;
 import io.davorpatech.apps.musicalsurveyor.persistence.model.SurveyParticipationId;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * The {@code SurveyParticipation} repository interface.
@@ -24,7 +26,30 @@ import org.springframework.stereotype.Repository;
  * @see SurveyParticipationId
  */
 @Repository
+@Transactional(readOnly = true)
 public interface SurveyParticipationRepository extends JpaRepository<SurveyParticipation, SurveyParticipationId>
 {
+    /**
+     * Returns whether there are any survey participations associated with the given {@code participantId}.
+     *
+     * @param participantId the participant ID to check, never {@code null}
+     * @return {@code true} if there are any survey participations associated with the given
+     *         {@code participantId}, {@code false} otherwise
+     */
+    default boolean existsByParticipant(Long participantId) {
+        return countByParticipant(participantId) > 0;
+    }
 
+    /**
+     * Returns the number of survey participations associated with the given {@code participantId}.
+     *
+     * <p>Zero represents that there are no survey participations associated with the given
+     * {@code participantId}, so it's safe to delete the participant.
+     *
+     * @param participantId the participant ID to check, never {@code null}
+     * @return the number of survey participations associated with the given {@code participantId},
+     *         never {@code null}, always greater than or equal to 0
+     */
+    @Query("SELECT COUNT(sp) FROM #{#entityName} sp WHERE sp.participant.id = ?1")
+    long countByParticipant(Long participantId);
 }

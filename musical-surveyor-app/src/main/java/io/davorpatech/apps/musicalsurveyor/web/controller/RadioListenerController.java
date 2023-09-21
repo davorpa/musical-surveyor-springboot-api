@@ -274,7 +274,7 @@ public class RadioListenerController // NOSONAR
         content = @Content)
     @ApiResponse(
         responseCode = "409",
-        description = "RadioListener has related resources",
+        description = "Radio listener has related resources",
         content = @Content)
     @DeleteMapping("/{id}")
     ResponseEntity<Void> delete(
