@@ -77,7 +77,7 @@ public class ArtistServiceImpl extends JpaBasedDataService<
     @Override
     protected void checkEntityDeletion(@NonNull Artist entity) {
         Long id = entity.getId();
-        Long count = songRepository.countByArtist(id);
+        long count = songRepository.countByArtist(id);
         if (count > 0) {
             throw new EntityUsedByForeignsException(
                 ArtistConstants.DOMAIN_NAME, id, SongConstants.DOMAIN_NAME, count);

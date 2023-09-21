@@ -92,7 +92,7 @@ public interface SongRepository extends JpaRepository<Song, Long>
      *         never {@code null}, always greater than or equal to 0
      */
     @Query("SELECT COUNT(s) FROM #{#entityName} s WHERE s.artist.id = ?1")
-    Long countByArtist(Long artistId);
+    long countByArtist(Long artistId);
 
     /**
      * Returns the number of participation responses associated with the given

@@ -49,5 +49,5 @@ public interface RaffleTicketRepository extends JpaRepository<RaffleTicket, Long
      *         never {@code null}, always greater than or equal to 0
      */
     @Query("SELECT COUNT(rt) FROM #{#entityName} rt WHERE rt.color.id = ?1")
-    Long countByColor(Long colorId);
+    long countByColor(Long colorId);
 }
