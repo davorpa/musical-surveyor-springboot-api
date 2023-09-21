@@ -49,31 +49,29 @@ public class UpdateRadioListenerRequest extends BaseValueObject implements Ident
     private final Long id;
 
     @Schema(
-        description = "The radio listener name",
-        example = "Beatle Greetings")
+        description = "The radio listener full name",
+        example = "John Lennon")
     @NotBlank
     @Size(max = RadioListenerConstants.NAME_MAXLEN)
     private final String name;
 
     @Schema(
-        description = "The radio listener phone",
-        example = "+34123456789")
-   @NotBlank
-   @Size(max = RadioListenerConstants.PHONE_MAXLEN)
+        description = "The radio listener phone number",
+        example = "+01123456789")
+    @NotBlank
+    @Size(max = RadioListenerConstants.PHONE_MAXLEN)
     @Pattern(regexp = RadioListenerConstants.PHONE_REGEX)
     private final String phone;
 
     @Schema(
-        description = "The radio listener address",
-        example = """
-            "123 Main St.""")
+        description = "The radio listener postal address",
+        example = "123 Main St. New York, NY 10030")
     @Size(max = RadioListenerConstants.ADDRESS_MAXLEN)
     private final String address;
 
     @Schema(
-        description = "The radio listener email",
-        example = """
-            "exaple@gmail.com.""")
+        description = "The radio listener email address",
+        example = "test@example.com")
     @Size(max = RadioListenerConstants.EMAIL_MAXLEN)
     @Email
     private final String email;
@@ -81,13 +79,12 @@ public class UpdateRadioListenerRequest extends BaseValueObject implements Ident
     /**
      * Creates a new {@link UpdateRadioListenerRequest} instance with the given arguments.
      *
-     * @param id        the radio listener ID
-     * @param name      the radio listener name
-     * @param phone     the radio listener phone
-     * @param address   the radio listener address
-     * @param email     the radio listener email
+     * @param id      the radio listener ID
+     * @param name    the radio listener full name
+     * @param phone   the radio listener phone number
+     * @param address the radio listener postal address (optional)
+     * @param email   the radio listener email address
      */
-
     @JsonCreator
     public UpdateRadioListenerRequest(Long id, String name, String phone, String address, String email) {
         super();
@@ -101,7 +98,7 @@ public class UpdateRadioListenerRequest extends BaseValueObject implements Ident
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof UpdateRadioListenerRequest)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         UpdateRadioListenerRequest other = (UpdateRadioListenerRequest) o;
         return Objects.equals(id, other.id) &&
             Objects.equals(name, other.name) &&
@@ -117,7 +114,8 @@ public class UpdateRadioListenerRequest extends BaseValueObject implements Ident
 
     @Override
     protected String defineObjAttrs() {
-        return String.format("id=%s, name='%s', phone='%s', address='%s', email='%s'", id, name, phone, address, email);
+        return String.format("id=%s, name='%s', phone='%s', address=%s, email='%s'",
+            id, name, phone, address == null ? null : '\'' + address + '\'', email);
     }
 
     /**
@@ -127,37 +125,40 @@ public class UpdateRadioListenerRequest extends BaseValueObject implements Ident
      */
     @Override
     public Long getId() {
-        return null;
+        return id;
     }
 
     /**
-     * Returns the radio listener name.
+     * Returns the radio listener full name.
      *
-     * @return the radio listener name
+     * @return the radio listener full name
      */
     public String getName() {
         return name;
     }
+
     /**
-     * Returns the radio listener phone.
+     * Returns the radio listener phone number.
      *
-     * @return the radio listener phone
+     * @return the radio listener phone number
      */
     public String getPhone() {
         return phone;
     }
+
     /**
-     * Returns the radio listener address.
+     * Returns the radio listener postal address.
      *
-     * @return the radio listener address
+     * @return the radio listener postal address
      */
     public String getAddress() {
         return address;
     }
+
     /**
-     * Returns the radio listener email.
+     * Returns the radio listener email address.
      *
-     * @return the radio listener email
+     * @return the radio listener email address
      */
     public String getEmail() {
         return email;

@@ -1,4 +1,4 @@
-package io.davorpatech.apps.musicalsurveyor.domain;
+package io.davorpatech.apps.musicalsurveyor.domain.prizes;
 
 /**
  * Constants to work with {@code Prize} domain entities and DTOs.

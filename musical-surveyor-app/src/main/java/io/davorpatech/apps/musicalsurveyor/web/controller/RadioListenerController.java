@@ -59,12 +59,11 @@ public class RadioListenerController // NOSONAR
     private final RadioListenerService radioListenerService;
 
     /**
-     * Creates a new {@code RadioListenerController} instance.
+     * Constructs a new {@code RadioListenerController} with the given arguments.
      *
      * @param radioListenerService the {@code RadioListenerService} instance
-     *                             to be injected
+     *                             to be injected, never {@code null}
      */
-
     RadioListenerController(RadioListenerService radioListenerService) {
         Assert.notNull(radioListenerService, "RadioListenerService must not be null!");
         this.radioListenerService = radioListenerService;
@@ -77,22 +76,20 @@ public class RadioListenerController // NOSONAR
      * resources in body
      */
     @Operation(
-        summary = "Finds all RadioListener resources.",
+        summary = "Finds all radio listeners",
         description = """
-            Finds all RadioListener resources.
+            Finds all radio listener.
                         
-            Returns a paginated list of RadioListener resources ordered by the
-            specified sort criteria in ascending or descending order.""",
+            The results can be paginated and sorted.""",
         tags = {"radio-listener"}
     )
     @ApiResponse(
         responseCode = "200",
-        description = "OK",
-        useReturnTypeSchema = true
-    )
+        description = "Successful operation",
+        useReturnTypeSchema = true)
     @ApiResponse(
         responseCode = "400",
-        description = "Bad Request",
+        description = "Request parameters are invalid",
         content = @Content)
     @GetMapping
     PagedResult<RadioListenerDTO> findAll(
@@ -100,13 +97,13 @@ public class RadioListenerController // NOSONAR
         @SortDefault.SortDefaults(
             @SortDefault(sort = "id", direction = Sort.Direction.ASC)
         ) Pageable pageable,
-        @RequestParam(value = "unpaged", defaultValue = "false") boolean forceUnpaged) {
+        @RequestParam(value = "unpaged", defaultValue = "false") boolean forceUnpaged)
+    {
         FindRadioListenersInput query = new FindRadioListenersInput(
             forceUnpaged || pageable.isUnpaged() ? 0 : pageable.getPageNumber(),
             forceUnpaged || pageable.isUnpaged() ? -1 : pageable.getPageSize(),
             pageable.getSort()
         );
-
         return radioListenerService.findAll(query);
     }
 
@@ -117,55 +114,55 @@ public class RadioListenerController // NOSONAR
      * @return the {@code RadioListener} resource matching the given ID
      */
     @Operation(
-        summary = "Finds all RadioListener",
+        summary = "Retrieves a radio listener detail by ID",
         description = """
-            Finds all RadioListener.
+            Retrieves a radio listener detail by its identifier.
                             
-            The results can be paginated and sorted.""",
+            The identifier is a numeric value.""",
         tags = {"radio-listener"}
     )
     @ApiResponse(
         responseCode = "200",
-        description = "successful operation",
+        description = "Successful operation",
         useReturnTypeSchema = true)
     @ApiResponse(
         responseCode = "400",
-        description = "Bad Request",
+        description = "Request parameters are invalid",
         content = @Content)
     @ApiResponse(
         responseCode = "404",
-        description = "RadioListener not found",
+        description = "Radio listener not found",
         content = @Content)
     @GetMapping("/{id}")
     ResponseEntity<RadioListenerDTO> retrieveById(
-        @Parameter(description = "The identifier of the RadioListener to be retrieved", example = "1")
-        @PathVariable("id") Long id) {
+        @Parameter(description = "The identifier of the radio listener to be retrieved", example = "1")
+        @PathVariable("id") Long id)
+    {
         RadioListenerDTO dto = radioListenerService.findById(id);
         return ResponseEntity.ok(dto);
     }
 
     /**
-     * Creates a new {@code RadioListener} resource.
+     * Creates a new {@code RadioListener} resource using the given arguments.
      *
-     * @return the {@code ResponseEntity} with the created {@code RadioListener}
-     * resource in body
+     * @param request the request body containing the parameters
+     * @return the created {@code RadioListener} resource
      */
-
     @Operation(
-        summary = "Creates a new RadioListener resource.",
+        summary = "Creates a new radio listener",
         description = """
-            Creates a new RadioListener resource.
+            Creates a new radio listener resource.
                             
             The request body must contain the parameters.""",
         tags = {"radio-listener"}
     )
     @ApiResponse(
         responseCode = "201",
-        description = "successful operation",
+        description = "Successful operation",
         useReturnTypeSchema = true)
     @ApiResponse(
         responseCode = "400",
-        description = "Bad Request",
+        description = "Request parameters are invalid",
         content = @Content)
     @ApiResponse(
         responseCode = "409",
@@ -173,20 +170,15 @@ public class RadioListenerController // NOSONAR
         content = @Content)
     @PostMapping
     ResponseEntity<RadioListenerDTO> create(
-
-        @RequestBody @Validated CreateRadioListenerRequest request) {
+        @RequestBody @Validated CreateRadioListenerRequest request)
+    {
         CreateRadioListenerInput input = new CreateRadioListenerInput(
-            request.getName(),
-            request.getPhone(),
-            request.getAddress(),
-            request.getEmail()
-
-        );
+            request.getName(), request.getPhone(),
+            request.getAddress(), request.getEmail());
         RadioListenerDTO dto = radioListenerService.create(input);
 
-        //Compose URI Location of the retrieve endpoint for this created resource
-        final URI location = ServletUriComponentsBuilder
-            .fromCurrentRequest()
+        // Compose URI Location of the retrieve endpoint for this created resource
+        final URI location = ServletUriComponentsBuilder.fromCurrentRequest()
             .path("/{id}")
             .buildAndExpand(dto.getId())
             .toUri();
@@ -195,16 +187,16 @@ public class RadioListenerController // NOSONAR
     }
 
     /**
-     * Updates an existing {@code RadioListener} resource.
+     * Updates an {@code RadioListener} resource using the given request body.
      *
-     * @param id  the ID of the resource to be updated
-     * @return the {@code ResponseEntity} with the updated {@code RadioListener}
-     * resource in body
+     * @param id      the ID of the radio listener resource to be updated
+     * @param request the request body containing the updated parameters
+     * @return the updated {@code RadioListener} resource
      */
     @Operation(
-        summary = "Updates a RadioListener resource detail by ID.",
+        summary = "Updates a radio listener detail by ID",
         description = """
-            Updates a RadioListener resource detail by its identifier.
+            Updates a radio listener detail by its identifier.
                             
             The identifier is a numeric value.
                             
@@ -213,7 +205,7 @@ public class RadioListenerController // NOSONAR
     )
     @ApiResponse(
         responseCode = "200",
-        description = "successful operation",
+        description = "Successful operation",
         useReturnTypeSchema = true)
     @ApiResponse(
         responseCode = "400",
@@ -221,7 +213,7 @@ public class RadioListenerController // NOSONAR
         content = @Content)
     @ApiResponse(
         responseCode = "404",
-        description = "RadioListener not found",
+        description = "Radio listener not found",
         content = @Content)
     @ApiResponse(
         responseCode = "409",
@@ -229,20 +221,17 @@ public class RadioListenerController // NOSONAR
         content = @Content)
     @PutMapping("/{id}")
     ResponseEntity<RadioListenerDTO> update(
-        @Parameter(description = "The identifier of the RadioListener to be updated", example = "1")
+        @Parameter(description = "The identifier of the radio listener to be updated", example = "1")
         @PathVariable("id") Long id,
-        @RequestBody @Validated UpdateRadioListenerRequest request) {
+        @RequestBody @Validated UpdateRadioListenerRequest request)
+    {
         if (request.hasId() && !Objects.equals(id, request.getId())) {
             throw new NoMatchingRelatedFieldsException(
                 "update.id", id, "update.request.id", request.getId());
         }
-        UpdateRadioListenerInput input = new UpdateRadioListenerInput(
-            id,
-            request.getName(),
-            request.getPhone(),
-            request.getAddress(),
-            request.getEmail()
-        );
+        UpdateRadioListenerInput input = new UpdateRadioListenerInput(id,
+            request.getName(), request.getPhone(),
+            request.getAddress(), request.getEmail());
         RadioListenerDTO dto = radioListenerService.update(input);
         return ResponseEntity.ok(dto);
     }
@@ -250,27 +239,27 @@ public class RadioListenerController // NOSONAR
     /**
      * Deletes the {@code RadioListener} resource with the given ID.
      *
-     * @param id the ID of the resource to be removed
+     * @param id the ID of the radio listener resource to be removed
      * @return the removed {@code RadioListener} resource
      */
     @Operation(
-        summary = "Deletes a RadioListener resource detail by ID.",
+        summary = "Deletes a radio listener detail by ID",
         description = """
-            Deletes a RadioListener resource detail by its identifier.
+            Deletes a radio listener by its identifier.
                             
             The identifier is a numeric value.""",
         tags = {"radio-listener"}
     )
     @ApiResponse(
         responseCode = "204",
-        description = "successful operation")
+        description = "Successful operation")
     @ApiResponse(
         responseCode = "400",
         description = "Request parameters are invalid",
         content = @Content)
     @ApiResponse(
         responseCode = "404",
-        description = "RadioListener not found",
+        description = "Radio listener not found",
         content = @Content)
     @ApiResponse(
         responseCode = "409",
@@ -278,7 +267,7 @@ public class RadioListenerController // NOSONAR
         content = @Content)
     @DeleteMapping("/{id}")
     ResponseEntity<Void> delete(
-        @Parameter(description = "The identifier of the RadioListener to be deleted", example = "1")
+        @Parameter(description = "The identifier of the radio listener to be deleted", example = "1")
         @PathVariable("id") Long id)
     {
         radioListenerService.deleteById(id);
