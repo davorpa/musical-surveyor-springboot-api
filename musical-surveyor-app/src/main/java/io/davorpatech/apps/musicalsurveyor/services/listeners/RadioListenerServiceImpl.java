@@ -1,7 +1,7 @@
 package io.davorpatech.apps.musicalsurveyor.services.listeners;
 
-import io.davorpatech.apps.musicalsurveyor.domain.SurveyParticipationConstants;
 import io.davorpatech.apps.musicalsurveyor.domain.listeners.*;
+import io.davorpatech.apps.musicalsurveyor.domain.surveys.SurveyParticipationConstants;
 import io.davorpatech.apps.musicalsurveyor.persistence.dao.RadioListenerRepository;
 import io.davorpatech.apps.musicalsurveyor.persistence.dao.SurveyParticipationRepository;
 import io.davorpatech.apps.musicalsurveyor.persistence.model.RadioListener;

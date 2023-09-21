@@ -1,4 +1,4 @@
-package io.davorpatech.apps.musicalsurveyor.domain;
+package io.davorpatech.apps.musicalsurveyor.domain.surveys;
 
 /**
  * Constants to work with {@code Survey} domain entities and DTOs.

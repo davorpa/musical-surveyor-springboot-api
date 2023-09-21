@@ -1,6 +1,6 @@
 package io.davorpatech.apps.musicalsurveyor.persistence.model;
 
-import io.davorpatech.apps.musicalsurveyor.domain.SurveyConstants;
+import io.davorpatech.apps.musicalsurveyor.domain.surveys.SurveyConstants;
 import io.davorpatech.fwk.model.BaseValueObject;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
