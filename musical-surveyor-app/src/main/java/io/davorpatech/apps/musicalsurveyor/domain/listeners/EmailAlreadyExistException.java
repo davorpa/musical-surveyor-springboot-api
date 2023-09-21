@@ -18,12 +18,12 @@ import java.util.Map;
  * <p>This will normally be used to indicate that a database Unique or
  * Primary Key has been violated.
  */
-
 @ResponseStatus(HttpStatus.CONFLICT)
-public class EmailAlreadyExistException extends PreconditionalException implements ErrorDomain, AdditionalArgumentsPopulator // NOSONAR
+public class EmailAlreadyExistException extends PreconditionalException // NOSONAR
+        implements ErrorDomain, AdditionalArgumentsPopulator // NOSONAR
 {
     @Serial
-    private static final long serialVersionUID = 6888990351803757846L;
+    private static final long serialVersionUID = 6769828224152068983L;
 
     private final String email;
 
@@ -56,32 +56,27 @@ public class EmailAlreadyExistException extends PreconditionalException implemen
     }
 
     /**
-     * Returns the affected field of the domain object.
-     *
-     * @return the affected field of the domain object
-     */
-    public String getEmail() {
-        return email;
-    }
-    /**
      * Returns the affected field the domain object.
      *
      * <p>In this case, the affected field is the {@code email}.
+     *
      * @return the affected field of the domain object
      */
-
     public String getFieldName() {
         return "email";
     }
+
     /**
      * Returns the rejected value of the affected field.
      *
      * <p>In this case, the rejected value is the {@code email}.
+     *
      * @return the rejected value of the affected field
      */
     public String getFieldValue() {
         return email;
     }
+
     @Override
     public void populate(
         final Environment environment,

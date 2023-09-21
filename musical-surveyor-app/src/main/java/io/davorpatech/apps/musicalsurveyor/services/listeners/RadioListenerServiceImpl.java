@@ -24,9 +24,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 public class RadioListenerServiceImpl extends JpaBasedDataService<
-    RadioListenerRepository,
-    Long, RadioListener, RadioListenerDTO,
-    FindRadioListenersInput, CreateRadioListenerInput, UpdateRadioListenerInput>
+        RadioListenerRepository,
+        Long, RadioListener, RadioListenerDTO,
+        FindRadioListenersInput, CreateRadioListenerInput, UpdateRadioListenerInput>
     implements RadioListenerService // NOSONAR
 {
     /**
@@ -84,7 +84,9 @@ public class RadioListenerServiceImpl extends JpaBasedDataService<
     public @NonNull RadioListenerDTO update(@NonNull UpdateRadioListenerInput input) {
         try {
             RadioListenerDTO dto = super.update(input);
+            // To be able to capture exceptions like DataIntegrityViolationException
             repository.flush();
+            return dto;
         } catch (DataIntegrityViolationException e) {
             // translate the exception to a more meaningful one
             if (StringUtils.containsIgnoreCase(e.getMessage(), "UK_radio_listener_email")) {
@@ -92,13 +94,12 @@ public class RadioListenerServiceImpl extends JpaBasedDataService<
             }
             throw e;
         }
-        return null;
     }
 
 
     @Override
     protected void populateEntityToUpdate(
-        @NonNull RadioListener entity, @NonNull UpdateRadioListenerInput input) {
+            @NonNull RadioListener entity, @NonNull UpdateRadioListenerInput input) {
         entity.setName(input.getName());
         entity.setPhone(input.getPhone());
         entity.setAddress(input.getAddress());
