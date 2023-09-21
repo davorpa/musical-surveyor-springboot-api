@@ -35,55 +35,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/prizes")
 public class PrizeController // NOSONAR
 {
-    private final PrizeService prizeService;
+
     public PrizeController(PrizeService prizeService) {
-        this.prizeService = prizeService;
+        Assert.notNull((prizeService), "PrizeService must not be null!");
+    }
     }
     /**
      *Creates a new {@code PrizeController} instance.
      *
-     *@param prizeService the{@code PrizeService} instance to use.
      *@throws NullPointerException if {@code prizeService} is {@code null}.
      *
      * @see PrizeService
      * @see PrizeController
-
      */
-    @RestController
-    @RequestMapping ("/api/prizes")
-    public class PrizeController // NOSONAR
-    {
-        private PrizeService prizeService = prizeService;
-
-        /**
-         * Creates a new {@code PrizeController} instance.
-         *
-         * @throws NullPointerException if {@code prizeService} is {@code null}.
-         * @see PrizeService
-         * @see PrizeController
-         */
-        PrizeController() {
-            this(null);
-        } //NOSONAR
-
-        /**
-         * Creates a new {@code PrizeController} instance.
-         *
-         * @param prizeService the {@code PrizeService} instance to use.
-         * @throws NullPointerException if {@code prizeService} is {@code null}.
-         * @see PrizeService
-         * @see PrizeController
-         */
-        PrizeController(PrizeService prizeService) {
-            Assert.notNull(prizeService, "PrizeService must not be null!");
-            this.prizeService = prizeService;
-        }
-
-/*
-             * Finds all {@code Prize} resources.
-             *
-             * @param pageable the page and sorting parameters to be applied
-             * @param forceUnpaged wheter to force an unpaged result
-             * @return all {@code Prize} resources
-             */
+ // * Finds all {@code Prize} resources.
+// *
+// * @param pageable the page and sorting parameters to be applied
+// * @param forceUnpaged wheter to force an unpaged result
+// * @return all {@code Prize} resources
 
