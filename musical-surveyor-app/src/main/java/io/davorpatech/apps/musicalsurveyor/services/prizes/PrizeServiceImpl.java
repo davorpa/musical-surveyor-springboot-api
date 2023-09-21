@@ -43,6 +43,7 @@ public class PrizeServiceImpl extends JpaBasedDataService<
             Sort.Order.asc("title"));
     }
 
+
     @Override
     protected @NonNull PrizeDTO convertEntityToDto(@NonNull Prize prize) {
         return new PrizeDTO(
