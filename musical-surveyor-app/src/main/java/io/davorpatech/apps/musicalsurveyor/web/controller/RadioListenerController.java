@@ -164,6 +164,10 @@ public class RadioListenerController // NOSONAR
         responseCode = "400",
         description = "Request parameters are invalid",
         content = @Content)
+    @ApiResponse(
+        responseCode = "409",
+        description = "Radio listener already exists",
+        content = @Content)
     @PostMapping
     ResponseEntity<RadioListenerDTO> create(
         @RequestBody @Validated CreateRadioListenerRequest request)
@@ -211,6 +215,10 @@ public class RadioListenerController // NOSONAR
         responseCode = "404",
         description = "Radio listener not found",
         content = @Content)
+    @ApiResponse(
+        responseCode = "409",
+        description = "Radio listener already exists",
+        content = @Content)
     @PutMapping("/{id}")
     ResponseEntity<RadioListenerDTO> update(
         @Parameter(description = "The identifier of the radio listener to be updated", example = "1")
@@ -253,9 +261,13 @@ public class RadioListenerController // NOSONAR
         responseCode = "404",
         description = "Radio listener not found",
         content = @Content)
+    @ApiResponse(
+        responseCode = "409",
+        description = "Radio listener has related resources",
+        content = @Content)
     @DeleteMapping("/{id}")
-    ResponseEntity<RadioListenerDTO> delete(
-        @Parameter(description = "The identifier of the RadioListener to be removed", example = "1")
+    ResponseEntity<Void> delete(
+        @Parameter(description = "The identifier of the radio listener to be removed", example = "1")
         @PathVariable("id") Long id)
     {
         radioListenerService.deleteById(id);
