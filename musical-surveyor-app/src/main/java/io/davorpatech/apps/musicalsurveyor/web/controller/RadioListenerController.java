@@ -277,7 +277,7 @@ public class RadioListenerController // NOSONAR
         description = "RadioListener has related resources",
         content = @Content)
     @DeleteMapping("/{id}")
-    ResponseEntity<RadioListenerDTO> delete(
+    ResponseEntity<Void> delete(
         @Parameter(description = "The identifier of the RadioListener to be deleted", example = "1")
         @PathVariable("id") Long id)
     {
