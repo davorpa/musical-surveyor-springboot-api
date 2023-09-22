@@ -1,7 +1,5 @@
 package io.davorpatech.apps.musicalsurveyor.domain.songs;
 
-import io.davorpatech.apps.musicalsurveyor.domain.artist.CreateArtistInput;
-import io.davorpatech.apps.musicalsurveyor.domain.artist.UpdateArtistInput;
 import io.davorpatech.fwk.model.BaseValueObject;
 import io.davorpatech.fwk.model.commands.BaseUpdateInputCmd;
 import jakarta.validation.constraints.Min;
@@ -23,12 +21,12 @@ import java.util.Objects;
  * This way, the DTOs can be extended in the future without breaking the
  * service contract.
  *
- * <p>This is why the {@link CreateArtistInput} and the {@link UpdateArtistInput}
+ * <p>This is why the {@link CreateSongInput} and the {@link UpdateSongInput}
  * are different classes. They both represent the same data, but the
- * {@link UpdateArtistInput} has an additional {@code id} field. This is
- * because the {@code id} is required to update an existing {@code Artist}.
- * The {@code id} is not required to create a new {@code Artist} because
- * the server will generate a new {@code id} for the new {@code Artist}.
+ * {@link UpdateSongInput} has an additional {@code id} field. This is
+ * because the {@code id} is required to update an existing {@code Song}.
+ * The {@code id} is not required to create a new {@code Song} because
+ * the server will generate a new {@code id} for the new {@code Song}.
  *
  * <p>As a domain DTO, it follows the {@link BaseValueObject} contract,
  * which means that it identifiable field is fuzzy, and it can be compared
