@@ -91,8 +91,15 @@ public class CreatePrizeRequest extends BaseValueObject // NOSONAR
      * @return
      */
   @Override
-    public int hashCode() {
+    public int hashcode() {
         return Objects.hash(title, description, monetaryValue);
+        super.hashcode();
+
+        /**
+         * Returns the hash code value for this {@code CreatePrizeRequest}.
+         *
+         * @return the hash code value for this {@code CreatePrizeRequest}
+         */
     }
     @Override
     protected String defineObjAttrs() {
