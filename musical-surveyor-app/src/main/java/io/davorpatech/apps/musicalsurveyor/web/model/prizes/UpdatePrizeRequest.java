@@ -50,22 +50,24 @@ public class UpdatePrizeRequest extends BaseValueObject implements Identifiable<
     private final Long id;
 
     @Schema(
-        description = """
-            The prize name.
-            
-            It have to follow the hexadecimal format, e.g. #FF0000 for red; or also color names, e.g. red.""",
-        example = "red")
+        description = "The prize name",
+        example = "A trip to the Bahamas")
+
     @NotBlank
     @Size(max = PrizeConstants.TITLE_MAXLEN)
     private final String title;
 
-    /**
-     * Creates a new {@link UpdatePrizeRequest} instance with the given arguments.
-     */
-
+    @Schema(description = "The prize description",
+        example = """
+            A trip to the Bahamas for two people with all expenses paid.
+                        
+            The trip includes a 5-day stay at the Atlantis Paradise Island resort
+            and a round trip flight from the winner's city to Nassau.""")
     @Size(max = PrizeConstants.DESCRIPTION_MAXLEN)
     private final String description;
-
+    @Schema(
+        description = "The prize monetary value",
+        example = "1000.00")
     @NotNull
     @Min(PrizeConstants.MONETARY_VALUE_MIN)
     private final BigDecimal monetaryValue;
@@ -73,9 +75,9 @@ public class UpdatePrizeRequest extends BaseValueObject implements Identifiable<
     /**
      * Creates a new {@link UpdatePrizeRequest} instance with the given arguments.
      *
-     * @param id the prize ID
-     * @param title the prize title
-     * @param description the prize description
+     * @param id            the prize ID
+     * @param title         the prize title
+     * @param description   the prize description
      * @param monetaryValue the prize monetary value
      */
 
@@ -87,6 +89,7 @@ public class UpdatePrizeRequest extends BaseValueObject implements Identifiable<
         this.description = description;
         this.monetaryValue = monetaryValue;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -96,14 +99,19 @@ public class UpdatePrizeRequest extends BaseValueObject implements Identifiable<
             Objects.equals(title, other.title) &&
             Objects.equals(description, other.description) &&
             Objects.equals(monetaryValue, other.monetaryValue);
-    }@Override
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(id, title, description, monetaryValue);
-    }@Override
+    }
+
+    @Override
     protected String defineObjAttrs() {
         return String.format("id=%s, title='%s', monetaryValue=%s, description=%s",
             id, title, monetaryValue, description == null ? null : '\'' + description + '\'');
     }
+
     /**
      * Returns the prize ID.
      *
@@ -113,6 +121,7 @@ public class UpdatePrizeRequest extends BaseValueObject implements Identifiable<
     public Long getId() {
         return id;
     }
+
     /**
      * Returns the prize title.
      *

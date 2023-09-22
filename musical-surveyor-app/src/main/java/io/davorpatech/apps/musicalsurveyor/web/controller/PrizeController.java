@@ -155,7 +155,7 @@ public class PrizeController // NOSONAR
             Creates a new prize.
             
             The request body must contain the parameters.""",
-        tags = { "Prize" }
+        tags = { "prize" }
     )
     @ApiResponse(
         responseCode = "201",
@@ -170,8 +170,9 @@ public class PrizeController // NOSONAR
         @Parameter(description = "The Prize to be created")
         @RequestBody @Validated CreatePrizeRequest request)
     {
-        CreatePrizeInput input = new CreatePrizeInput(
-            request.getTitle(), request.getDescription(), request.getMonetaryValue());
+        CreatePrizeInput input= new CreatePrizeInput(request.getTitle(),
+            request.getDescription(),
+            request.getMonetaryValue());
         PrizeDTO dto = prizeService.create(input);
 
         // Compose URI Location of the retrieve endpoint for this created resource
