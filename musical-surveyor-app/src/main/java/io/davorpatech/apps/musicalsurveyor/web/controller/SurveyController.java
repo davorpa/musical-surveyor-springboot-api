@@ -162,6 +162,10 @@ public class SurveyController // NOSONAR
         responseCode = "400",
         description = "Request parameters are invalid",
         content = @Content)
+    @ApiResponse(
+        responseCode = "412",
+        description = "Survey cannot be created due to business rules",
+        content = @Content)
     @PostMapping
     ResponseEntity<SurveyDTO> create(
         @RequestBody @Validated CreateSurveyRequest request)

@@ -33,6 +33,19 @@ import java.util.Optional;
 public interface SongRepository extends JpaRepository<Song, Long>
 {
     /**
+     * Returns whether there are any {@code Song} entities stored in
+     * the repository.
+     *
+     * @return {@code true} if there are any {@code Song} entities,
+     *         {@code false} otherwise
+     *
+     * @see #count()
+     */
+    default boolean isEmpty() {
+        return count() == 0L;
+    }
+
+    /**
      * Returns the song with the given {@code artistId} and {@code songId}.
      *
      * @param artistId the artist ID to check, never {@code null}

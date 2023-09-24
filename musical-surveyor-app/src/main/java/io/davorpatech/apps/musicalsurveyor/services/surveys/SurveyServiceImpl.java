@@ -1,6 +1,10 @@
 package io.davorpatech.apps.musicalsurveyor.services.surveys;
 
+import io.davorpatech.apps.musicalsurveyor.domain.colors.EmptyColorsException;
+import io.davorpatech.apps.musicalsurveyor.domain.listeners.EmptyRadioListenersException;
 import io.davorpatech.apps.musicalsurveyor.domain.surveys.*;
+import io.davorpatech.apps.musicalsurveyor.persistence.dao.ColorRepository;
+import io.davorpatech.apps.musicalsurveyor.persistence.dao.RadioListenerRepository;
 import io.davorpatech.apps.musicalsurveyor.persistence.dao.SurveyRepository;
 import io.davorpatech.apps.musicalsurveyor.persistence.model.Survey;
 import io.davorpatech.apps.musicalsurveyor.persistence.model.SurveyConfig;
@@ -11,6 +15,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import java.util.Optional;
 
@@ -32,14 +37,25 @@ public class SurveyServiceImpl extends JpaBasedDataService<
         FindSurveysInput, CreateSurveyInput, UpdateSurveyInput>
     implements SurveyService // NOSONAR
 {
-/**
+    private final RadioListenerRepository radioListenerRepository;
+
+    private final ColorRepository colorRepository;
+
+    /**
      * Constructs a new {@link SurveyServiceImpl} with the given arguments.
      *
-     * @param surveyRepository the survey repository, never {@code null}
+     * @param surveyRepository        the survey repository, never {@code null}
+     * @param radioListenerRepository the radio listener repository, never {@code null}
      */
-    SurveyServiceImpl(SurveyRepository surveyRepository)
+    SurveyServiceImpl(SurveyRepository surveyRepository,
+                      RadioListenerRepository radioListenerRepository,
+                      ColorRepository colorRepository)
     {
         super(surveyRepository, SurveyConstants.DOMAIN_NAME);
+        Assert.notNull(radioListenerRepository, "RadioListenerRepository must not be null!");
+        this.radioListenerRepository = radioListenerRepository;
+        Assert.notNull(colorRepository, "ColorRepository must not be null!");
+        this.colorRepository = colorRepository;
     }
 
     @Override
@@ -57,6 +73,21 @@ public class SurveyServiceImpl extends JpaBasedDataService<
         Survey probe = new Survey();
         probe.setStatus(status);
         return Example.of(probe);
+    }
+
+    @Transactional
+    @Override
+    public @NonNull SurveyDTO create(@NonNull CreateSurveyInput input) {
+        // business rules: there must be at least one radio listener and one color
+        if (radioListenerRepository.isEmpty()) {
+            throw new EmptyRadioListenersException(
+                "At least one radio listener must be present before create a survey");
+        }
+        if (colorRepository.isEmpty()) {
+            throw new EmptyColorsException(
+                "At least one color must be present before create a survey");
+        }
+        return super.create(input);
     }
 
     @Override
