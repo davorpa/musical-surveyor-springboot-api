@@ -1,9 +1,6 @@
 package io.davorpatech.apps.musicalsurveyor.web.controller;
 
-import io.davorpatech.apps.musicalsurveyor.domain.surveys.CreateSurveyInput;
-import io.davorpatech.apps.musicalsurveyor.domain.surveys.FindSurveysInput;
-import io.davorpatech.apps.musicalsurveyor.domain.surveys.SurveyDTO;
-import io.davorpatech.apps.musicalsurveyor.domain.surveys.UpdateSurveyInput;
+import io.davorpatech.apps.musicalsurveyor.domain.surveys.*;
 import io.davorpatech.apps.musicalsurveyor.services.surveys.SurveyService;
 import io.davorpatech.apps.musicalsurveyor.web.model.surveys.CreateSurveyRequest;
 import io.davorpatech.apps.musicalsurveyor.web.model.surveys.UpdateSurveyRequest;
@@ -70,8 +67,9 @@ public class SurveyController // NOSONAR
     /**
      * Finds all {@code Survey} resources.
      *
-     * @param pageable the page request, never {@code null}
+     * @param pageable     the page request, never {@code null}
      * @param forceUnpaged whether to force an unpaged result
+     * @param status       the status of the survey used as a filter (optional)
      * @return all {@code Survey} resources
      */
     @Operation(
@@ -98,12 +96,14 @@ public class SurveyController // NOSONAR
         @SortDefault(sort = "startDate", direction = Sort.Direction.DESC)
         @SortDefault(sort = "endDate", direction = Sort.Direction.ASC)
         Pageable pageable,
-        @RequestParam(required = false, defaultValue = "false") boolean forceUnpaged)
+        @RequestParam(value = "unpaged", defaultValue = "false") boolean forceUnpaged,
+        @RequestParam(required = false) SurveyStatus status)
     {
         FindSurveysInput input = new FindSurveysInput(
             forceUnpaged || pageable.isUnpaged() ?  0 : pageable.getPageNumber(),
             forceUnpaged || pageable.isUnpaged() ? -1 : pageable.getPageSize(),
-            pageable.getSort()
+            pageable.getSort(),
+            status
         );
         return surveyService.findAll(input);
     }

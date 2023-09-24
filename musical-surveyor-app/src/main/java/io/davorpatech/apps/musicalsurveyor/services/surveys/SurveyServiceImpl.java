@@ -5,6 +5,7 @@ import io.davorpatech.apps.musicalsurveyor.persistence.dao.SurveyRepository;
 import io.davorpatech.apps.musicalsurveyor.persistence.model.Survey;
 import io.davorpatech.apps.musicalsurveyor.persistence.model.SurveyConfig;
 import io.davorpatech.fwk.service.data.jpa.JpaBasedDataService;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
@@ -46,6 +47,16 @@ public class SurveyServiceImpl extends JpaBasedDataService<
         return Sort.by(
             Sort.Order.desc("startDate"),
             Sort.Order.asc("endDate"));
+    }
+
+    @Override
+    protected Example<Survey> determineFindFilters(@NonNull FindSurveysInput query) {
+        final SurveyStatus status = query.getStatus();
+        if (status == null) return super.determineFindFilters(query);
+        // build the probe entity to filter by status
+        Survey probe = new Survey();
+        probe.setStatus(status);
+        return Example.of(probe);
     }
 
     @Override
