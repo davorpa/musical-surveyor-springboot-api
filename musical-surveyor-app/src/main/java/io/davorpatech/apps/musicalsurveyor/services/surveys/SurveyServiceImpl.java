@@ -1,13 +1,13 @@
 package io.davorpatech.apps.musicalsurveyor.services.surveys;
 
+import io.davorpatech.apps.musicalsurveyor.domain.RaffleConstants;
 import io.davorpatech.apps.musicalsurveyor.domain.colors.EmptyColorsException;
 import io.davorpatech.apps.musicalsurveyor.domain.listeners.EmptyRadioListenersException;
 import io.davorpatech.apps.musicalsurveyor.domain.surveys.*;
-import io.davorpatech.apps.musicalsurveyor.persistence.dao.ColorRepository;
-import io.davorpatech.apps.musicalsurveyor.persistence.dao.RadioListenerRepository;
-import io.davorpatech.apps.musicalsurveyor.persistence.dao.SurveyRepository;
+import io.davorpatech.apps.musicalsurveyor.persistence.dao.*;
 import io.davorpatech.apps.musicalsurveyor.persistence.model.Survey;
 import io.davorpatech.apps.musicalsurveyor.persistence.model.SurveyConfig;
+import io.davorpatech.fwk.exception.EntityUsedByForeignsException;
 import io.davorpatech.fwk.service.data.jpa.JpaBasedDataService;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
@@ -41,21 +41,34 @@ public class SurveyServiceImpl extends JpaBasedDataService<
 
     private final ColorRepository colorRepository;
 
+    private final RaffleRepository raffleRepository;
+
+    private final SurveyParticipationRepository surveyParticipationRepository;
+
     /**
      * Constructs a new {@link SurveyServiceImpl} with the given arguments.
      *
-     * @param surveyRepository        the survey repository, never {@code null}
-     * @param radioListenerRepository the radio listener repository, never {@code null}
+     * @param surveyRepository              the survey repository, never {@code null}
+     * @param radioListenerRepository       the radio listener repository, never {@code null}
+     * @param colorRepository               the color repository, never {@code null}
+     * @param raffleRepository              the raffle repository, never {@code null}
+     * @param surveyParticipationRepository the survey participation repository, never {@code null}
      */
     SurveyServiceImpl(SurveyRepository surveyRepository,
                       RadioListenerRepository radioListenerRepository,
-                      ColorRepository colorRepository)
+                      ColorRepository colorRepository,
+                      RaffleRepository raffleRepository,
+                      SurveyParticipationRepository surveyParticipationRepository)
     {
         super(surveyRepository, SurveyConstants.DOMAIN_NAME);
         Assert.notNull(radioListenerRepository, "RadioListenerRepository must not be null!");
         this.radioListenerRepository = radioListenerRepository;
         Assert.notNull(colorRepository, "ColorRepository must not be null!");
         this.colorRepository = colorRepository;
+        Assert.notNull(raffleRepository, "RaffleRepository must not be null!");
+        this.raffleRepository = raffleRepository;
+        Assert.notNull(surveyParticipationRepository, "SurveyParticipationRepository must not be null!");
+        this.surveyParticipationRepository = surveyParticipationRepository;
     }
 
     @Override
@@ -146,5 +159,19 @@ public class SurveyServiceImpl extends JpaBasedDataService<
                     "app.survey.config.num-needed-responses",
                     Integer.class, SurveyConstants.CFG_NUM_RESPONSES_DEFAULT))
         );
+    }
+
+    @Override
+    protected void checkEntityDeletion(Survey entity) {
+        Long id = entity.getId();
+        long count = -1;
+        if ((count = raffleRepository.countBySurvey(id)) > 0) {
+            throw new EntityUsedByForeignsException(domainName, id,
+                RaffleConstants.DOMAIN_NAME, count);
+        }
+        if ((count = surveyParticipationRepository.countBySurvey(id)) > 0) {
+            throw new EntityUsedByForeignsException(domainName, id,
+                SurveyParticipationConstants.DOMAIN_NAME, count);
+        }
     }
 }

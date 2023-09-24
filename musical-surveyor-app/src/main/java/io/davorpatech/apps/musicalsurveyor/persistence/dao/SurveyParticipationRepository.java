@@ -37,7 +37,7 @@ public interface SurveyParticipationRepository extends JpaRepository<SurveyParti
      *         {@code participantId}, {@code false} otherwise
      */
     default boolean existsByParticipant(Long participantId) {
-        return countByParticipant(participantId) > 0;
+        return countByParticipant(participantId) > 0L;
     }
 
     /**
@@ -52,4 +52,28 @@ public interface SurveyParticipationRepository extends JpaRepository<SurveyParti
      */
     @Query("SELECT COUNT(sp) FROM #{#entityName} sp WHERE sp.participant.id = ?1")
     long countByParticipant(Long participantId);
+
+    /**
+     * Returns whether there are any survey participations associated with the given {@code surveyId}.
+     *
+     * @param surveyId the survey ID to check, never {@code null}
+     * @return {@code true} if there are any survey participations associated with the given
+     *         {@code surveyId}, {@code false} otherwise
+     */
+    default boolean existsBySurvey(Long surveyId) {
+        return countBySurvey(surveyId) > 0L;
+    }
+
+    /**
+     * Returns the number of survey participations associated with the given {@code surveyId}.
+     *
+     * <p>Zero represents that there are no survey participations associated with the given
+     * {@code surveyId}, so it's safe to delete the survey.
+     *
+     * @param surveyId the survey ID to check, never {@code null}
+     * @return the number of survey participations associated with the given {@code surveyId},
+     *         never {@code null}, always greater than or equal to 0
+     */
+    @Query("SELECT COUNT(sp) FROM #{#entityName} sp WHERE sp.survey.id = ?1")
+    long countBySurvey(Long surveyId);
 }

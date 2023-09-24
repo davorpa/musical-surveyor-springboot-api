@@ -257,6 +257,10 @@ public class SurveyController // NOSONAR
         responseCode = "404",
         description = "Survey not found",
         content = @Content)
+    @ApiResponse(
+        responseCode = "409",
+        description = "Survey is used by other resources",
+        content = @Content)
     @DeleteMapping("/{id}")
     ResponseEntity<Void> delete(
         @Parameter(description = "The identifier of the survey to be removed", example = "1")
