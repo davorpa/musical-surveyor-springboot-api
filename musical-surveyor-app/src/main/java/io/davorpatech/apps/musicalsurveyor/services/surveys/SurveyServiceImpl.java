@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -137,9 +139,27 @@ public class SurveyServiceImpl extends JpaBasedDataService<
 
     @Override
     protected void populateEntityToUpdate(@NonNull Survey entity, @NonNull UpdateSurveyInput input) {
+        // business rules: cannot edit a closed survey
+        if (Objects.equals(entity.getStatus(), SurveyStatus.CLOSED)) {
+            throw new UnableToEditLockedSurveyDetailException(entity.getId(), "Already closed");
+        }
+
         final SurveyConfig config = resolveSurveyConfigWithDefaults(input.getConfig());
         entity.setTitle(input.getTitle());
         entity.setDescription(input.getDescription());
+
+        // business rule: cannot edit some survey attributes if participants has been already selected
+        SurveyConfig currentConfig = entity.getConfig();
+        LocalDateTime currentStartDate = entity.getStartDate();
+        if (!Objects.equals(currentConfig.getNumMaxParticipants(), config.getNumMaxParticipants())
+            || !Objects.equals(currentConfig.getNumSurveyResponses(), config.getNumSurveyResponses())
+            || !Objects.equals(currentStartDate, input.getStartDate()))
+        {
+            if (surveyParticipationRepository.existsBySurvey(entity.getId())) { // NOSONAR
+                throw new UnableToEditLockedSurveyDetailException(entity.getId(),
+                    "Already selected participants");
+            }
+        }
         entity.setStartDate(input.getStartDate());
         entity.setEndDate(input.getEndDate());
         entity.getConfig().setNumMaxParticipants(config.getNumMaxParticipants());

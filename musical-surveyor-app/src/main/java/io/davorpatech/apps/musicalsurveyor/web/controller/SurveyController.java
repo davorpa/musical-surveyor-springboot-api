@@ -214,6 +214,10 @@ public class SurveyController // NOSONAR
         responseCode = "404",
         description = "Survey not found",
         content = @Content)
+    @ApiResponse(
+        responseCode = "412",
+        description = "Survey cannot be updated because it is used by other resources",
+        content = @Content)
     @PutMapping("/{id}")
     ResponseEntity<SurveyDTO> update(
         @Parameter(description = "The identifier of the survey to be updated", example = "1")
