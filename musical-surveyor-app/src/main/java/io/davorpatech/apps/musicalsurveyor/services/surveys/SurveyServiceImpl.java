@@ -108,12 +108,12 @@ public class SurveyServiceImpl extends JpaBasedDataService<
                 .map(SurveyConfigDTO::getNumMaxParticipants)
                 .orElseGet(() -> environment.getProperty(
                     "app.survey.config.num-max-participants",
-                    Integer.class, 50)),
+                    Integer.class, SurveyConstants.CFG_NUM_MAX_PARTICIPANTS_DEFAULT)),
             Optional.ofNullable(config)
                 .map(SurveyConfigDTO::getNumNeededResponses)
                 .orElseGet(() -> environment.getProperty(
                     "app.survey.config.num-needed-responses",
-                    Integer.class, 3))
+                    Integer.class, SurveyConstants.CFG_NUM_RESPONSES_DEFAULT))
         );
     }
 }

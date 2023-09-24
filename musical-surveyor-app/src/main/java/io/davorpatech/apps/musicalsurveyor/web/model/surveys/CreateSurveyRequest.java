@@ -73,8 +73,8 @@ public class CreateSurveyRequest extends BaseValueObject // NOSONAR
         description = "The survey participation configuration",
         example = """
             {
-                "numMaxParticipants": 50,
-                "numNeededResponses": 3
+                "numMaxParticipants":""" + SurveyConstants.CFG_NUM_MAX_PARTICIPANTS_DEFAULT + /* NOSONAR */ """
+                "numNeededResponses":""" /* NOSONAR */ + SurveyConstants.CFG_NUM_RESPONSES_DEFAULT + """
             }""")
     @Valid
     private final SurveyConfigDTO config;

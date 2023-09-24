@@ -32,13 +32,13 @@ public class SurveyConfigDTO extends BaseValueObject // NOSONAR
 
     @Schema(
         description = "The maximum number of participants allowed in the survey",
-        example = "50")
+        example = "" + SurveyConstants.CFG_NUM_MAX_PARTICIPANTS_DEFAULT)
     @Min(SurveyConstants.CFG_NUM_MAX_PARTICIPANTS_MIN)
     private final Integer numMaxParticipants;
 
     @Schema(
         description = "The number of responses that the survey will have",
-        example = "3")
+        example = "" + SurveyConstants.CFG_NUM_RESPONSES_DEFAULT)
     @Min(SurveyConstants.CFG_NUM_RESPONSES_MIN)
     private final Integer numNeededResponses;
 
