@@ -44,8 +44,7 @@ public class SurveyServiceImpl extends JpaBasedDataService<
     @Override
     protected @NonNull Sort getDefaultFindSort() {
         return Sort.by(
-            Sort.Order.desc("status"),
-            Sort.Order.asc("startDate"),
+            Sort.Order.desc("startDate"),
             Sort.Order.asc("endDate"));
     }
 

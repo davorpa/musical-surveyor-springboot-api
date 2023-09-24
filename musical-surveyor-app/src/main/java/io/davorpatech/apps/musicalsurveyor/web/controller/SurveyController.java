@@ -80,7 +80,7 @@ public class SurveyController // NOSONAR
             Finds all surveys.
             
             The results can be paginated and sorted
-            (sorted by default by status, start date, and end date)""",
+            (sorted by default by start date, and end date)""",
         tags = { "survey" }
     )
     @ApiResponse(
@@ -95,8 +95,7 @@ public class SurveyController // NOSONAR
     @GetMapping
     PagedResult<SurveyDTO> findAll(
         @ParameterObject
-        @SortDefault(sort = "status", direction = Sort.Direction.DESC)
-        @SortDefault(sort = "startDate", direction = Sort.Direction.ASC)
+        @SortDefault(sort = "startDate", direction = Sort.Direction.DESC)
         @SortDefault(sort = "endDate", direction = Sort.Direction.ASC)
         Pageable pageable,
         @RequestParam(required = false, defaultValue = "false") boolean forceUnpaged)
