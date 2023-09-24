@@ -219,6 +219,10 @@ public class PrizeController // NOSONAR
         responseCode = "409",
         description = "Prize already exists",
         content = @Content)
+    @ApiResponse(
+        responseCode = "412",
+        description = "Prize cannot be updated because it is used by other resources",
+        content = @Content)
     @PutMapping("/{id}")
     ResponseEntity<PrizeDTO> update(
         @Parameter(description = "The identifier of the prize to be updated", example = "1")

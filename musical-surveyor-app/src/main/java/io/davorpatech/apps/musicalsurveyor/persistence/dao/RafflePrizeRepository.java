@@ -52,4 +52,31 @@ public interface RafflePrizeRepository extends JpaRepository<RafflePrize, Raffle
      */
     @Query("SELECT COUNT(rp) FROM #{#entityName} rp WHERE rp.prize.id = ?1")
     long countByPrize(Long prizeId);
+
+    /**
+     * Returns whether there are any prizes associated with the given {@code prizeId}
+     * that have been awarded to some winner.
+     *
+     * @param prizeId the prize ID to check, never {@code null}
+     * @return {@code true} if there are any prizes associated with the given
+     *         {@code prizeId} that have been awarded to a winner, {@code false} otherwise
+     */
+    default boolean existsAwardedTicketsByPrize(Long prizeId) {
+        return countAwardedTicketsByPrize(prizeId) > 0;
+    }
+
+    /**
+     * Returns the number of prizes associated with the given {@code prizeId}
+     * that have been awarded to some winner.
+     *
+     * <p>Zero represents that there are no prizes associated with the given
+     * {@code prizeId} that have been awarded to a winner, so it's safe to edit
+     * the prize details (e.g. change its title, description, or monetary value).
+     *
+     * @param prizeId the prize ID to check, never {@code null}
+     * @return the number of awarded prizes associated with the given {@code prizeId},
+     *         always greater than or equal to 0
+     */
+    @Query("SELECT COUNT(rp) FROM #{#entityName} rp WHERE rp.prize.id = ?1 AND rp.winnerTicket IS NOT NULL")
+    long countAwardedTicketsByPrize(Long prizeId);
 }

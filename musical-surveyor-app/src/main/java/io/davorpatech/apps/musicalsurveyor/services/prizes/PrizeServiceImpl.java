@@ -107,6 +107,13 @@ public class PrizeServiceImpl extends JpaBasedDataService<
     @Override
     protected void populateEntityToUpdate(
             @NonNull Prize entity, @NonNull UpdatePrizeInput input) {
+        Long prizeId = entity.getId();
+        if (rafflePrizeRepository.existsAwardedTicketsByPrize(prizeId)) {
+            // business rule: a prize that has been awarded to some winner cannot be edited
+            throw new UnableToEditLockedPrizeDetailException(prizeId,
+                "Already awarded to some winner");
+        }
+        // populate the entity with the input data
         entity.setTitle(input.getTitle());
         entity.setDescription(input.getDescription());
         entity.setMonetaryValue(input.getMonetaryValue());
