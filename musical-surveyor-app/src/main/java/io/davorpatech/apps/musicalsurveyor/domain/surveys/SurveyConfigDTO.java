@@ -69,7 +69,7 @@ public class SurveyConfigDTO extends BaseValueObject // NOSONAR
     }
 
     @Override
-    protected String defineObjAttrs() {
+    public String defineObjAttrs() {
         return String.format("numMaxParticipants=%s, numNeededResponses=%s",
             numMaxParticipants, numNeededResponses);
     }

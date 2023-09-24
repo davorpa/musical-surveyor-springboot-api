@@ -53,19 +53,21 @@ public class SurveyDTO extends BaseValueObject implements Identifiable<Long> // 
 
     @Schema(
         description = "The survey start date",
-        example = "2021-10-01T00:00:00")
+        example = "2023-10-01T00:00:00Z")
     private final LocalDateTime startDate;
 
     @Schema(
         description = "The survey end date",
-        example = "2021-10-31T23:59:59")
+        example = "2023-10-31T23:59:59Z")
     private final LocalDateTime endDate;
 
     @Schema(
         description = "The survey participation configuration",
         example = """
-            numMaxParticipants=50,
-            numNeededResponses=3""")
+            {
+                "numMaxParticipants": 50,
+                "numNeededResponses": 3
+            }""")
     private final SurveyConfigDTO config;
 
     /**
