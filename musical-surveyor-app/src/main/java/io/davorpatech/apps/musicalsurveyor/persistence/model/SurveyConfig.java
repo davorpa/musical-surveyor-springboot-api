@@ -32,6 +32,17 @@ public class SurveyConfig extends BaseValueObject // NOSONAR
     @Min(SurveyConstants.CFG_NUM_RESPONSES_MIN)
     private Integer numSurveyResponses;
 
+    protected SurveyConfig() {
+        super();
+    }
+
+    public SurveyConfig(Integer numMaxParticipants,
+                        Integer numNeededResponses) {
+        super();
+        this.numMaxParticipants = numMaxParticipants;
+        this.numSurveyResponses = numNeededResponses;
+    }
+
     @Override
     protected String defineObjAttrs() {
         return String.format("numMaxParticipants=%s, numSurveyResponses=%s",
