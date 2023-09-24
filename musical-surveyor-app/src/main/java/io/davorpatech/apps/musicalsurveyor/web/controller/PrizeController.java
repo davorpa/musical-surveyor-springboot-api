@@ -167,12 +167,10 @@ public class PrizeController // NOSONAR
         content = @Content)
     @PostMapping
     ResponseEntity<PrizeDTO> create(
-        @Parameter(description = "The Prize to be created")
         @RequestBody @Validated CreatePrizeRequest request)
     {
-        CreatePrizeInput input= new CreatePrizeInput(request.getTitle(),
-            request.getDescription(),
-            request.getMonetaryValue());
+        CreatePrizeInput input = new CreatePrizeInput(
+            request.getTitle(), request.getDescription(), request.getMonetaryValue());
         PrizeDTO dto = prizeService.create(input);
 
         // Compose URI Location of the retrieve endpoint for this created resource

@@ -81,17 +81,15 @@ public class CreatePrizeRequest extends BaseValueObject // NOSONAR
     }
 
     @Override
-    public String toString() {
-        return "CreatePrizeRequest{" +
-            "title='" + title + '\'' +
-            ", description='" + description + '\'' +
-            ", monetaryValue=" + monetaryValue +
-            '}';
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CreatePrizeRequest other = (CreatePrizeRequest) o;
+        return Objects.equals(title, other.title) &&
+            Objects.equals(description, other.description) &&
+            Objects.equals(monetaryValue, other.monetaryValue);
     }
 
-    /*
-     * @return
-     */
     @Override
     public int hashCode() {
         return Objects.hash(title, description, monetaryValue);
@@ -108,17 +106,25 @@ public class CreatePrizeRequest extends BaseValueObject // NOSONAR
      *
      * @return the prize title
      */
-
     public String getTitle() {
         return title;
     }
 
+    /**
+     * Returns the prize description.
+     *
+     * @return the prize description
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Returns the prize monetary value.
+     *
+     * @return the prize monetary value
+     */
     public BigDecimal getMonetaryValue() {
         return monetaryValue;
     }
-
 }

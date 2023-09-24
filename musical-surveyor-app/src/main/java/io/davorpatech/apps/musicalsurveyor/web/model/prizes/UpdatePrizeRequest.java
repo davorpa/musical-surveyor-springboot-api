@@ -52,7 +52,6 @@ public class UpdatePrizeRequest extends BaseValueObject implements Identifiable<
     @Schema(
         description = "The prize name",
         example = "A trip to the Bahamas")
-
     @NotBlank
     @Size(max = PrizeConstants.TITLE_MAXLEN)
     private final String title;
@@ -60,11 +59,12 @@ public class UpdatePrizeRequest extends BaseValueObject implements Identifiable<
     @Schema(description = "The prize description",
         example = """
             A trip to the Bahamas for two people with all expenses paid.
-                        
+            
             The trip includes a 5-day stay at the Atlantis Paradise Island resort
             and a round trip flight from the winner's city to Nassau.""")
     @Size(max = PrizeConstants.DESCRIPTION_MAXLEN)
     private final String description;
+
     @Schema(
         description = "The prize monetary value",
         example = "1000.00")
@@ -77,10 +77,9 @@ public class UpdatePrizeRequest extends BaseValueObject implements Identifiable<
      *
      * @param id            the prize ID
      * @param title         the prize title
-     * @param description   the prize description
+     * @param description   the prize description (optional)
      * @param monetaryValue the prize monetary value
      */
-
     @JsonCreator
     public UpdatePrizeRequest(Long id, String title, String description, BigDecimal monetaryValue) {
         super();
@@ -131,10 +130,20 @@ public class UpdatePrizeRequest extends BaseValueObject implements Identifiable<
         return title;
     }
 
+    /**
+     * Returns the prize description.
+     *
+     * @return the prize description
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Returns the prize monetary value.
+     *
+     * @return the prize monetary value
+     */
     public BigDecimal getMonetaryValue() {
         return monetaryValue;
     }
