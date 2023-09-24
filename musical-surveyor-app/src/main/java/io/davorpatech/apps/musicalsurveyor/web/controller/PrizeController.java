@@ -165,6 +165,10 @@ public class PrizeController // NOSONAR
         responseCode = "400",
         description = "Request parameters are invalid",
         content = @Content)
+    @ApiResponse(
+        responseCode = "409",
+        description = "Prize already exists",
+        content = @Content)
     @PostMapping
     ResponseEntity<PrizeDTO> create(
         @RequestBody @Validated CreatePrizeRequest request)
@@ -211,6 +215,14 @@ public class PrizeController // NOSONAR
         responseCode = "404",
         description = "Prize not found",
         content = @Content)
+    @ApiResponse(
+        responseCode = "409",
+        description = "Prize already exists",
+        content = @Content)
+    @ApiResponse(
+        responseCode = "412",
+        description = "Prize cannot be updated because it is used by other resources",
+        content = @Content)
     @PutMapping("/{id}")
     ResponseEntity<PrizeDTO> update(
         @Parameter(description = "The identifier of the prize to be updated", example = "1")
@@ -250,6 +262,10 @@ public class PrizeController // NOSONAR
     @ApiResponse(
         responseCode = "404",
         description = "Prize not found",
+        content = @Content)
+    @ApiResponse(
+        responseCode = "409",
+        description = "Prize is used by other resources",
         content = @Content)
     @DeleteMapping("/{id}")
     ResponseEntity<Void> deleteById(
