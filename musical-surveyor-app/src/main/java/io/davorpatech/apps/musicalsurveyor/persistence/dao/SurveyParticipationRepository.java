@@ -30,50 +30,83 @@ import org.springframework.transaction.annotation.Transactional;
 public interface SurveyParticipationRepository extends JpaRepository<SurveyParticipation, SurveyParticipationId>
 {
     /**
-     * Returns whether there are any survey participations associated with the given {@code participantId}.
+     * Returns whether there are any survey participations associated with the given
+     * {@code participantId}.
      *
      * @param participantId the participant ID to check, never {@code null}
-     * @return {@code true} if there are any survey participations associated with the given
-     *         {@code participantId}, {@code false} otherwise
+     * @return {@code true} if there are any survey participations associated with the
+     *         given {@code participantId}, {@code false} otherwise
      */
     default boolean existsByParticipant(Long participantId) {
         return countByParticipant(participantId) > 0L;
     }
 
     /**
-     * Returns the number of survey participations associated with the given {@code participantId}.
+     * Returns the number of survey participations associated with the given
+     * {@code participantId}.
      *
-     * <p>Zero represents that there are no survey participations associated with the given
-     * {@code participantId}, so it's safe to delete the participant.
+     * <p>Zero represents that there are no survey participations associated with the
+     * given {@code participantId}, so it's safe to delete the participant.
      *
      * @param participantId the participant ID to check, never {@code null}
-     * @return the number of survey participations associated with the given {@code participantId},
-     *         never {@code null}, always greater than or equal to 0
+     * @return the number of survey participations associated with the given
+     *         {@code participantId}, never {@code null}, always greater than or equal
+     *         to 0
      */
     @Query("SELECT COUNT(sp) FROM #{#entityName} sp WHERE sp.participant.id = ?1")
     long countByParticipant(Long participantId);
 
     /**
-     * Returns whether there are any survey participations associated with the given {@code surveyId}.
+     * Returns whether there are any survey participations associated with the given
+     * {@code surveyId}.
      *
      * @param surveyId the survey ID to check, never {@code null}
-     * @return {@code true} if there are any survey participations associated with the given
-     *         {@code surveyId}, {@code false} otherwise
+     * @return {@code true} if there are any survey participations associated with the
+     *         given {@code surveyId}, {@code false} otherwise
      */
     default boolean existsBySurvey(Long surveyId) {
         return countBySurvey(surveyId) > 0L;
     }
 
     /**
-     * Returns the number of survey participations associated with the given {@code surveyId}.
+     * Returns the number of survey participations associated with the given
+     * {@code surveyId}.
      *
-     * <p>Zero represents that there are no survey participations associated with the given
-     * {@code surveyId}, so it's safe to delete the survey.
+     * <p>Zero represents that there are no survey participations associated with the
+     * given {@code surveyId}, so it's safe to delete the survey.
      *
      * @param surveyId the survey ID to check, never {@code null}
-     * @return the number of survey participations associated with the given {@code surveyId},
-     *         never {@code null}, always greater than or equal to 0
+     * @return the number of survey participations associated with the given
+     *         {@code surveyId}, never {@code null}, always greater than or equal to 0
      */
     @Query("SELECT COUNT(sp) FROM #{#entityName} sp WHERE sp.survey.id = ?1")
     long countBySurvey(Long surveyId);
+
+    /**
+     * Returns whether there are some participants that have completed the survey
+     * associated with the given {@code surveyId}.
+     *
+     * @param surveyId the survey ID to check, never {@code null}
+     * @return {@code true} if there are some participants that have completed the
+     *         survey associated with the given {@code surveyId}, {@code false}
+     *         otherwise
+     */
+    default boolean existsByRespondedSurvey(Long surveyId) {
+        return countByRespondedSurvey(surveyId) > 0L;
+    }
+
+    /**
+     * Returns the number of participants that have completed the survey associated
+     * with the given {@code surveyId}.
+     *
+     * <p>Zero represents that there are no participants that have completed the
+     * survey associated with the given {@code surveyId}
+     *
+     * @param surveyId the survey ID to check, never {@code null}
+     * @return the number of participants that have completed the survey associated
+     *         with the given {@code surveyId}, never {@code null}, always greater
+     *         than or equal to 0
+     */
+    @Query("SELECT COUNT(sp) FROM #{#entityName} sp WHERE sp.survey.id = ?1 AND sp.responses IS NOT EMPTY")
+    long countByRespondedSurvey(Long surveyId);
 }
