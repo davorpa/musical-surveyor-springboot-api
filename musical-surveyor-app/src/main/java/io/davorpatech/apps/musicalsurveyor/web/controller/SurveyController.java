@@ -273,4 +273,49 @@ public class SurveyController // NOSONAR
         surveyService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+    /**
+     * Close the {@code Survey} resource with the given ID.
+     *
+     * @param id the identifier of the survey to be manually closed
+     */
+    @Operation(
+        summary = "Closes a survey by ID",
+        description = """
+            Closes a survey by its identifier.
+            
+            The identifier is a numeric value.
+
+            Closed surveys are frozen resources that cannot be updated or deleted.
+            
+            Surveys can be manually closed only if its end date has been reached and there are
+            some participant who have completed the survey sending their favourite songs.
+            Closing surveys already closed has no effect.
+            
+            Only surveys in this final state are eligible for raffles or prize draws.""",
+        tags = { "survey" }
+    )
+    @ApiResponse(
+        responseCode = "200",
+        description = "Successful operation")
+    @ApiResponse(
+        responseCode = "400",
+        description = "Request parameters are invalid",
+        content = @Content)
+    @ApiResponse(
+        responseCode = "404",
+        description = "Survey not found",
+        content = @Content)
+    @ApiResponse(
+        responseCode = "412",
+        description = "Survey cannot be closed due to business rules",
+        content = @Content)
+    @PostMapping("/{id}/close")
+    ResponseEntity<SurveyDTO> close(
+        @Parameter(description = "The identifier of the survey to be closed", example = "1")
+        @PathVariable("id") Long id)
+    {
+        SurveyDTO dto = surveyService.close(id);
+        return ResponseEntity.ok(dto);
+    }
 }

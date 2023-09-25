@@ -8,6 +8,7 @@ import io.davorpatech.apps.musicalsurveyor.persistence.dao.*;
 import io.davorpatech.apps.musicalsurveyor.persistence.model.Survey;
 import io.davorpatech.apps.musicalsurveyor.persistence.model.SurveyConfig;
 import io.davorpatech.fwk.exception.EntityUsedByForeignsException;
+import io.davorpatech.fwk.exception.NoSuchEntityException;
 import io.davorpatech.fwk.service.data.jpa.JpaBasedDataService;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
@@ -193,5 +194,29 @@ public class SurveyServiceImpl extends JpaBasedDataService<
             throw new EntityUsedByForeignsException(domainName, id,
                 SurveyParticipationConstants.DOMAIN_NAME, count);
         }
+    }
+
+    @Transactional
+    @Override
+    public @NonNull SurveyDTO close(@NonNull Long id) {
+        // 1. find the survey
+        Survey entity = repository.findById(id)
+            .orElseThrow(NoSuchEntityException.creater(domainName, id));
+        // 2. check if it is already closed
+        if (SurveyStatus.CLOSED.equals(entity.getStatus())) {
+            // already closed, so nothing to do
+            return convertEntityToDto(entity);
+        }
+        // 3a. business rule: cannot close a survey that has not yet ended
+        if (LocalDateTime.now().isAfter(entity.getEndDate())) {
+            // 3b. check if there are some participants that have completed the survey
+            if (surveyParticipationRepository.existsByRespondedSurvey(id)) {
+                entity.setStatus(SurveyStatus.CLOSED);
+                repository.save(entity);
+                return convertEntityToDto(entity);
+            }
+            throw new UnableToCloseSurveyException(id, "Missing participant responses");
+        }
+        throw new UnableToCloseSurveyException(id, "Not yet ended");
     }
 }
