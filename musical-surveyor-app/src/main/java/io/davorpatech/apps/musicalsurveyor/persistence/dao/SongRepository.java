@@ -1,5 +1,6 @@
 package io.davorpatech.apps.musicalsurveyor.persistence.dao;
 
+import io.davorpatech.apps.musicalsurveyor.domain.SongWithPopularityInfo;
 import io.davorpatech.apps.musicalsurveyor.persistence.model.Song;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -59,7 +61,7 @@ public interface SongRepository extends JpaRepository<Song, Long>
         WHERE s.id = :songId AND s.artist.id = :artistId
         """)
     @EntityGraph(
-        attributePaths = {"artist"},
+        attributePaths = { "artist" },
         type = EntityGraph.EntityGraphType.FETCH)
     Optional<Song> findInArtistRepertoire(
         @Param("artistId") Long artistId,
@@ -146,4 +148,29 @@ public interface SongRepository extends JpaRepository<Song, Long>
          """)
     long countByParticipationResponses(
         @Param("songId") Long songId);
+
+    /**
+     * Returns a collection of songs ranked by popularity.
+     *
+     * <p>The rank is based on the number of times the song was selected as a favorite
+     * in the successive surveys made by the radio station.
+     *
+     * @return the collection containing the ranked songs by popularity
+     */
+    @Query(value = """
+        SELECT s.id AS id,
+               s.title AS title,
+               s.release_year AS releaseYear,
+               s.duration AS duration,
+               s.genre AS genre,
+               a.id AS artistId,
+               a.name AS artistName,
+               COUNT(sr.song_id) AS likes
+        FROM song s
+             INNER JOIN artist a ON (s.artist_id = a.id)
+             LEFT JOIN survey_responsing sr ON (s.id = sr.song_id)
+        GROUP BY s.id, s.title, s.release_year, s.duration, s.genre, a.id, a.name
+        ORDER BY likes DESC
+        """, nativeQuery = true)
+    List<SongWithPopularityInfo> findAllRankedPopularityBy();
 }
