@@ -178,7 +178,7 @@ INSERT INTO `survey`
     (`title`, `description`, `status`, `start_date`, `end_date`, `num_max_participants`, `num_survey_responses`, `created_on`, `created_by`)
     VALUES
     ('Survey 001', NULL, 'CLOSED',  '2022-07-15T12:00:00', '2022-07-31T23:59:59', 5, 2, '2023-07-10T12:00:00', 'SYSTEM'),
-    ('Survey 002', NULL, 'CLOSED',  '2022-08-01T12:00:00', '2023-08-15T23:59:59', 5, 2, '2023-07-10T12:00:00', 'SYSTEM'),
+    ('Survey 002', NULL, 'CLOSED',  '2022-08-01T12:00:00', '2022-08-15T23:59:59', 5, 2, '2023-07-10T12:00:00', 'SYSTEM'),
     ('Survey 003', NULL, 'CLOSED',  '2023-01-01T12:00:00', '2023-01-31T23:59:59', 5, 2, '2023-07-10T12:00:00', 'SYSTEM'),
     ('Survey 004', NULL, 'PENDING', '2023-09-10T12:00:00', '2023-10-31T23:59:59', 5, 2, '2023-07-10T12:00:00', 'SYSTEM'),
     ('Survey 005', NULL, 'PENDING', '2023-09-10T12:00:00', '2023-10-31T23:59:59', 5, 2, '2023-07-10T12:00:00', 'SYSTEM'),

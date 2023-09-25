@@ -26,5 +26,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public interface RadioListenerRepository extends JpaRepository<RadioListener, Long>
 {
-
+    /**
+     * Returns whether there are any {@code RadioListener} entities stored in
+     * the repository.
+     *
+     * @return {@code true} if there are any {@code RadioListener} entities,
+     *         {@code false} otherwise
+     *
+     * @see #count()
+     */
+    default boolean isEmpty() {
+        return count() == 0L;
+    }
 }

@@ -2,6 +2,7 @@ package io.davorpatech.apps.musicalsurveyor.persistence.dao;
 
 import io.davorpatech.apps.musicalsurveyor.persistence.model.Raffle;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,5 +27,27 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public interface RaffleRepository extends JpaRepository<Raffle, Long>
 {
+    /**
+     * Returns whether there are any raffles associated with the given {@code surveyId}.
+     *
+     * @param surveyId the survey ID to check, never {@code null}
+     * @return {@code true} if there are any raffles associated with the given
+     *         {@code surveyId}, {@code false} otherwise
+     */
+    default boolean existsBySurvey(Long surveyId) {
+        return countBySurvey(surveyId) > 0L;
+    }
 
+    /**
+     * Returns the number of raffles associated with the given {@code surveyId}.
+     *
+     * <p>Zero represents that there are no raffles associated with the given
+     * {@code surveyId}, so it's safe to delete the survey.
+     *
+     * @param surveyId the survey ID to check, never {@code null}
+     * @return the number of raffles associated with the given {@code surveyId},
+     *         never {@code null}, always greater than or equal to 0
+     */
+    @Query("SELECT COUNT(sp) FROM #{#entityName} sp WHERE sp.survey.id = ?1")
+    long countBySurvey(Long surveyId);
 }

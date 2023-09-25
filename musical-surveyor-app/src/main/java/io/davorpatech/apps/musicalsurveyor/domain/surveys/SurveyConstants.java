@@ -1,4 +1,4 @@
-package io.davorpatech.apps.musicalsurveyor.domain;
+package io.davorpatech.apps.musicalsurveyor.domain.surveys;
 
 /**
  * Constants to work with {@code Survey} domain entities and DTOs.
@@ -30,7 +30,17 @@ public interface SurveyConstants { // NOSONAR
     int CFG_NUM_MAX_PARTICIPANTS_MIN = 0;
 
     /**
+     * The default value of the {@code numMaxParticipants} field.
+     */
+    int CFG_NUM_MAX_PARTICIPANTS_DEFAULT = 50;
+
+    /**
      * The minimum value of the {@code numResponses} field.
      */
     int CFG_NUM_RESPONSES_MIN = 0;
+
+    /**
+     * The default value of the {@code numResponses} field.
+     */
+    int CFG_NUM_RESPONSES_DEFAULT = 3;
 }

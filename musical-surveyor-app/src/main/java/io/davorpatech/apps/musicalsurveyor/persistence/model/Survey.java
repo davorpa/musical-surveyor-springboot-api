@@ -1,7 +1,7 @@
 package io.davorpatech.apps.musicalsurveyor.persistence.model;
 
-import io.davorpatech.apps.musicalsurveyor.domain.SurveyConstants;
-import io.davorpatech.apps.musicalsurveyor.domain.SuveyStatus;
+import io.davorpatech.apps.musicalsurveyor.domain.surveys.SurveyConstants;
+import io.davorpatech.apps.musicalsurveyor.domain.surveys.SurveyStatus;
 import io.davorpatech.fwk.auditing.jpa.Audit;
 import io.davorpatech.fwk.auditing.jpa.AuditAccessor;
 import io.davorpatech.fwk.model.BaseEntity;
@@ -62,7 +62,7 @@ public class Survey extends BaseEntity<Long> implements AuditAccessor // NOSONAR
     @Column(name = "status", length = SurveyConstants.STATUS_MAXLEN, nullable = false)
     @Enumerated(EnumType.STRING)
     @NotNull
-    private SuveyStatus status;
+    private SurveyStatus status;
 
     @Column(name = "start_date", nullable = false)
     @NotNull
@@ -154,7 +154,7 @@ public class Survey extends BaseEntity<Long> implements AuditAccessor // NOSONAR
      *
      * @return the status of the survey
      */
-    public SuveyStatus getStatus() {
+    public SurveyStatus getStatus() {
         return status;
     }
 
@@ -163,7 +163,7 @@ public class Survey extends BaseEntity<Long> implements AuditAccessor // NOSONAR
      *
      * @param status the status of the survey to set, never {@code null}
      */
-    public void setStatus(SuveyStatus status) {
+    public void setStatus(SurveyStatus status) {
         this.status = status;
     }
 
@@ -220,7 +220,7 @@ public class Survey extends BaseEntity<Long> implements AuditAccessor // NOSONAR
      * <p>It is a one-to-one relationship, so it is always a single raffle.
      * Raffles are optional, so it may be {@code null}, meaning that there
      * is no raffle for this survey. As a business rule, raffles should be
-     * created and set when the survey pass to the {@link SuveyStatus#CLOSED}
+     * created and set when the survey pass to the {@link SurveyStatus#CLOSED}
      * status.
      *
      * @return the raffle for this survey
@@ -237,7 +237,7 @@ public class Survey extends BaseEntity<Long> implements AuditAccessor // NOSONAR
      * and its associated raffle.
      *
      * <p>Raffles should be created and linked when the survey pass to the
-     * {@link SuveyStatus#CLOSED} status.
+     * {@link SurveyStatus#CLOSED} status.
      *
      * @param raffle the raffle for this survey
      */
